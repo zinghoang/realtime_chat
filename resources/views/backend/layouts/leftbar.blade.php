@@ -17,4 +17,5 @@
         <li class=""><a href="{{ route('users.index') }}"><i class="fa fa-user"></i> <span>Users</span></a></li>
 
     </ul>
+    <br />
 </section>
