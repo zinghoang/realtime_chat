@@ -24,7 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.users.create');
     }
 
     /**
@@ -46,7 +46,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('backend.users.show');
     }
 
     /**
@@ -57,7 +57,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('backend.users.edit');
     }
 
     /**

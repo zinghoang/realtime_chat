@@ -24,7 +24,7 @@ class FileController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.files.create');
     }
 
     /**
@@ -46,7 +46,7 @@ class FileController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('backend.files.show');
     }
 
     /**
@@ -57,7 +57,7 @@ class FileController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('backend.files.edit');
     }
 
     /**

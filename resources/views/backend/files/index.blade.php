@@ -1,23 +1,13 @@
-<?php require_once(__DIR__. '/../layouts/header.php'); ?>
-
-<header class="main-header">
-    <a href="../home" class="logo">
-        <span class="logo-mini"><b>A</b></span><span class="logo-lg"><b>Admin</b></span>    </a>
-    <nav class="navbar navbar-static-top" role="navigation">
-        <?php require_once(__DIR__. '/../layouts/menu.php'); ?>
-    </nav>
-</header>
-<aside class="main-sidebar">
-    <?php require_once(__DIR__. '/../layouts/leftbar.php'); ?>
-</aside>
+@extends('backend.layouts.master')
+@section('content')
 
 <div class="content-wrapper">
     <section class="content-header">
         <h1 class="pull-left">
-            Rooms
+            Files
         </h1>
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="">Add New</a>
+            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="create.php">Add New</a>
         </h1>
     </section>
 
@@ -32,13 +22,17 @@
                         <table class="table table-responsive table-bordered" id="tours-table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Title</th>
+                                    <th>Room</th>
+                                    <th>Type</th>
                                     <th class="text-center" colspan="3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>bevypex</td>
+                                    <td>Eveniet, culpa unde saepe praesentium</td>
+                                    <td>Illo nostrud autem.</td>
+                                    <td>Sound</td>
                                     <td class="text-center">
                                         <form method="POST" action="" accept-charset="UTF-8">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -58,7 +52,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>bevypex</td>
+                                    <td>Labore ut quia qui unde qui</td>
+                                    <td>Culpa unde saepe</td>
+                                    <td>Video</td>
                                     <td class="text-center">
                                         <form method="POST" action="" accept-charset="UTF-8">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -78,7 +74,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>bevypex</td>
+                                    <td>Ipsam non voluptate cumque </td>
+                                    <td>Saepe praesentium</td>
+                                    <td>Sound</td>
                                     <td class="text-center">
                                         <form method="POST" action="" accept-charset="UTF-8">
                                             <input name="_method" type="hidden" value="DELETE">
@@ -97,7 +95,6 @@
                                         </form>
                                     </td>
                                 </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -118,4 +115,4 @@
     </section>
 </div>
 
-<?php require_once(__DIR__. '/../layouts/footer.php'); ?>
+@stop

@@ -46,7 +46,7 @@ class RoomController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('backend.rooms.show');
     }
 
     /**
@@ -57,7 +57,7 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('backend.rooms.edit');
     }
 
     /**

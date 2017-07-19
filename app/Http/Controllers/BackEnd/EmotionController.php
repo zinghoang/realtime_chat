@@ -46,7 +46,7 @@ class EmotionController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('backend.emotions.show');
     }
 
     /**
@@ -57,7 +57,7 @@ class EmotionController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('backend.emotions.edit');
     }
 
     /**
