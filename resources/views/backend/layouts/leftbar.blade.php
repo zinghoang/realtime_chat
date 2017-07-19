@@ -11,9 +11,9 @@
 
     <ul class="sidebar-menu">
         <li class=""><a href="../home"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
-        <li class="active"><a href="../rooms"><i class="fa fa-folder"></i> <span>Room</span></a></li>
-        <li class=""><a href="../emotions"><i class="fa fa-smile-o"></i> <span>Emotion</span></a></li>
-        <li class=""><a href="../files"><i class="fa fa-file-audio-o"></i> <span>Files</span></a></li>
-        <li class=""><a href="../users"><i class="fa fa-user"></i> <span>Users</span></a></li>
+        <li class="active"><a href="../admin/rooms"><i class="fa fa-folder"></i> <span>Rooms</span></a></li>
+        <li class=""><a href="../admin/emotions"><i class="fa fa-smile-o"></i> <span>Emotions</span></a></li>
+        <li class=""><a href="../admin/files"><i class="fa fa-file-audio-o"></i> <span>Files</span></a></li>
+        <li class=""><a href="../admin/users"><i class="fa fa-user"></i> <span>Users</span></a></li>
     </ul>
 </section>

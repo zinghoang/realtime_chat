@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Room;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,8 @@ class RoomController extends Controller
      */
     public function index()
     {
-        return view('backend.rooms.index');
+        $rooms = Room::paginate(5);
+        return view('backend.rooms.index')->with('rooms',$rooms);
     }
 
     /**
@@ -35,7 +37,11 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name = $request->name;
+        $room = new Room();
+        $room->name = $name;
+        $room->save();
+        return redirect()->route('rooms.index');
     }
 
     /**
@@ -46,7 +52,8 @@ class RoomController extends Controller
      */
     public function show($id)
     {
-        return view('backend.rooms.show');
+        $room = Room::findOrFail($id);
+        return view('backend.rooms.show')->with('room',$room);
     }
 
     /**
@@ -57,7 +64,8 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        return view('backend.rooms.edit');
+        $room = Room::findOrFail($id);
+        return view('backend.rooms.edit')->with('room',$room);
     }
 
     /**
@@ -69,7 +77,10 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $room = Room::findOrFail($id);
+        $room->name = $request->name;
+        $room->save();
+        return redirect()->route('rooms.index');
     }
 
     /**
@@ -80,6 +91,8 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $room = Room::findOrFail($id);
+        $room->delete();
+        return redirect()->route('rooms.index');
     }
 }
