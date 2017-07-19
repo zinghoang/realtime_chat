@@ -21,3 +21,4 @@ Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
     Route::resource('emotions', 'EmotionController');
     Route::resource('files', 'FileController');
 });
+
