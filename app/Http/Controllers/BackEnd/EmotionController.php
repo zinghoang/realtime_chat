@@ -14,7 +14,7 @@ class EmotionController extends Controller
      */
     public function index()
     {
-        //
+        return view('backend.emotions.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class EmotionController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.emotions.create');
     }
 
     /**
