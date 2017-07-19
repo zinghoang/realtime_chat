@@ -16,8 +16,8 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
-    Route::resource('user', 'UserController');
-    Route::resource('room', 'RoomController');
-    Route::resource('emotion', 'EmotionController');
-    Route::resource('file', 'FileController');
+    Route::resource('users', 'UserController');
+    Route::resource('rooms', 'RoomController');
+    Route::resource('emotions', 'EmotionController');
+    Route::resource('files', 'FileController');
 });

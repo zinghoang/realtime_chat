@@ -16,8 +16,8 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    <form method="POST" action="index.php" accept-charset="UTF-8" id="room">
-                        <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
+                    <form method="POST" action="{{ route('users.store') }}" accept-charset="UTF-8" id="room">
+                        {{ csrf_field() }}
                         <div class="form-group">
                             <!-- Name Field -->
                             <div class="col-sm-12">
@@ -31,7 +31,7 @@
                             <!-- Submit Field -->
                             <div class="col-sm-12">
                                 <input class="btn btn-primary" type="submit" value="Save">
-                                <a href="index.php" class="btn btn-default">Back</a>
+                                <a href="{{ route('users.index') }}" class="btn btn-default">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>

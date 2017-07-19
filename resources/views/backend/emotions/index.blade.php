@@ -7,7 +7,7 @@
             Emotions
         </h1>
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="create.php">Add New</a>
+            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('emotions.create') }}">Add New</a>
         </h1>
     </section>
 
@@ -29,19 +29,20 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <tr>
                                     <td>Smile</td>
                                     <td><img src="../assets/images/smile.png" width="30px"></td>
                                     <td>:D</td>
                                     <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
+                                        <form method="POST" action="{{ route('emotions.destroy', 1) }}" accept-charset="UTF-8">
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
+                                            {{ csrf_field() }}
                                             <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
+                                                <a href="{{ route('emotions.show', 1) }}" class='btn btn-default btn-xs'>
                                                     <i class="glyphicon glyphicon-eye-open"></i>
                                                 </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
+                                                <a href="{{ route('emotions.edit', 1) }}" class='btn btn-default btn-xs'>
                                                     <i class="glyphicon glyphicon-edit"></i>
                                                 </a>
                                                 <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
@@ -51,138 +52,8 @@
                                         </form>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Angel</td>
-                                    <td><img src="../assets/images/angel.png" width="30px"></td>
-                                    <td>o:-)</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Cool</td>
-                                    <td><img src="../assets/images/cool.png" width="30px"></td>
-                                    <td>:B</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Hihi</td>
-                                    <td><img src="../assets/images/hihi.png" width="30px"></td>
-                                    <td>:)</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Love heart</td>
-                                    <td><img src="../assets/images/love-heart.png" width="30px"></td>
-                                    <td><3</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Sad</td>
-                                    <td><img src="../assets/images/sad.png" width="30px"></td>
-                                    <td>:(</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Tongue Out</td>
-                                    <td><img src="../assets/images/tongue-out.png" width="30px"></td>
-                                    <td>:P</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>   
+                                
+
                             </tbody>
                         </table>
                     </div>
