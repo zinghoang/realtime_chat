@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
+    Route::resource('user', 'UserController');
+    Route::resource('room', 'RoomController');
+    Route::resource('emotion', 'EmotionController');
+    Route::resource('file', 'FileController');
+});
