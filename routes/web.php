@@ -20,4 +20,4 @@ Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
     Route::resource('rooms', 'RoomController');
     Route::resource('emotions', 'EmotionController');
     Route::resource('files', 'FileController');
-}); 
+});
