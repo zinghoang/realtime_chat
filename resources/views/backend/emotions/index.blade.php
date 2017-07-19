@@ -1,15 +1,5 @@
-<?php require_once(__DIR__. '/../layouts/header.php'); ?>
-
-<header class="main-header">
-    <a href="../home" class="logo">
-        <span class="logo-mini"><b>A</b></span><span class="logo-lg"><b>Admin</b></span>    </a>
-    <nav class="navbar navbar-static-top" role="navigation">
-        <?php require_once(__DIR__. '/../layouts/menu.php'); ?>
-    </nav>
-</header>
-<aside class="main-sidebar">
-    <?php require_once(__DIR__. '/../layouts/leftbar.php'); ?>
-</aside>
+@extends('backend.layouts.master')
+@section('content')
 
 <div class="content-wrapper">
     <section class="content-header">
@@ -213,4 +203,4 @@
     </section>
 </div>
 
-<?php require_once(__DIR__. '/../layouts/footer.php'); ?>
+@stop

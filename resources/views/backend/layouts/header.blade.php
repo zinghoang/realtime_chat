@@ -5,14 +5,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Administrator</title>
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../assets/css/ionicons.min.css">
-        <link rel="stylesheet" href="../assets/css/select2.min.css">
-        <link rel="stylesheet" href="../assets/css/AdminLTE.min.css">
+        <link rel="stylesheet" href="{{ asset('admin/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('admin/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('admin/css/ionicons.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('admin/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('admin/css/AdminLTE.min.css') }}">
 
-        <link rel="stylesheet" href="../assets/css/skin-blue.min.css">
-        <script src="../assets/js/jquery.min.js"></script>
+        <link rel="stylesheet" href="{{ asset('admin/css/skin-blue.min.css') }}">
+        <script src="{{ asset('admin/js/jquery.min.js') }}"></script>
 
         <style>
             .error{
