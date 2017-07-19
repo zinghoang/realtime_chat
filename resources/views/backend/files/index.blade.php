@@ -6,9 +6,6 @@
         <h1 class="pull-left">
             Files
         </h1>
-        <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="create.php">Add New</a>
-        </h1>
     </section>
 
     <section class="content">
@@ -29,20 +26,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <tr>
                                     <td>Eveniet, culpa unde saepe praesentium</td>
                                     <td>Illo nostrud autem.</td>
                                     <td>Sound</td>
                                     <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
+                                        <form method="POST" action="{{ route('files.destroy', 1) }}" accept-charset="UTF-8">
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
+                                            {{ csrf_field() }}
                                             <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
+                                                <a href="{{ route('files.show', 1) }}" class='btn btn-default btn-xs'>
                                                     <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
                                                 </a>
                                                 <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
                                                     <i class="glyphicon glyphicon-trash"></i>
@@ -51,50 +46,8 @@
                                         </form>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Labore ut quia qui unde qui</td>
-                                    <td>Culpa unde saepe</td>
-                                    <td>Video</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Ipsam non voluptate cumque </td>
-                                    <td>Saepe praesentium</td>
-                                    <td>Sound</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
+                                
+
                             </tbody>
                         </table>
                     </div>
