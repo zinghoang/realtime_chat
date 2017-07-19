@@ -16,8 +16,8 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    <form method="POST" action="index.php" accept-charset="UTF-8" id="emotion">
-                        <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
+                    <form method="POST" action="{{ route('emotions.store') }}" accept-charset="UTF-8" id="emotion">
+                        {{ csrf_field() }}
                         <div class="form-group">
                             <!-- Name Field -->
                             <div class="col-sm-6">
@@ -37,7 +37,7 @@
                                 <label for="image">Image:</label>
                                 <input class="form-control" name="image" type="file" id="image" onchange="viewImg(this)">
                                 <br>
-                                <p><img id="avartar-img-show" src="../assets/images/avatar.png" alt="avatar" class="img-responsive" width="100%"></p>
+                                <p><img id="avartar-img-show" src="{{ asset('admin/images/avatar.png') }}" alt="avatar" class="img-responsive" width="100%"></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -46,7 +46,7 @@
                             <!-- Submit Field -->
                             <div class="col-sm-12">
                                 <input class="btn btn-primary" type="submit" value="Save">
-                                <a href="index.php" class="btn btn-default">Back</a>
+                                <a href="{{ route('emotions.index') }}" class="btn btn-default">Back</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
