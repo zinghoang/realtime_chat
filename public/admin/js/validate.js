@@ -29,7 +29,7 @@ $( document ).ready( function () {
         rules: {
             name: {
                 required: true,
-                minlength: 6,
+                minlength: 2,
                 maxlength: 32,
             },
             email: {
@@ -47,6 +47,26 @@ $( document ).ready( function () {
 				minlength: 2,
 				maxlenght: 100
 			}
+        }
+    });
+    $( "#user_update" ).validate( {
+
+        rules: {
+            name: {
+                required: true,
+                minlength: 2,
+                maxlength: 32,
+            },
+            email: {
+                required: true,
+                minlength: 10,
+                maxlength: 200,
+            },
+            fullname: {
+                required: true,
+                minlength: 2,
+                maxlenght: 100
+            }
         }
     });
 });

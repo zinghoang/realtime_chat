@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
 {
@@ -45,6 +48,12 @@ class UserController extends Controller
         $user->fullname = $request->fullname;
         $user->level = $request->level;
         $user->avatar = 'avatar.png';
+        if($user->save()) {
+            $request->session()->flash('success', 'User was created successful');
+        }else{
+            $request->session()->flash('fail', 'User was created unsuccessful');
+        }
+        return redirect()->route('users.index');
     }
 
     /**
@@ -55,7 +64,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return view('backend.users.show');
+        $user = User::findOrFail($id);
+        return view('backend.users.show')->with('user',$user);
     }
 
     /**
@@ -66,7 +76,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('backend.users.edit');
+        $user = User::findOrFail($id);
+        return view('backend.users.edit')->with('user',$user);
     }
 
     /**
@@ -76,9 +87,35 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        //Lay thong tin tu form
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->fullname = $request->fullname;
+        $user->level = $request->level;
+        if($request->email != null){
+            $user->password = bcrypt($request->password);
+        }
+        if($request->file('avatar') != null){
+            $image = Input::file('avatar')->getClientOriginalName();
+            if($user->avatar != 'avatar.png'){
+                //Xoa anh cu~
+                File::delete('storage/avatars/'.$user->avatar);
+            }
+            //Up anh moi
+            Input::file('avatar')->move('storage/avatars', $image);
+        }else{
+            $image = $user->avatar;
+        }
+        $user->avatar = $image;
+        if($user->save()) {
+            $request->session()->flash('success', 'User was updated successful');
+        }else{
+            $request->session()->flash('fail', 'User was updated unsuccessful');
+        }
+        return redirect()->route('users.index');
     }
 
     /**
@@ -89,6 +126,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        if($user->avatar != 'avatar.png'){
+            //Xoa anh trong folder
+            File::delete('storage/avatars/'.$user->avatar);
+        }
+        //Xoa record trong database
+        $user->delete();
+        return redirect()->route('users.index');
     }
 }
