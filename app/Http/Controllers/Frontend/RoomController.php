@@ -9,12 +9,12 @@ class RoomController extends Controller
 {
     public function index()
     {
-        return view('');
+        return view('frontend.rooms.index');
     }
 
     public function create()
     {
-    	return view('');
+    	return view('frontend.rooms.create');
     }
 
     public function store(Request $request)
@@ -24,7 +24,7 @@ class RoomController extends Controller
 
     public function show($id)
     {
-        return view('backend.emotions.show');
+        return view('frontend.rooms.show');
     }
 
     public function invite($id)
@@ -34,7 +34,7 @@ class RoomController extends Controller
 
     public function edit($id)
     {
-        return view('backend.emotions.edit');
+        return view('frontend.rooms.edit');
     }
 
     public function update(Request $request, $id)

@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
     Route::resource('users', 'UserController');
     Route::resource('rooms', 'RoomController');
@@ -22,3 +18,17 @@ Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
     Route::resource('files', 'FileController');
 });
 
+Route::group(['namespace' => 'Frontend'], function(){
+	Route::get('/', 'HomeController@index')->name('frontend.home.index');
+
+	Route::group(['prefix' => 'message'], function(){
+		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
+	});
+
+	Route::group(['prefix' => 'room'], function(){
+		Route::get('/', 'RoomController@index')->name('frontend.room.index');
+		Route::get('/create', 'RoomController@create')->name('frontend.room.create');
+		Route::post('/', 'RoomController@store')->name('frontend.room.store');
+	});
+
+});
