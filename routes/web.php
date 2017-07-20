@@ -19,7 +19,7 @@ Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
 });
 
 Route::group(['namespace' => 'Frontend'], function(){
-	Route::get('/', 'HomeController@index')->name('frontend.home.index');
+	Route::get('/home', 'HomeController@index')->name('home');
 
 	Route::group(['prefix' => 'message'], function(){
 		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
@@ -35,4 +35,4 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('frontend.home.index');
