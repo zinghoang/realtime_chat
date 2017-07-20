@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="ms-body">
+<div class="ms-body"> 
     <div class="listview lv-message">
         <div class="lv-header-alt clearfix">
             <div id="ms-menu-trigger">

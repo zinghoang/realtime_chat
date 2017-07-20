@@ -40,3 +40,4 @@ Route::group(['namespace' => 'Frontend'], function(){
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('frontend.home.index');
+ 

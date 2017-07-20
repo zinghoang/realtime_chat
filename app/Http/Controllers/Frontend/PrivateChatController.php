@@ -12,3 +12,4 @@ class PrivateChatController extends Controller
     	return view('frontend.privatechat.user');
     }
 }
+ 
