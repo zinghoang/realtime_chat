@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Emotion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 
 class EmotionController extends Controller
 {
@@ -14,7 +16,8 @@ class EmotionController extends Controller
      */
     public function index()
     {
-        return view('backend.emotions.index');
+        $emotions = Emotion::paginate(10);
+        return view('backend.emotions.index')->with('emotions',$emotions);
     }
 
     /**
@@ -35,7 +38,23 @@ class EmotionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $code = $request->code;
+        $emotion = Emotion::where('code','=',$code)->first();
+        if($emotion == null){
+            $name = $request->name;
+            $image = Input::file('image')->getClientOriginalName();
+            Input::file('image')->move('storage/emotions', $image);
+            $emotion_add = new Emotion();
+            $emotion_add->name = $name;
+            $emotion_add->code = $code;
+            $emotion_add->image = $image;
+            $emotion_add->save();
+            $request->session()->flash('addsuccess','Emotion was added success!');
+        }else{
+            $request->session()->flash('addfail','The code was existed!');
+        }
+        return redirect()->route('emotions.index');
+
     }
 
     /**
@@ -46,7 +65,8 @@ class EmotionController extends Controller
      */
     public function show($id)
     {
-        return view('backend.emotions.show');
+        $emotion = Emotion::findOrFail($id);
+        return view('backend.emotions.show')->with('emotion',$emotion);
     }
 
     /**

@@ -19,7 +19,7 @@ $( document ).ready( function () {
 			},
 			code: {
 				required: true,
-				minlength: 5,
+				minlength: 2,
 				maxlength: 100,
 			},
 		}

@@ -16,7 +16,7 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    <form method="POST" action="{{ route('emotions.store') }}" accept-charset="UTF-8" id="emotion">
+                    <form method="POST" action="{{ route('emotions.store') }}" accept-charset="UTF-8" id="emotion" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <!-- Name Field -->
@@ -37,7 +37,7 @@
                                 <label for="image">Image:</label>
                                 <input class="form-control" name="image" type="file" id="image" onchange="viewImg(this)">
                                 <br>
-                                <p><img id="avartar-img-show" src="{{ asset('admin/images/avatar.png') }}" alt="avatar" class="img-responsive" width="100%"></p>
+                                <p><img id="avartar-img-show" src="{{ asset('admin/images/avatar.png') }}" alt="avatar" class="img-responsive" width="50px" height="50px"></p>
                             </div>
                             <div class="clearfix"></div>
                         </div>

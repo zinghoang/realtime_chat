@@ -21,3 +21,6 @@ Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
     Route::resource('emotions', 'EmotionController');
     Route::resource('files', 'FileController');
 });
+Route::get('/return',function (){
+    echo "da upload";
+})->name('return');
