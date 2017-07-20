@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Private extends Model
 {
-    protected $fillable = ['from', 'to', ];
+	protected $table = 'privates';
+	
+    protected $fillable = ['from', 'to', 'content', ];
 }
