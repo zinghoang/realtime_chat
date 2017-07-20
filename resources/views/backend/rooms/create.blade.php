@@ -9,9 +9,13 @@
     </section>
 
     <section class="content">
-        <ul class="alert alert-danger" style="list-style-type: none">
-            <li>The name field is required.</li>
-        </ul>
+        @if($errors->count()>0)
+            <ul class="alert alert-danger" style="list-style-type: none">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
 
         <div class="box box-primary">
             <div class="box-body">

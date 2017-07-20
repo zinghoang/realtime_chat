@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\BackEnd;
 
 use App\Emotion;
+use App\Http\Requests\EmotionRequest;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
+use Mockery\Exception;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class EmotionController extends Controller
 {
@@ -16,7 +21,7 @@ class EmotionController extends Controller
      */
     public function index()
     {
-        $emotions = Emotion::paginate(10);
+        $emotions = Emotion::orderBy('id','DESC')->paginate(10);
         return view('backend.emotions.index')->with('emotions',$emotions);
     }
 
@@ -36,7 +41,7 @@ class EmotionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmotionRequest $request)
     {
         $code = $request->code;
         $emotion = Emotion::where('code','=',$code)->first();
@@ -49,9 +54,9 @@ class EmotionController extends Controller
             $emotion_add->code = $code;
             $emotion_add->image = $image;
             $emotion_add->save();
-            $request->session()->flash('addsuccess','Emotion was added success!');
+            $request->session()->flash('success','Emotion was added success!');
         }else{
-            $request->session()->flash('addfail','The code was existed!');
+            $request->session()->flash('fail','The code was existed!');
         }
         return redirect()->route('emotions.index');
 
@@ -77,7 +82,8 @@ class EmotionController extends Controller
      */
     public function edit($id)
     {
-        return view('backend.emotions.edit');
+        $emotion = Emotion::findOrFail($id);
+        return view('backend.emotions.edit')->with('emotion',$emotion);
     }
 
     /**
@@ -87,9 +93,33 @@ class EmotionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmotionRequest $request, $id)
     {
-        //
+        $emotion = Emotion::findOrFail($id);
+        //Lay thong tin tu form
+        $name = $request->name;
+        $code = $request->code;
+        //kiem tra code co bi trung khong
+        $emotion_check_code = Emotion::where('code','=',$code)->first();
+        if($emotion_check_code !=null && $emotion_check_code->id === $emotion->id){ //khong trung
+            if($request->file('image') != null){
+                $image = Input::file('image')->getClientOriginalName();
+                //Xoa anh cu~
+                File::delete('storage/emotions/'.$emotion->image);
+                //Up anh moi
+                Input::file('image')->move('storage/emotions', $image);
+            }else{
+                $image = $emotion->image;
+            }
+            $emotion->name = $name;
+            $emotion->code = $code;
+            $emotion->image = $image;
+            $emotion->save();
+            $request->session()->flash('success','The emotion was updated successful!');
+        }else{ //trung
+            $request->session()->flash('fail','The code was existed!');
+        }
+        return redirect()->route('emotions.index');
     }
 
     /**
@@ -100,6 +130,11 @@ class EmotionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $emotion = Emotion::findOrFail($id);
+        //Xoa file
+        File::delete('storage/emotions/'.$emotion->image);
+        //Xoa record trong CSDL
+        $emotion->delete();
+        return redirect()->route("emotions.index");
     }
 }

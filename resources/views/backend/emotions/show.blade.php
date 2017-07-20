@@ -4,10 +4,10 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1 class="pull-left">
-            Rooms
+            Emotions
         </h1>
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('rooms.create') }}">Add New</a>
+            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('emotions.create') }}">Add New</a>
         </h1>
     </section>
 
@@ -21,7 +21,7 @@
                         <table class="table table-responsive table-bordered" id="tours-table">
                             <thead>
                                 <tr class="info">
-                                    <th class="text-center" colspan="2"><h3>EMOTION'S PROFILE</h3></th>
+                                    <th class="text-center" colspan="2"><h3>EMOTION'S INFORMATION</h3></th>
                                 </tr>
                             </thead>
                             <tbody>

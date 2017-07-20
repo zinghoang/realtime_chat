@@ -4,36 +4,66 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Rooms
+            Add Users
         </h1>
     </section>
 
     <section class="content">
-        <ul class="alert alert-danger" style="list-style-type: none">
-            <li>The name field is required.</li>
-        </ul>
-
+        @if($errors->count()>0)
+            <ul class="alert alert-danger" style="list-style-type: none">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
-                    <form method="POST" action="{{ route('users.store') }}" accept-charset="UTF-8" id="room">
+                    <form method="POST" action="{{ route('users.store') }}" accept-charset="UTF-8" id="user">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <!-- Name Field -->
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <label for="name">Name:</label>
                                 <input class="form-control" name="name" type="text" id="name">
                             </div>
+                            <!-- Email Field -->
+                            <div class="col-sm-6">
+                                <label for="email">Email:</label>
+                                <input class="form-control" name="email" type="email" id="email">
+                            </div>
                             <div class="clearfix"></div>
                         </div>
-
+                        <div class="form-group">
+                            <!-- Password Field -->
+                            <div class="col-sm-6">
+                                <label for="password">Password:</label>
+                                <input class="form-control" name="password" type="password" id="password">
+                            </div>
+                            <!-- Fullname Field -->
+                            <div class="col-sm-6">
+                                <label for="fullname">Fullname:</label>
+                                <input class="form-control" name="fullname" type="text" id="fullname">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <!-- Level Field -->
+                            <div class="col-sm-6">
+                                <label for="level">Level:</label>
+                                <select name="level" id="level" class="form-control">
+                                    <option value="1">Admin</option>
+                                    <option value="0">User</option>
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
                         <div class="form-group">
                             <!-- Submit Field -->
                             <div class="col-sm-12">
                                 <input class="btn btn-primary" type="submit" value="Save">
                                 <a href="{{ route('users.index') }}" class="btn btn-default">Back</a>
                             </div>
-                            <div class="clearfix"></div>
                         </div>
                     </form>
                 </div>

@@ -15,7 +15,12 @@
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-success"><p><strong>Saved successfully.</strong></p></div>
+                @if(Session::has('success'))
+                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
+                @endif
+                @if(Session::has('fail'))
+                    <div class="alert alert-danger"><p><strong>{{ Session::get('fail') }}</strong></p></div>
+                @endif
                 <div class="clearfix"></div>
                 <div class="box box-primary">
                     <div class="box-body table-responsive">
@@ -27,6 +32,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @if(count($rooms) <1)
+                                <td colspan="2">List of rooms is empty!</td>
+                            @else
                             @foreach($rooms as $room)
                                 <tr>
                                     <td>{{ $room->name }}</td>
@@ -49,7 +57,7 @@
                                     </td>
                                 </tr>
                                @endforeach
-
+                            @endif
                             </tbody>
                         </table>
                     </div>
