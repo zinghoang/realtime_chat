@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Http\Requests\UserRequest;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,8 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //return view('backend.users.index');
-        return view('auth.login');
+        $users = User::orderBy('id','DESC')->paginate(5);
+        return view('backend.users.index')->with('users',$users);
     }
 
     /**
@@ -34,9 +36,15 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->fullname = $request->fullname;
+        $user->level = $request->level;
+        $user->avatar = 'avatar.png';
     }
 
     /**
@@ -68,7 +76,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         //
     }

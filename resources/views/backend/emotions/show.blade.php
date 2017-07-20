@@ -21,7 +21,7 @@
                         <table class="table table-responsive table-bordered" id="tours-table">
                             <thead>
                                 <tr class="info">
-                                    <th class="text-center" colspan="2"><h3>EMOTION'S PROFILE</h3></th>
+                                    <th class="text-center" colspan="2"><h3>EMOTION'S INFORMATION</h3></th>
                                 </tr>
                             </thead>
                             <tbody>

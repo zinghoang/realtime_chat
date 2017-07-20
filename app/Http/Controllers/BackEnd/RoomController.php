@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\Http\Requests\RoomRequest;
 use App\Room;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,7 +16,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::paginate(5);
+        $rooms = Room::orderBy('id','DESC')->paginate(5);
         return view('backend.rooms.index')->with('rooms',$rooms);
     }
 
@@ -35,12 +36,13 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RoomRequest $request)
     {
         $name = $request->name;
         $room = new Room();
         $room->name = $name;
         $room->save();
+        $request->session()->flash('success','Room was added successful!');
         return redirect()->route('rooms.index');
     }
 
@@ -75,11 +77,12 @@ class RoomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RoomRequest $request, $id)
     {
         $room = Room::findOrFail($id);
         $room->name = $request->name;
         $room->save();
+        $request->session()->flash('success','Room was updated successful!');
         return redirect()->route('rooms.index');
     }
 
