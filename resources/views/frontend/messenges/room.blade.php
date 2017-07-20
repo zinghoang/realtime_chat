@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Forum :: Home Page</title>
+	<title>Chat Blue Team</title>
 	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/messsages.css') }}" rel="stylesheet">
 	<link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
@@ -51,6 +51,55 @@
 							<div class="lv-small">
 								<b>aur bhai collage kse chale rhai hai </b>
 							</div>
+						</div>
+					</div>
+					<div class="lv-item media">
+						<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
+						<div class="media-body">
+							<div class="lv-title">Sumit kumar</div>
+							<div class="lv-small">aur suna kya haal hai bhai, aur</div>
+						</div>
+					</div>
+					<div class="lv-item media">
+						<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
+						<div class="media-body">
+							<div class="lv-title">Sumit kumar</div>
+							<div class="lv-small">aur suna kya haal hai bhai, aur</div>
+						</div>
+					</div>
+					<div class="lv-item media">
+						<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
+						<div class="media-body">
+							<div class="lv-title">Sumit kumar</div>
+							<div class="lv-small">aur suna kya haal hai bhai, aur</div>
+						</div>
+					</div>
+					<div class="lv-item media">
+						<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
+						<div class="media-body">
+							<div class="lv-title">Sumit kumar</div>
+							<div class="lv-small">aur suna kya haal hai bhai, aur</div>
+						</div>
+					</div>
+					<div class="lv-item media">
+						<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
+						<div class="media-body">
+							<div class="lv-title">Sumit kumar</div>
+							<div class="lv-small">aur suna kya haal hai bhai, aur</div>
+						</div>
+					</div>
+					<div class="lv-item media">
+						<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
+						<div class="media-body">
+							<div class="lv-title">Sumit kumar</div>
+							<div class="lv-small">aur suna kya haal hai bhai, aur</div>
+						</div>
+					</div>
+					<div class="lv-item media">
+						<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
+						<div class="media-body">
+							<div class="lv-title">Sumit kumar</div>
+							<div class="lv-small">aur suna kya haal hai bhai, aur</div>
 						</div>
 					</div>
 					<div class="lv-item media">
