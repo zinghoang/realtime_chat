@@ -31,14 +31,20 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::post('/', 'RoomController@store')->name('frontend.room.store');
 	});
 
+	Route::group(['prefix' => 'chat'], function(){
+		Route::get('/{username}', 'PrivateChatController@user')->name('private.user');
+	});
+
 });
 
 Auth::routes();
 
+//Route::get('/', 'HomeController@index')->name('frontend.home.index');
+ 
 //Route::get('/', 'HomeController@index')->name('frontend.home.index');
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
+/*Route::get('/home', 'HomeController@index')->name('home');*/
