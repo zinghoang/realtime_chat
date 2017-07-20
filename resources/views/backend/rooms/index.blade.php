@@ -7,7 +7,7 @@
             Rooms
         </h1>
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="create.php">Add New</a>
+            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('rooms.create') }}">Add New</a>
         </h1>
     </section>
 
@@ -27,17 +27,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach($rooms as $room)
                                 <tr>
-                                    <td>bevypex</td>
+                                    <td>{{ $room->name }}</td>
                                     <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
+                                            <form method="POST" action="{{ route('rooms.destroy',$room->id) }}" accept-charset="UTF-8">
+                                            {{ csrf_field() }}
                                             <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
                                             <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
+                                                <a href="{{ route('rooms.show',$room->id) }}" class='btn btn-default btn-xs'>
                                                     <i class="glyphicon glyphicon-eye-open"></i>
                                                 </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
+                                                <a href="{{ route('rooms.edit',$room->id) }}" class='btn btn-default btn-xs'>
                                                     <i class="glyphicon glyphicon-edit"></i>
                                                 </a>
                                                 <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
@@ -47,59 +48,14 @@
                                         </form>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>bevypex</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>bevypex</td>
-                                    <td class="text-center">
-                                        <form method="POST" action="" accept-charset="UTF-8">
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <input name="_token" type="hidden" value="6Jr9gEdr5E9dT88yJPD9a1iWVfa12bUrzCWf0nxP">
-                                            <div class='btn-group'>
-                                                <a href="show.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                                </a>
-                                                <a href="create.php" class='btn btn-default btn-xs'>
-                                                    <i class="glyphicon glyphicon-edit"></i>
-                                                </a>
-                                                <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
+                               @endforeach
 
                             </tbody>
                         </table>
                     </div>
                     <div class="box-footer clearfix">
                         <div class="pagination-sm no-margin pull-right">
-                            <ul class="pagination">
-                                <li class="disabled"><span>&laquo;</span></li>
-                                <li class="active"><span>1</span></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#" rel="next">&raquo;</a></li>
-                            </ul>
+                            {{ $rooms->links() }}
                         </div>
                     </div>
                 </div>
