@@ -26,10 +26,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        //return view('frontend.home.index');
+        return view('frontend.home.index');
 
-        $user = Auth::user();
+        /*$user = Auth::user();
         $users = User::all();
-        return view('frontend.privatechat.user',compact('user','users'));
+        return view('frontend.privatechat.user',compact('user','users'));*/
     }
 }
