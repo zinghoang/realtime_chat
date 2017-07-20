@@ -13,16 +13,14 @@
 				</div>
 			</div>
 			<div class="lvh-label hidden-xs">
-				<div class="lv-avatar pull-left"> <img src="{{ asset('images/bhai.jpg') }}" alt=""> </div><span class="c-black">Ashwani Singh Yadav<span class="nick-online"></span></span>
+				<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div><span class="c-black">All rooms</span>
 			</div>
 		</div>
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				<div class="col-md-7">
 				
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
-						
-						
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:550px;">
 					</div>
 				</div>
 				<div class="col-md-5 div-chat">
