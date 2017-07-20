@@ -31,6 +31,10 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::post('/', 'RoomController@store')->name('frontend.room.store');
 	});
 
+	Route::group(['prefix' => 'chat'], function(){
+		Route::get('/{username}', 'PrivateChatController@user')->name('private.user');
+	});
+
 });
 
 Auth::routes();
