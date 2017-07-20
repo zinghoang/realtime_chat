@@ -16,10 +16,4 @@
         <li class=""><a href="{{ route('files.index') }}"><i class="fa fa-file-audio-o"></i> <span>Files</span></a></li>
         <li class=""><a href="{{ route('users.index') }}"><i class="fa fa-user"></i> <span>Users</span></a></li>
     </ul>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
 </section>
