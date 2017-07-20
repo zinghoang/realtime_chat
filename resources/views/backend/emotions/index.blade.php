@@ -15,11 +15,11 @@
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12">
-                @if(Session::has('addsucess'))
-                <div class="alert alert-success"><p><strong>{{ Session::get('addsucess') }}</strong></p></div>
+                @if(Session::has('success'))
+                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
                 @endif
-                @if(Session::has('addfail'))
-                <div class="alert alert-danger"><p><strong>{{ Session::get('addfail') }}</strong></p></div>
+                @if(Session::has('fail'))
+                    <div class="alert alert-danger"><p><strong>{{ Session::get('fail') }}</strong></p></div>
                 @endif
                 <div class="clearfix"></div>
                 <div class="box box-primary">
@@ -35,6 +35,9 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @if(count($emotions) <1)
+                                <td colspan="5">List of emotions is empty!</td>
+                            @else
                                 @foreach($emotions as $emotion)
                                 <tr>
                                     <td>{{ $emotion->name }}</td>
@@ -42,7 +45,7 @@
                                     <td>{{ $emotion->image }}</td>
                                     <td>{{ $emotion->code }}</td>
                                     <td class="text-center">
-                                        <form method="POST" action="{{ route('emotions.destroy', 1) }}" accept-charset="UTF-8">
+                                        <form method="POST" action="{{ route('emotions.destroy', $emotion->id) }}" accept-charset="UTF-8">
                                             <input name="_method" type="hidden" value="DELETE">
                                             {{ csrf_field() }}
                                             <div class='btn-group'>
@@ -60,20 +63,13 @@
                                     </td>
                                 </tr>
                                 @endforeach
-
+                            @endif
                             </tbody>
                         </table>
-                        {{ $emotions->links() }}
                     </div>
                     <div class="box-footer clearfix">
                         <div class="pagination-sm no-margin pull-right">
-                            <ul class="pagination">
-                                <li class="disabled"><span>&laquo;</span></li>
-                                <li class="active"><span>1</span></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#" rel="next">&raquo;</a></li>
-                            </ul>
+                            {{ $emotions->links() }}
                         </div>
                     </div>
                 </div>
