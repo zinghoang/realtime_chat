@@ -38,6 +38,7 @@
                             </div>
                         </div>
 
+
                         <div class="form-group{{ $errors->has('fullname') ? ' has-error' : '' }}">
                             <label for="fullname" class="col-md-4 control-label">Fullname</label>
 
