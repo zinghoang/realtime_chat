@@ -35,4 +35,10 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('frontend.home.index');
+//Route::get('/', 'HomeController@index')->name('frontend.home.index');
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/home', 'HomeController@index')->name('home');
