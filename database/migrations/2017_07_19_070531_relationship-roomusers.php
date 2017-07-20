@@ -13,7 +13,7 @@ class RelationshipRoomusers extends Migration
      */
     public function up()
     {
-        Schema::table('room-_users', function (Blueprint $table) {
+        Schema::table('room_users', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('room_id')->references('id')->on('rooms')->onDelete('cascade');
         });
@@ -26,7 +26,7 @@ class RelationshipRoomusers extends Migration
      */
     public function down()
     {
-        Schema::table('room-_users', function (Blueprint $table) {
+        Schema::table('room_users', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
             $table->dropForeign(['room_id']);
         });
