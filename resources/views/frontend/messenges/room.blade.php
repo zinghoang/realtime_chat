@@ -48,7 +48,14 @@
 				<div class="col-md-7">
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
 						<div class="content-video">
-							<iframe width="100%" height="315" src="https://www.youtube.com/embed/mji0VwdFjJI" frameborder="0" allowfullscreen></iframe>
+							<video width="100%" controls>
+								<source src="{{ asset('storage/media/mov_bbb.mp4') }}" type="video/mp4">
+								Your browser does not support HTML5 video.
+							</video>
+							<audio width="100%" controls>
+								<source src="{{ asset('storage/media/horse.mp3') }}" type="audio/mpeg">
+								Your browser does not support the audio element.
+							</audio>
 							<h3>Eum doloremque sunt dolore et velit</h3>
 							<hr>
 						</div>
