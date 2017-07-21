@@ -18,7 +18,12 @@ class PrivateChatController extends Controller
     {	
     	$user = Auth::user();
     	$toUser = User::where('name',$username)->first();
-    	return view('frontend.privatechat.user',compact('user','toUser'));
+
+        $listPrivateChat = PrivateMessage::where('from', $user->id)->where('to', $toUser->id)->orWhere('from', $toUser->id)->where('to', $user->id)->get()->toArray();
+
+        dd($listPrivateChat);
+        
+    	return view('frontend.privatechat.user',compact('user','toUser', 'listPrivateChat'));
     }
 
     public function addPrivateMess(Request $request){

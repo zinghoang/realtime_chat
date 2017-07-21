@@ -14,7 +14,7 @@
             </div>
             <div class="lvh-label hidden-xs">
                 <div class="lv-avatar pull-left"> 
-                    <img src="{{ asset('images/' . $toUser->avatar) }}" alt=""> 
+                    <img src="{{ asset('storage/avatars/' . $toUser->avatar) }}" alt=""> 
                 </div>
                 <span class="c-black">{{ $toUser->fullname }}<span class="nick-online"></span></span>
             </div>
