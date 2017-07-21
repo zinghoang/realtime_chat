@@ -13,7 +13,10 @@
                 </div>
             </div>
             <div class="lvh-label hidden-xs">
-                <div class="lv-avatar pull-left"> <img src="{{ asset('images/bhai.jpg') }}" alt=""> </div><span class="c-black">Ashwani Singh Yadav<span class="nick-online"></span></span>
+                <div class="lv-avatar pull-left"> 
+                    <img src="{{ asset('storage/avatars/' . $toUser->avatar) }}" alt=""> 
+                </div>
+                <span class="c-black">{{ $toUser->fullname }}<span class="nick-online"></span></span>
             </div>
             <ul class="lv-actions actions list-unstyled list-inline">
                 <li>
@@ -41,34 +44,22 @@
             <div class="row content-chat-video">
                 <div class="col-md-12">
                     <div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
-                        <div class="lv-item media right">
-                            <div class="lv-avatar pull-right"> 
-                                <img src="{{ asset('images/avatar.jpg') }}" alt=""> 
+                        @foreach ($listPrivateChat as $key => $chat)
+                        <div class="lv-item media @if($chat->from == Auth::id()) right @endif">
+                            <div class="lv-avatar @if($chat->from == Auth::id()) pull-right @else pull-left @endif"> 
+                                <img src="{{ asset('storage/avatars/avatar.png') }}" alt=""> 
                             </div>
                             <div class="media-body">
                                 <div class="ms-item"> 
-                                    We started this site with clear mission that we want to deliver complete details knowledge of Programming to our audience. We are sharing this knowledge in all areas that you can see in our site. 
+                                    {{ $chat->content}}
                                 </div>
                                 <small class="ms-date">
                                     <span class="glyphicon glyphicon-time"></span>
-                                    &nbsp; 05/10/2015 at 09:30
+                                    &nbsp; {{ date('d-m-Y', strtotime($chat->created_at)) }} at {{ date('h:i:s', strtotime($chat->created_at)) }}
                                 </small> 
                             </div>
                         </div>
-                        <div class="lv-item media">
-                            <div class="lv-avatar pull-left"> 
-                                <img src="{{ asset('images/bhai.jpg') }}" alt=""> 
-                            </div>
-                            <div class="media-body">
-                                <div class="ms-item"> 
-                                    It's gives the power to synthesis anything anywhere you want to. Its the ultimate tool to solve any problem. And we help you excel in that by working with you. 
-                                </div>
-                                <small class="ms-date">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                    &nbsp; 20/02/2015 at 09:33
-                                </small> 
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="clearfix"></div>
                     <div class="lv-footer ms-reply">

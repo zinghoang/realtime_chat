@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -15,12 +16,14 @@ class HomeController extends Controller
      */
     function __construct()
     {
-
+        $this->middleware('auth');
+        $this->middleware('CheckAdmin');
     }
 
     public function index()
     {
-        dd(1);
+        $users = User::orderBy('id','DESC')->paginate(5);
+        return view('backend.index')->with('users',$users);
     }
 
 
