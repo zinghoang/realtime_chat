@@ -26,7 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('frontend.home.index');
+        $user = Auth::user();
+        return view('frontend.home.index',compact('user'));
 
         /*$user = Auth::user();
         $users = User::all();

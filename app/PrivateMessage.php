@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
-class Private extends Model
+class PrivateMessage extends Model
 {
 	use Searchable;
 
