@@ -22,7 +22,7 @@ class ListRoomChat extends AbstractWidget
     {
         //
 
-        return view('widgets.list_room_chat', [
+        return view('frontend.layouts.widgets.list_room_chat', [
             'config' => $this->config,
             'listRoom' => Room::all(),
         ]);
