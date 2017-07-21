@@ -39,6 +39,8 @@ Route::group(['namespace' => 'Frontend'], function(){
     Route::resource('account', 'AccountController');
 });
 
+Route::get('search/{users}', 'Search\SearchUserController@index')->name('SearchUser');
+
 Auth::routes();
 
 
