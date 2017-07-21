@@ -10,12 +10,13 @@ class SearchUserController extends Controller
 {
     public function index(Request $request)
     {
+        $nameSeach = $request->search;
         if ($request->has('search')) {
-            $users = User::search($request->search)
-                ->paginate(6);
+            $users = User::search($nameSeach)
+                ->paginate(12);
         } else {
-            $users = User::paginate(6);
+            $users = User::paginate(12);
         }
-        return view('frontend.search.searchusers', compact('users'));
+        return view('frontend.search.users', compact('users', 'nameSeach'));
     }
 }

@@ -37,72 +37,34 @@
 						@else
 						<div class="row">
 							<div class="col-md-12">
-								<h5 class="text-center">Some recent message</h5>
+								<h5 class="text-center">Result of {{ $nameSeach }}</h5>
 								<hr>
 							</div>
-							<div class="col-md-4 col-md-offset-2">
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-							</div>
-							<div class="col-md-5 col-md-offset-1">
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-							</div>
+							@if($users->count())
+                        		@foreach($users as $key => $user)
+									<div class="col-md-4 col-md-offset-2">
+										<div class="lv-item media ">
+											<a href="#" title="" style="text-decoration:none;">
+											<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt=""> </div>
+											<div class="media-body">
+												<div class="lv-title">{{ $user->fullname }}</div>
+												<div class="lv-small">@ {{ $user->name }}</div>
+											</div>
+											</a>
+										</div>
+									</div>	
+								@endforeach
+		                    @else
+		                        There are no data.
+		                    @endif
 						</div>
 						@endif
+						<div class="col-md-11">
+							<div class="pull-right">{{ $users->links() }}</div>
+						</div>
 					</div>
 				</div>
-					<div class="clearfix"></div>
+				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>
