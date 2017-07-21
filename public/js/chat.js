@@ -6,6 +6,8 @@ socket.emit('register',user);
 socket.on('receiver private mess',function(data){
 	console.log(data);
 	//nhan ve, giong respon
+
+
 })
 
 $.ajaxSetup({
@@ -17,8 +19,6 @@ $('#btn-reply').click(function(){
 	var mess = $('#txt-mess-content').val();
   	
   	$('#txt-mess-content').val('');
-
-
 
 	var request = $.ajax({
 		type: "post",
@@ -39,8 +39,8 @@ $('#btn-reply').click(function(){
 
 
 	  	var stringDivData = ' <div class="lv-item media right"> ' + ' <div class="lv-avatar pull-right"> ' + 
-	  	' <img src="a" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' + 
-	  	' <div class="ms-item"> ' + response.content + ' </div> ' + ' <small class="ms-date"> ' + 
+	  	' <img src="../storage/avatars/'+ user.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+	  	' <div class="ms-item"> ' + response.content + ' </div> ' + ' <small class="ms-date"> ' +
 	  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
 		
 

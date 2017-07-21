@@ -46,12 +46,17 @@
                     <div id="ms-scrollbar" class="content-message" style="overflow:scroll; overflow-x: hidden; height:530px;">
                         @foreach ($listPrivateChat as $key => $chat)                        
                         <div class="lv-item media @if($chat->from == Auth::id()) right @endif">
-                            <div class="lv-avatar @if($chat->from == Auth::id()) pull-right @else pull-left @endif"> 
-                                <img src="{{ asset('storage/avatars/avatar.png') }}" alt=""> 
+                            <div class="lv-avatar @if($chat->from == Auth::id()) pull-right @else pull-left @endif">
+                                @if($chat->from == $user->id)
+                                    <img src="{{ asset('storage/avatars/'.$user->avatar) }}" alt="">
+                                @elseif($chat->from == $toUser->id)
+                                    <img src="{{ asset('storage/avatars/'.$toUser->avatar) }}" alt="">
+                                @endif
+
                             </div>
                             <div class="media-body">
                                 <div class="ms-item"> 
-                                    {{ $chat->content}}
+                                    {!! $chat->content !!}
                                 </div>
                                 <small class="ms-date">
                                     <span class="glyphicon glyphicon-time"></span>
