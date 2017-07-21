@@ -46,6 +46,28 @@ class RoomController extends Controller
     	//
     }
 
+    public function leave($id)
+    {
+        $room = Room::findOrFail($id);
+
+        $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
+        $roomUser->delete();
+
+        return redirect()->route('frontend.message.room', $id);
+    }
+
+    public function join($id)
+    {
+        $room = Room::findOrFail($id);
+
+        $roomUser = new RoomUser;
+        $roomUser->user_id = Auth::id();
+        $roomUser->room_id = $id;
+        $roomUser->save();
+
+        return redirect()->route('frontend.message.room', $id);
+    }
+
     public function edit($id)
     {
         return view('frontend.rooms.edit');
