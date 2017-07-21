@@ -17,11 +17,13 @@ class PrivateChatController extends Controller
     public function user($username)
     {	
     	$user = Auth::user();
-    	$toUser = User::where('name',$username)->first();
+    	$toUser = User::where('name',$username)->where('name', '!=', $user->name)->first();
 
-        $listPrivateChat = PrivateMessage::where('from', $user->id)->where('to', $toUser->id)->orWhere('from', $toUser->id)->where('to', $user->id)->get()->toArray();
+        if ($toUser == null) {
+            abort(404);
+        }
 
-        dd($listPrivateChat);
+        $listPrivateChat = PrivateMessage::where('from', $user->id)->where('to', $toUser->id)->orWhere('from', $toUser->id)->where('to', $user->id)->get();
         
     	return view('frontend.privatechat.user',compact('user','toUser', 'listPrivateChat'));
     }
