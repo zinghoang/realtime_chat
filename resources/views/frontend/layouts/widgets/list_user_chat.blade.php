@@ -9,11 +9,11 @@
 	</a>
 </div>
 @endforeach
-<div class="lv-item media {{ Request::is('room') ? 'active' : '' }}">
+<div class="lv-item media {{ Request::is('chat') ? 'active' : '' }}">
 	<div class="media-body">
 		<p class="text-center" style="margin: 0px;">
 			<a href="{{ route('frontend.private.index') }}" title="" style="text-decoration:none;">
-				SHOW ALL USERS
+				SHOW MORE...
 			</a>
 		</p>
 	</div>
