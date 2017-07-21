@@ -7,18 +7,23 @@ use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
-
 class UserController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('CheckAdmin');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $users = User::orderBy('id','DESC')->paginate(5);
@@ -136,5 +141,13 @@ class UserController extends Controller
         //Xoa record trong database
         $user->delete();
         return redirect()->route('users.index');
+    }
+    /* Check admin */
+    public static function check()
+    {
+        if(Auth::user()->level == 0){
+            return redirect()->route('home');
+        }
+        dd(0);
     }
 }

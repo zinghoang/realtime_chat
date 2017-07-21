@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 
 class RoomController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('CheckAdmin');
+    }
     /**
      * Display a listing of the resource.
      *

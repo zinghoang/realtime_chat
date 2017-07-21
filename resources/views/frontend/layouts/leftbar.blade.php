@@ -4,9 +4,9 @@
 			<img src="{{ asset('images/avatar.jpg') }}" alt="">
 			<h5 class="q-title" align="center">
 				TenDangNhap<br />
-				
-				
-                                    
+
+
+
                                         <a href="{!! url('/logout') !!}" class="btn btn-default btn-flat"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             Sign out
@@ -14,8 +14,8 @@
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
-                                    
-                                
+
+
 
 
 
