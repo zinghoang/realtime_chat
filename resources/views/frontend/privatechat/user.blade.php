@@ -69,39 +69,11 @@
                                 </small> 
                             </div>
                         </div>
-                        <div class="lv-item media">
-                            <div class="lv-avatar pull-left"> 
-                                <img src="{{ asset('images/bhai.jpg') }}" alt=""> 
-                            </div>
-                            <div class="media-body">
-                                <div class="ms-item"> 
-                                    It's gives the power to synthesis anything anywhere you want to. Its the ultimate tool to solve any problem. And we help you excel in that by working with you. 
-                                </div>
-                                <small class="ms-date">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                    &nbsp; 20/02/2015 at 09:33
-                                </small> 
-                            </div>
-                        </div>
-                        <div class="lv-item media">
-                            <div class="lv-avatar pull-left"> 
-                                <img src="{{ asset('images/bhai.jpg') }}" alt=""> 
-                            </div>
-                            <div class="media-body">
-                                <div class="ms-item"> 
-                                    It's gives the power to synthesis anything anywhere you want to. Its the ultimate tool to solve any problem. And we help you excel in that by working with you. 
-                                </div>
-                                <small class="ms-date">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                    &nbsp; 20/02/2015 at 09:33
-                                </small> 
-                            </div>
-                        </div>
                     </div>
                     <div class="clearfix"></div>
                     <div class="lv-footer ms-reply">
-                        <textarea rows="10" placeholder="Write messages..."></textarea>
-                        <button class="">
+                        <textarea rows="10" placeholder="Write messages..." id="txt-mess-content"></textarea>
+                        <button class="" id='btn-reply'>
                             <span class="glyphicon glyphicon-send"></span>
                         </button>
                     </div>
@@ -110,4 +82,12 @@
         </div>
     </div>
 </div>
-@stop
+
+@endsection
+@section('script')
+<script>
+    var toUser = {!!json_encode($toUser)!!};
+    console.log(toUser);
+</script>
+<script src="{{ asset('js/chat.js') }}"></script>
+@endsection

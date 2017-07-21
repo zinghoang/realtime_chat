@@ -34,6 +34,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 	Route::group(['prefix' => 'chat'], function(){
 		Route::get('/', 'PrivateChatController@index')->name('frontend.private.index');
 		Route::get('/{username}', 'PrivateChatController@user')->name('private.user');
+		Route::post('/addprivatemess','PrivateChatController@addPrivateMess');
 	});
     Route::resource('account', 'AccountController');
 });
