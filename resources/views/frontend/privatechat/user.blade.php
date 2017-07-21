@@ -43,8 +43,8 @@
         <div class="lv-body">
             <div class="row content-chat-video">
                 <div class="col-md-12">
-                    <div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
-                        @foreach ($listPrivateChat as $key => $chat)
+                    <div id="ms-scrollbar" class="content-message" style="overflow:scroll; overflow-x: hidden; height:530px;">
+                        @foreach ($listPrivateChat as $key => $chat)                        
                         <div class="lv-item media @if($chat->from == Auth::id()) right @endif">
                             <div class="lv-avatar @if($chat->from == Auth::id()) pull-right @else pull-left @endif"> 
                                 <img src="{{ asset('storage/avatars/avatar.png') }}" alt=""> 
@@ -81,4 +81,5 @@
     console.log(toUser);
 </script>
 <script src="{{ asset('js/chat.js') }}"></script>
+
 @endsection
