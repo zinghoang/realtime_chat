@@ -16,6 +16,6 @@ class SearchUserController extends Controller
         } else {
             $users = User::paginate(6);
         }
-        return view('frontend.search.users');
+        return view('frontend.search.searchusers', compact('users'));
     }
 }
