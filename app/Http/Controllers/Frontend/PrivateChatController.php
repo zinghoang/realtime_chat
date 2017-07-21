@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\User;
-use App\Private;
+use App\PrivateMessage;
 
 class PrivateChatController extends Controller
 {
@@ -23,11 +23,11 @@ class PrivateChatController extends Controller
 
     public function addPrivateMess(Request $request){
     	\Log::info($request);
-    	Private::create([
+    	PrivateMessage::create([
     		'from' => $request['user']['id'],
     		'to' =>$request['toUser']['id'],
     		'content' => $request['message']
-    		])
+    		]);
     }
 }
  
