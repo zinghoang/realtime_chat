@@ -24,7 +24,7 @@ class ListUserChat extends AbstractWidget
     {
         //
 
-        return view('widgets.list_user_chat', [
+        return view('frontend.layouts.widgets.list_user_chat', [
             'config' => $this->config,
             'listUser' => User::all(),
             

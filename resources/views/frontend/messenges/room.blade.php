@@ -15,6 +15,7 @@
 			<div class="lvh-label hidden-xs">
 				<div class="lv-avatar pull-left"> <img src="{{ asset('images/bhai.jpg') }}" alt=""> </div><span class="c-black">Ashwani Singh Yadav<span class="nick-online"></span></span>
 			</div>
+			@if(1 == 1)
 			<ul class="lv-actions actions list-unstyled list-inline">
 				<li>
 					<a href="#"> <i class="fa fa-check"></i> </a>
@@ -36,11 +37,12 @@
 					</ul>
 				</li>
 			</ul>
+			@endif
 		</div>
 		<div class="lv-body">
 			<div class="row content-chat-video">
+				@if(1 == 1)
 				<div class="col-md-7">
-				
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
 						<div class="content-video">
 							<iframe width="100%" height="315" src="https://www.youtube.com/embed/mji0VwdFjJI" frameborder="0" allowfullscreen></iframe>
@@ -117,8 +119,6 @@
 								</li>
 							</ul>
 						</div>
-						
-						
 					</div>
 				</div>
 				<div class="col-md-5 div-chat">
@@ -188,6 +188,18 @@
 						</button>
 					</div>
 				</div>
+				@else
+				<div class="col-md-12">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
+	                    <div class="border text-center">
+	                        <a href="#" style="font-size: 340px; color: #cccccc;">
+	                            <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>
+	                        </a>
+	                        <h5><a href="" >CLICK HERE TO JOIN THIS ROOM</a></h5>
+	                    </div>
+					</div>
+				</div>
+				@endif
 			</div>
 		</div>
 	</div>

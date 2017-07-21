@@ -1,9 +1,10 @@
 <div class="ms-menu" style="overflow:scroll; overflow-x: hidden;" id="ms-scrollbar">
 	<div class="ms-block">
 		<div class="ms-user"> 
-			<img src="{{ asset('images/avatar.jpg') }}" alt="">
+			<img src="{{ asset('images/' . Auth::user()->avatar ) }}" alt="">
 			<h5 class="q-title" align="center">
-				{{ Auth::user()->fullname }}<br />                                    
+				<a href="{{ route('account.edit', Auth::id()) }}">{{ Auth::user()->fullname }} <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+				<br />                                    
             <a href="{!! url('/logout') !!}" 
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="text-decoration: none;">
                 Sign out <i class="fa fa-sign-out" aria-hidden="true"></i>

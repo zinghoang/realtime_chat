@@ -23,9 +23,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="border text-center">
-                        <a class="" href="javascript:void(0)" style="font-size: 360px;">
+                        <span style="font-size: 360px; color: #cccccc;">
                             <i class="fa fa-home" aria-hidden="true"></i>
-                        </a>
+                        </span>
                     </div>
                 </div>
             </div>
