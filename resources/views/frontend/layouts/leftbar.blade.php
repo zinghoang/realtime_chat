@@ -19,11 +19,6 @@
 		<form action="{{ route('SearchUser') }}" method="get">
 			<div class="form-group">
 				<input type="text" name="search" class="form-control" id="name" placeholder="Search" value="{{ old('search') }}">
-				<div class="input-group-btn">
-                    <button type="submit" class="btn btn-default">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </div>
 			</div>
 		</form>
 	</div>

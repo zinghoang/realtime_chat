@@ -28,7 +28,6 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 	Route::group(['prefix' => 'room'], function(){
 		Route::get('/', 'RoomController@index')->name('frontend.room.index');
-		Route::get('/create', 'RoomController@create')->name('frontend.room.create');
 		Route::post('/', 'RoomController@store')->name('frontend.room.store');
 	});
 

@@ -35,7 +35,7 @@ class User extends Authenticatable
 
     public function roomusers()
     {
-        return $this->hasMany('App\Room-User');
+        return $this->hasMany('App\RoomUser');
     }
 
     public function messengeses()
