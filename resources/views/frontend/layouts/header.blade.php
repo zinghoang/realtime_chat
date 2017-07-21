@@ -10,6 +10,7 @@
 	<link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>

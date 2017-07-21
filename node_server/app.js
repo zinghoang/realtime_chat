@@ -4,11 +4,9 @@ var io = require('socket.io')(server);
 server.listen(3000);
 
 var globalConnect = [];	
-var count = 0;
-var t=0;
 io.on('connection',function(socket){
 	var currentUser;
-	console.log('welcome ' + socket.id);
+	//console.log('welcome ' + socket.id);
 
 	// socket.on('join-channel',function(data){
 	// 	console.log(data);
@@ -26,21 +24,30 @@ io.on('connection',function(socket){
 
 	//--------- PRIVATE CHAT ---------
 	socket.on('register',function(data){
-		console.log(socket.id + " : " + data.email);
-		currentUser = new User(socket,data)
-		globalConnect[count++] = currentUser ;
+		currentUser = new User(socket,data);
+		globalConnect.push(currentUser) ;
+		// console.log('welcome ' + socket.id + " : "  + " count: " + count);
+		 console.log('wlcome length' + globalConnect.length);
 	});
 
 	socket.on('send private message',function(email,message){
+
 		for(temp=0; temp< globalConnect.length;temp++){
 			if(globalConnect[temp].user.email == email){
+				console.log(email + " - " + message);
 				globalConnect[temp].socket.emit('receiver private mess',currentUser.user.name + " - " + message);
 			}
 		}
+	//	console.log('index: '+index);
 	})
 
 	socket.on('disconnect',function(){
 		console.log(socket.id + " has disconnect");
+		var index = globalConnect.indexOf(currentUser);
+		console.log('disconect index ' + index);
+		if(index>=0){
+			globalConnect.splice(index,1);
+		}
 	})
 })
 
