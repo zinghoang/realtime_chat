@@ -1,7 +1,7 @@
 <div class="ms-menu" style="overflow:scroll; overflow-x: hidden;" id="ms-scrollbar">
 	<div class="ms-block">
 		<div class="ms-user"> 
-			<img src="{{ asset('images/' . Auth::user()->avatar ) }}" alt="">
+			<img src="{{ url('storage/avatars/' . Auth::user()->avatar ) }}" alt="">
 			<h5 class="q-title" align="center">
 				<a href="{{ route('account.edit', Auth::id()) }}">{{ Auth::user()->fullname }} <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 				<br />                                    

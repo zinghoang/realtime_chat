@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class FileController extends Controller
 {
-    /**
+    function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('CheckAdmin');
+    }    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

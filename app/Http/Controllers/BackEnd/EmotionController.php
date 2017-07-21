@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class EmotionController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('CheckAdmin');
+    }
     /**
      * Display a listing of the resource.
      *

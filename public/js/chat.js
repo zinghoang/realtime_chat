@@ -14,7 +14,7 @@ $.ajaxSetup({
 });
 $('#btn-reply').click(function(){
 	var mess = $('#txt-mess-content').val();
-  	socket.emit('send private message',toUser.email,mess);
+  	
   	$('#txt-mess-content').val('');
 
 
@@ -29,11 +29,12 @@ $('#btn-reply').click(function(){
 			});
 
 	request.done(function (response, textStatus, jqXHR){
-	  console.log(response);
+	  	console.log(response);
+	  	socket.emit('send private message',response);
 	});
 
 	// Callback handler that will be called on failure
 	request.fail(function (jqXHR, textStatus, errorThrown){
-	console.error("error");
+		console.error("error");
 	});
 })

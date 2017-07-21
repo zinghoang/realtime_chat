@@ -28,7 +28,7 @@ class PrivateChatController extends Controller
 
     public function addPrivateMess(Request $request){
     	\Log::info($request);
-    	PrivateMessage::create([
+    	return PrivateMessage::create([
     		'from' => $request['user']['id'],
     		'to' =>$request['toUser']['id'],
     		'content' => $request['message']

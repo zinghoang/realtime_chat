@@ -26,19 +26,16 @@ io.on('connection',function(socket){
 	socket.on('register',function(data){
 		currentUser = new User(socket,data);
 		globalConnect.push(currentUser) ;
-		// console.log('welcome ' + socket.id + " : "  + " count: " + count);
-		 console.log('wlcome length' + globalConnect.length);
 	});
 
-	socket.on('send private message',function(email,message){
+	socket.on('send private message',function(message){
 
 		for(temp=0; temp< globalConnect.length;temp++){
-			if(globalConnect[temp].user.email == email){
-				console.log(email + " - " + message);
-				globalConnect[temp].socket.emit('receiver private mess',currentUser.user.name + " - " + message);
+			if(globalConnect[temp].user.id == message.to){
+				console.log(message);
+				globalConnect[temp].socket.emit('receiver private mess',message);
 			}
 		}
-	//	console.log('index: '+index);
 	})
 
 	socket.on('disconnect',function(){
