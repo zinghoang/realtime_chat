@@ -43,11 +43,11 @@
                                 </tr>
                                 <tr>
                                     <td>Created At</td>
-                                    <td>{{ $user->created_at }}</td>
+                                    <td class="text-success">{{ $user->created_at }}</td>
                                 </tr>
                                 <tr>
                                     <td>Updated At</td>
-                                    <td>{{ $user->updated_at }}</td>
+                                    <td class="text-danger">{{ $user->updated_at }}</td>
                                 </tr>
                                 <tr>
                                     <td>Avatar</td>
