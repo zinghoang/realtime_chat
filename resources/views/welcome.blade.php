@@ -66,7 +66,7 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="flex-center position-ref full-height" style="background-image: url({{ asset('images/background.jpg')  }}) ; background-repeat: no-repeat;">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @if (Auth::check())
