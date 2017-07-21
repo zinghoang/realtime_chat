@@ -13,21 +13,152 @@
 				</div>
 			</div>
 			<div class="lvh-label hidden-xs">
-				<div class="lv-avatar pull-left"> <img src="{{ asset('images/bhai.jpg') }}" alt=""> </div><span class="c-black">Ashwani Singh Yadav<span class="nick-online"></span></span>
+				<div class="lv-avatar pull-left"> 
+					<span style="color: #818181;"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+				</div>
+				<span class="c-black">Chat</span>
 			</div>
 		</div>
 		<div class="lv-body">
 			<div class="row content-chat-video">
-				<div class="col-md-7">
+				<div class="col-md-12">
 				
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
-						
-						
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:550px;">
+						@if(1 == 1)
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="text-center">Room you was joined</h5>
+								<hr>
+							</div>
+							<div class="col-md-4 col-md-offset-2">
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to chat...</div>
+									</div>
+									</a>
+								</div>
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to chat...</div>
+									</div>
+									</a>
+								</div>
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to chat...</div>
+									</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-md-5 col-md-offset-1">
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to chat...</div>
+									</div>
+									</a>
+								</div>
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to chat...</div>
+									</div>
+									</a>
+								</div>
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to chat...</div>
+									</div>
+									</a>
+								</div>
+							</div>
+						</div>
+							<hr>
+						@endif
+						<div class="row">
+							<div class="col-md-12">
+								
+								<h5 class="text-center">Some room you can join...</h5>
+								<hr>
+							</div>
+							<div class="col-md-4 col-md-offset-2">
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to join...</div>
+									</div>
+									</a>
+								</div>
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to join...</div>
+									</div>
+									</a>
+								</div>
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to join...</div>
+									</div>
+									</a>
+								</div>
+							</div>
+							<div class="col-md-5 col-md-offset-1">
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to join...</div>
+									</div>
+									</a>
+								</div>
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to join...</div>
+									</div>
+									</a>
+								</div>
+								<div class="lv-item media ">
+									<a href="#" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">Nguyen Van An</div>
+										<div class="lv-small">Click here to join...</div>
+									</div>
+									</a>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="col-md-5 div-chat">
-					<div class="clearfix"></div>
-				</div>
+				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>

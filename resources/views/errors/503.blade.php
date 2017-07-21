@@ -80,11 +80,11 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Chat Blue Team
+                    Sorry!
                 </div>
 
                 <div style="font-size: 60px;">
-                    Welcome to blue team!
+                    Be right back!!!
                 </div>
             </div>
         </div>

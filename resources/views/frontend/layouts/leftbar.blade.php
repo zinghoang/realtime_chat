@@ -1,24 +1,17 @@
 <div class="ms-menu" style="overflow:scroll; overflow-x: hidden;" id="ms-scrollbar">
 	<div class="ms-block">
 		<div class="ms-user"> 
-			<img src="{{ asset('images/avatar.jpg') }}" alt="">
+			<img src="{{ url('storage/avatars/' . Auth::user()->avatar ) }}" alt="">
 			<h5 class="q-title" align="center">
-				TenDangNhap<br />
-
-
-
-                                        <a href="{!! url('/logout') !!}" class="btn btn-default btn-flat"
-                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            Sign out
-                                        </a>
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-
-
-
-
-
+				<a href="{{ route('account.edit', Auth::id()) }}">{{ Auth::user()->fullname }} <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+				<br />                                    
+            <a href="{!! url('/logout') !!}" 
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="text-decoration: none;">
+                Sign out <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </a>
+            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+            </form>
 				</h5> 
 		</div>
 	</div>
@@ -31,59 +24,10 @@
 	</div>
 	<hr/>
 	<div class="listview lv-user m-t-20">
-		<div class="lv-item media active">
-			<div class="lv-avatar pull-left"> 
-				<img src="{{ asset('images/bhai.jpg') }}" alt=""> 
-			</div>
-			<div class="media-body">
-				<div class="lv-title">Ashwani Singh Yadav</div>
-				<div class="lv-small"> Acadnote a world class website is processing surveys for </div>
-			</div>
-		</div>
-		<div class="lv-item media"> 
-			<div class="lv-avatar pull-left"> 
-				<img src="{{ asset('images/chota.jpg') }}" alt=""> 
-			</div>
-			<div class="media-body"> 
-				<div class="lv-title">
-					<b>Deepak Yadav</b>
-					<span class="pull-right">2 new</span>
-				</div>
-				<div class="lv-small">
-					<b>aur bhai collage kse chale rhai hai </b>
-				</div>
-			</div>
-		</div>
-		<div class="lv-item media">
-			<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-			<div class="media-body">
-				<div class="lv-title">Sumit kumar</div>
-				<div class="lv-small">aur suna kya haal hai bhai, aur</div>
-			</div>
-		</div>
+		@widget('listRoomChat')
 	</div>
 	<hr>
 	<div class="listview lv-user m-t-20">
-		<div class="lv-item media"> 
-			<div class="lv-avatar pull-left"> 
-				<img src="{{ asset('images/chota.jpg') }}" alt=""> 
-			</div>
-			<div class="media-body"> 
-				<div class="lv-title">
-					<b>Deepak Yadav</b>
-					<span class="pull-right">2 new</span>
-				</div>
-				<div class="lv-small">
-					<b>aur bhai collage kse chale rhai hai </b>
-				</div>
-			</div>
-		</div>
-		<div class="lv-item media">
-			<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-			<div class="media-body">
-				<div class="lv-title">Sumit kumar</div>
-				<div class="lv-small">aur suna kya haal hai bhai, aur</div>
-			</div>
-		</div>
+		@widget('listUserChat')
 	</div>
 </div>
