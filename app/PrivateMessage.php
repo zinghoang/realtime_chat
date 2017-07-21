@@ -13,6 +13,11 @@ class PrivateMessage extends Model
 	
     protected $fillable = ['from', 'to', 'content', ];
 
+    public function user()
+    {
+    	return $this->belongsTo('App\User');
+    }
+
     public function searchableAs()
     {
         return 'privates_index';
