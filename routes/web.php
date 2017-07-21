@@ -24,11 +24,14 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 	Route::group(['prefix' => 'message'], function(){
 		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
+		
 	});
 
 	Route::group(['prefix' => 'room'], function(){
 		Route::get('/', 'RoomController@index')->name('frontend.room.index');
 		Route::post('/', 'RoomController@store')->name('frontend.room.store');
+		Route::get('/join/{room}', 'RoomController@join')->name('frontend.room.join');
+		Route::get('/leave/{room}', 'RoomController@leave')->name('frontend.room.leave');
 	});
 
 	Route::group(['prefix' => 'chat'], function(){
