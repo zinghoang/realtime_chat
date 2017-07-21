@@ -26,16 +26,16 @@
 	border-radius: 50%; background-color:#80d3ab;
 }
 
-@media (min-width: 1200px)
+@media (min-width: 1200px){}
 .container {
     width: 100%;
 }
 
-@media (min-width: 992px)
+@media (min-width: 992px){}
 .container {
     width: 100%;
 }
-@media (min-width: 768px)
+@media (min-width: 768px){}
 .container {
     width: 100%;
 }
