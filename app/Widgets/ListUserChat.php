@@ -5,6 +5,7 @@ namespace App\Widgets;
 use Arrilot\Widgets\AbstractWidget;
 
 use App\User;
+use Auth;
 
 
 class ListUserChat extends AbstractWidget
@@ -26,7 +27,7 @@ class ListUserChat extends AbstractWidget
 
         return view('frontend.layouts.widgets.list_user_chat', [
             'config' => $this->config,
-            'listUser' => User::all(),
+            'listUser' => User::where('id', '!=', Auth::id())->get(),
             
         ]);
     }
