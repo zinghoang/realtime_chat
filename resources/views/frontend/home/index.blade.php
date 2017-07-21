@@ -13,7 +13,9 @@
                 </div>
             </div>
             <div class="lvh-label hidden-xs">
-
+                @if(Session::has('fail'))
+                    <div class="alert alert-danger"><p><strong>{{ Session::get('fail') }}</strong></p></div>
+                @endif
                 <span class="c-black">
                     Welcome to Chat Blue Team!
                 </span>

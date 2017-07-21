@@ -16,6 +16,7 @@ Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
     Route::resource('rooms', 'RoomController');
     Route::resource('emotions', 'EmotionController');
     Route::resource('files', 'FileController');
+    Route::get('/index','HomeController@index')->name('admin.index')->middleware('CheckAdmin');
 });
 
 Route::group(['namespace' => 'Frontend'], function(){
