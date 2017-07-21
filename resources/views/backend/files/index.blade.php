@@ -12,7 +12,9 @@
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-success"><p><strong>Saved successfully.</strong></p></div>
+                @if(Session::has('success'))
+                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
+                @endif
                 <div class="clearfix"></div>
                 <div class="box box-primary">
                     <div class="box-body table-responsive">
@@ -22,21 +24,26 @@
                                     <th>Title</th>
                                     <th>Room</th>
                                     <th>Type</th>
+                                    <th>Uploaded By</th>
                                     <th class="text-center" colspan="3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-
+                            @if(count($files) < 1 )
+                                <td colspan="7" class="text-center">List of Files is empty!</td>
+                            @else
+                                @foreach($files as $file)
                                 <tr>
-                                    <td>Eveniet, culpa unde saepe praesentium</td>
-                                    <td>Illo nostrud autem.</td>
-                                    <td>Sound</td>
+                                    <td>{{ $file->title }}</td>
+                                    <td>{{ $file->roomname }}</td>
+                                    <td>{{ $file->type }}</td>
+                                    <td>{{ $file->fullname }}</td>
                                     <td class="text-center">
-                                        <form method="POST" action="{{ route('files.destroy', 1) }}" accept-charset="UTF-8">
+                                        <form method="POST" action="{{ route('files.destroy', $file->id ) }}" accept-charset="UTF-8">
                                             <input name="_method" type="hidden" value="DELETE">
                                             {{ csrf_field() }}
                                             <div class='btn-group'>
-                                                <a href="{{ route('files.show', 1) }}" class='btn btn-default btn-xs'>
+                                                <a href="{{ route('files.show', $file->id) }}" class='btn btn-default btn-xs'>
                                                     <i class="glyphicon glyphicon-eye-open"></i>
                                                 </a>
                                                 <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(&#039;Are you sure?&#039;)">
@@ -46,20 +53,14 @@
                                         </form>
                                     </td>
                                 </tr>
-                                
-
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
                     <div class="box-footer clearfix">
                         <div class="pagination-sm no-margin pull-right">
-                            <ul class="pagination">
-                                <li class="disabled"><span>&laquo;</span></li>
-                                <li class="active"><span>1</span></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#" rel="next">&raquo;</a></li>
-                            </ul>
+                            {{ $files->links() }}
                         </div>
                     </div>
                 </div>

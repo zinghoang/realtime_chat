@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\File;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class FileController extends Controller
 {
@@ -14,7 +16,13 @@ class FileController extends Controller
      */
     public function index()
     {
-        return view('backend.files.index');
+        $files = DB::table('files')
+            ->join('users','users.id','=','files.user_id')
+            ->join('rooms','rooms.id','=','files.room_id')
+            ->select('files.id','files.title','files.type','users.fullname','rooms.name as roomname')
+            ->paginate(1);
+
+        return view('backend.files.index')->with('files',$files);
     }
 
     /**
@@ -46,7 +54,14 @@ class FileController extends Controller
      */
     public function show($id)
     {
-        return view('backend.files.show');
+        $file = DB::table('files')
+            ->join('users','users.id','=','files.user_id')
+            ->join('rooms','rooms.id','=','files.room_id')
+            ->where('files.id','=',$id)
+            ->select('files.*','users.fullname','rooms.name as roomname')
+            ->get();
+
+        return view('backend.files.show')->with('file',$file);
     }
 
     /**
@@ -78,8 +93,14 @@ class FileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        $file = File::findOrFail($id);
+        //Xoa file
+        \Illuminate\Support\Facades\File::delete('storage/media/'.$file->name);
+        //Xoa record trong CSDL
+        $file->delete();
+        $request->session()->flash('success','Removed Successful');
+        return redirect()->route("files.index");
     }
 }

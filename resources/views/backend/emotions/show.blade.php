@@ -43,11 +43,11 @@
                                 </tr>
                                 <tr>
                                     <td>Created At</td>
-                                    <td>{{ $emotion->created_at }}</td>
+                                    <td class="text-success">{{ $emotion->created_at }}</td>
                                 </tr>
                                 <tr>
                                     <td>Updated At</td>
-                                    <td>{{ $emotion->updated_at }}</td>
+                                    <td class="text-danger">{{ $emotion->updated_at }}</td>
                                 </tr>
                             </tbody>
                         </table>
