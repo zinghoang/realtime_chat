@@ -18,6 +18,35 @@
 				</div>
 				<span class="c-black">Chat</span>
 			</div>
+			<ul class="lv-actions actions list-unstyled list-inline">
+				<li><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> </a></li>
+            </ul>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+            	<div class="modal-dialog">
+            		<!-- Modal content-->
+            		<div class="modal-content">
+            			<div class="modal-header">
+            				<button type="button" class="close" data-dismiss="modal">&times;</button>
+            				<h4 class="modal-title">Create room...</h4>
+            			</div>
+            			<form method="post" action="{{ route('frontend.room.store') }}">
+            				{{ csrf_field() }}
+            				<div class="modal-body">
+            					<div class="form-group">
+	            					<label for="name">Name:</label>
+	            					<input type="text" class="form-control" name="name" id="name">
+            					</div>
+	            			</div>
+	            			<div class="modal-footer">
+	            				<button type="submit" class="btn btn-info">Save</button>
+	            				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	            			</div>
+            			</form>
+            		</div>
+
+            	</div>
+            </div>
 		</div>
 		<div class="lv-body">
 			<div class="row content-chat-video">

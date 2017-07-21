@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Frontend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Room;
+use App\RoomUser;
+use Auth;
+
 
 class RoomController extends Controller
 {
@@ -19,7 +23,17 @@ class RoomController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $room = new Room;
+        $room->name = $request->name;
+        $room->save();
+
+
+        $roomUser = new RoomUser;
+        $roomUser->user_id = Auth::id();
+        $roomUser->room_id = $room->id;
+        $roomUser->save();
+
+        return redirect()->route('frontend.room.index');
     }
 
     public function show($id)

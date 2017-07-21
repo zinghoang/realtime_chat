@@ -18,7 +18,7 @@ class Room extends Model
 
     public function roomusers()
     {
-    	return $this->hasMany('App\Room-User');
+    	return $this->hasMany('App\RoomUser');
     }
 
     public function messengeses()
