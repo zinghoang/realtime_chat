@@ -9,11 +9,11 @@
         </div>
     </div>
 
-    <ul class="sidebar-menu">
-        <li class=""><a href="../home"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
-        <li class="active"><a href="{{ route('rooms.index') }}"><i class="fa fa-folder"></i> <span>Rooms</span></a></li>
-        <li class=""><a href="{{ route('emotions.index') }}"><i class="fa fa-smile-o"></i> <span>Emotions</span></a></li>
-        <li class=""><a href="{{ route('files.index') }}"><i class="fa fa-file-audio-o"></i> <span>Files</span></a></li>
-        <li class=""><a href="{{ route('users.index') }}"><i class="fa fa-user"></i> <span>Users</span></a></li>
+    <ul class="sidebar-menu" id="list_pages">
+        <li><a href="{{ route('home') }}"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+        <li class="{{ Request::is('admin/rooms*')? 'active' : '' }}"><a href="{{ route('rooms.index') }}"><i class="fa fa-folder"></i> <span>Rooms</span></a></li>
+        <li class="{{ Request::is('admin/emotions*')? 'active' : '' }}"><a href="{{ route('emotions.index') }}"><i class="fa fa-smile-o"></i> <span>Emotions</span></a></li>
+        <li class="{{ Request::is('admin/files*')? 'active' : '' }}"><a href="{{ route('files.index') }}"><i class="fa fa-file-audio-o"></i> <span>Files</span></a></li>
+        <li class="{{ Request::is('admin/users*')? 'active' : '' }}"><a href="{{ route('users.index') }}"><i class="fa fa-user"></i> <span>Users</span></a></li>
     </ul>
 </section>

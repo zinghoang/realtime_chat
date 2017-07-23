@@ -21,11 +21,16 @@
 					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room"> <i class="fa fa-share" aria-hidden="true"></i> </a>
 				</li>
 				<li>
-					<a href="#"> <i class="fa fa-check"></i> </a>
+					<a href="#">
+						<i class="fa fa-upload" aria-hidden="true"></i> 
+					</a>
 				</li>
 				<li>
-					<a href="#"> <i class="fa fa-clock-o"></i> </a>
+					<a href="#" title="Invite friend">
+						<i class="fa fa-envelope" aria-hidden="true"></i>
+					</a>
 				</li>
+
 				<li>
 					<a data-toggle="dropdown" href="#"> <i class="fa fa-list"></i>
 					</a>
@@ -56,8 +61,6 @@
 								<source src="{{ asset('storage/media/horse.mp3') }}" type="audio/mpeg">
 								Your browser does not support the audio element.
 							</audio>
-							<h3>Eum doloremque sunt dolore et velit</h3>
-							<hr>
 						</div>
 						<div class="list-video">
 
