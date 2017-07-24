@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Room;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\RoomUser;
+use App\File;
+use App\Messenges;
 use Auth;
 
 
@@ -38,6 +41,7 @@ class RoomController extends Controller
     {
         $room = new Room;
         $room->name = $request->name;
+        $room->user_id = Auth::id();
         $room->save();
 
 
@@ -63,8 +67,32 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
+        $files = File::where('room_id', $id)->where('user_id', Auth::id())->get();
+
+        foreach ($files as $key => $file) {
+            Storage::delete('public/media/'.$file->name);
+
+            File::findOrFail($file->id)->delete();
+        }
+
         $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
         $roomUser->delete();
+
+        $checkRoomMember = RoomUser::where('room_id', $id)->get();
+
+        if(count($checkRoomMember) == 0){
+            RoomUser::where('room_id', $id)->delete();
+            Messenges::where('room_id', $id)->delete();
+            $files = File::where('room_id', $id)->get();
+
+            foreach ($files as $key => $file) {
+                Storage::delete('public/media/'.$file->name);
+            }
+
+            $room->delete();
+
+            return redirect()->route('frontend.room.index');
+        }
 
         return redirect()->route('frontend.message.room', $id);
     }
@@ -88,7 +116,11 @@ class RoomController extends Controller
 
     public function update(Request $request, $id)
     {
-        $room = Room::find($id);
+        $room = Room::findOrFail($id);
+
+        if ($room->user_id != Auth::id()) {
+            abort(404);
+        }
         $room->name = $request->name;
         $room->save();
 
@@ -97,6 +129,22 @@ class RoomController extends Controller
 
     public function destroy($id)
     {
-        //
+        $room = Room::findOrFail($id);
+
+        if ($room->user_id != Auth::id()) {
+            abort(404);
+        }
+
+        RoomUser::where('room_id', $id)->delete();
+        Messenges::where('room_id', $id)->delete();
+        $files = File::where('room_id', $id)->get();
+
+        foreach ($files as $key => $file) {
+            Storage::delete('public/media/'.$file->name);
+        }
+
+        $room->delete();
+
+        return redirect()->route('frontend.room.index');
     }
 }

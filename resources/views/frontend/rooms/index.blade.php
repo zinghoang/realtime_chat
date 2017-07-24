@@ -65,7 +65,7 @@
 										<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
 										<div class="media-body">
 											<div class="lv-title">{{ $roomJoined->room->name }}</div>
-											<div class="lv-small">Click here to join...</div>
+											<div class="lv-small">Continue the conversation...</div>
 										</div>
 										</a>
 									</div>

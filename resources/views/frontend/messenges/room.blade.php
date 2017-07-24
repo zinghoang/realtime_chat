@@ -2,6 +2,9 @@
 
 @section('content')
 
+
+
+
 <div class="ms-body">
 	<div class="listview lv-message">
 		<div class="lv-header-alt clearfix">
@@ -17,11 +20,11 @@
 					<img src="{{ asset('images/home.png') }}" alt=""> 
 				</div>
 				<span class="c-black">{{ $room->name }}</span>
-				@if($isJoin == 1)
-				<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" title="Edit the name of room"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+				@if($room->user_id == Auth::id())
+				<a href="javascript:void(0)" data-toggle="modal" data-target="#editNameRoom" title="Edit the name of room"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 
-				<!-- Modal -->
-	            <div class="modal fade" id="myModal" role="dialog">
+				<!-- Modal Edit Name Room -->
+	            <div class="modal fade" id="editNameRoom" role="dialog">
 	            	<div class="modal-dialog">
 	            		<!-- Modal content-->
 	            		<div class="modal-content">
@@ -51,39 +54,90 @@
 			@if($isJoin == 1)
 			<ul class="lv-actions actions list-unstyled list-inline">
 				<li>
-					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room"> <i class="fa fa-share" aria-hidden="true"></i> </a>
+					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room" onclick="return confirm('Do you want to leave this room?')"> <i class="fa fa-share" aria-hidden="true"></i> </a>
 				</li>
 				<li>
-					<a href="#">
-						<i class="fa fa-upload" aria-hidden="true"></i> 
-					</a>
+					<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="upload-file">
+						{{ csrf_field() }}
+						<label for="upload">
+							<i class="fa fa-upload" aria-hidden="true"></i> 
+							<input type="file" id="upload" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('upload-file').submit();">
+						</label>
+				    </form>					
 				</li>
 				<li>
-					<a href="#" title="Invite friend">
+					<a href="javascript:void(0)" data-toggle="modal" data-target="#inviteFriend" title="Invite friend">
 						<i class="fa fa-envelope" aria-hidden="true"></i>
 					</a>
 				</li>
 
-				<li>
-					<a data-toggle="dropdown" href="#"> <i class="fa fa-list"></i>
-					</a>
-					<ul class="dropdown-menu user-detail" role="menu">
-						<li> <a href="">Latest</a> </li>
-						<li> <a href="">Oldest</a> </li>
-					</ul>
-				</li>
-				<li> <a data-toggle="dropdown" href="#" data-toggle="tooltip" data-placement="left" title="Tooltip on left"><span class="glyphicon glyphicon-trash"></span></a>
-					<ul class="dropdown-menu user-detail" role="menu">
-						<li> <a href="">Delete Messages</a> </li>
-					</ul>
-				</li>
+				<style type="text/css">
+					.lv-header-alt .lv-actions>li>a, .lv-header-alt .lv-actions>li>form {
+					    margin: 0 3px;
+					}
+
+					.actions>a, .actions>li>a, .actions>li>form {
+					    width: 30px;
+					    height: 30px;
+					    line-height: 35px;
+					    display: inline-block;
+					    text-align: center;
+					    position: relative;
+					}
+
+				</style>
+
+				@if($room->user_id == Auth::id())
+					<li> 
+						<a href="{{ route('frontend.room.destroy', $room->id) }}" 
+			                onclick="event.preventDefault(); document.getElementById('destroy-room').submit();" style="text-decoration: none;">
+			                <span class="glyphicon glyphicon-trash"></span>
+			            </a>
+			            <form id="destroy-room" action="{{ route('frontend.room.destroy', $room->id) }}" method="POST" style="display: none;">
+			                {{ csrf_field() }}
+			                <input name="_method" type="hidden" value="DELETE">
+			            </form>
+					</li>
+				@endif
 			</ul>
+			<!-- Modal Invite Room -->
+	            <div class="modal fade" id="inviteFriend" role="dialog">
+	            	<div class="modal-dialog">
+	            		<!-- Modal content-->
+	            		<div class="modal-content">
+	            			<div class="modal-header">
+	            				<button type="button" class="close" data-dismiss="modal">&times;</button>
+	            				<h4 class="modal-title">Invite friend...</h4>
+	            			</div>
+	            			<form method="post" action="">
+	            				{{ csrf_field() }}
+	            				<div class="modal-body">
+	            					<div class="form-group">
+		            					<label for="name">Name:</label>
+		            					<input type="text" class="form-control" name="name" id="name" value="">
+	            					</div>
+		            			</div>
+		            			<div class="modal-footer">
+		            				<button type="submit" class="btn btn-info">Invite</button>
+		            				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		            			</div>
+	            			</form>
+	            		</div>
+	            	</div>
+	            </div>
 			@endif
 		</div>
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				@if($isJoin == 1)
+
+			        
 				<div class="col-md-7">
+				@if($errors->count()>0)
+				    	@foreach($errors->all() as $error)
+		                    <div class="alert alert-danger" style="margin: 5px 10px 5px 5px;"><p><strong>{{ $error }}</strong></p></div>
+		                @endforeach
+			        @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
 						<div class="content-video">
 							<video width="100%" controls>
@@ -98,71 +152,15 @@
 						<div class="list-video">
 
 							<ul class="show-list-video" style="list-style: none;">
-								<li class="active">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;It's gives the power to synthesis anything...
-									</a>
-								</li>
+								@foreach ($listFile as $key => $file)
+									
 								<li class="">
 									<a href="">
-										<i class="fa fa-volume-up" aria-hidden="true"></i> &nbsp;We are sharing this knowledge in all ...
+										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i> &nbsp;{{ $file->title }}
 									</a>
 								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-volume-up" aria-hidden="true"></i> &nbsp;Its the ultimate tool to solve any problem....
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;We help you excel in that by working with you.
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
+								@endforeach
+								
 							</ul>
 						</div>
 					</div>

@@ -24,6 +24,10 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 	Route::group(['prefix' => 'message'], function(){
 		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
+		
+		Route::get('/room/upload/{room}', 'MessengesController@room');
+		Route::post('/room/upload/{room}', 'MessengesController@uploadFile')->name('frontend.message.uploadfile');
+		
 		Route::post('/add-room-message','MessengesController@addRoomMessage');
 	});
 
@@ -33,6 +37,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 		Route::get('/{room}', 'RoomController@edit')->name('frontend.room.edit');
 		Route::put('/{room}', 'RoomController@update')->name('frontend.room.update');
+		Route::delete('/{room}', 'RoomController@destroy')->name('frontend.room.destroy');
 
 
 		Route::get('/join/{room}', 'RoomController@join')->name('frontend.room.join');
