@@ -10,6 +10,11 @@ use Auth;
 
 class MessengesController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function room($id)
     {
     	$room = Room::findOrFail($id);
