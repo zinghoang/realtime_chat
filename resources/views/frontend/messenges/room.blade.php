@@ -2,6 +2,9 @@
 
 @section('content')
 
+
+
+
 <div class="ms-body">
 	<div class="listview lv-message">
 		<div class="lv-header-alt clearfix">
@@ -79,29 +82,38 @@
 					
 				</li>
 				<li>
-					<a href="javascript:void(0)" data-toggle="modal" data-target="#inviteFriend" title="Invite friend"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+					<a href="javascript:void(0)" data-toggle="modal" data-target="#inviteFriend" title="Invite friend">
+						<i class="fa fa-envelope" aria-hidden="true"></i>
+					</a>
 				</li>
 
+				<style type="text/css">
+					.lv-header-alt .lv-actions>li>a, .lv-header-alt .lv-actions>li>form {
+					    margin: 0 3px;
+					}
+
+					.actions>a, .actions>li>a, .actions>li>form {
+					    width: 30px;
+					    height: 30px;
+					    line-height: 35px;
+					    display: inline-block;
+					    text-align: center;
+					    position: relative;
+					}
+
+				</style>
+
 				@if($room->user_id == Auth::id())
-				
 					<li> 
-
-
-
-
 						<a href="{{ route('frontend.room.destroy', $room->id) }}" 
 			                onclick="event.preventDefault(); document.getElementById('destroy-room').submit();" style="text-decoration: none;">
 			                <span class="glyphicon glyphicon-trash"></span>
 			            </a>
-		            <form id="destroy-room" action="{{ route('frontend.room.destroy', $room->id) }}" method="POST" style="display: none;">
-		                {{ csrf_field() }}
-		                <input name="_method" type="hidden" value="DELETE">
-		            </form>
-
-
-
+			            <form id="destroy-room" action="{{ route('frontend.room.destroy', $room->id) }}" method="POST" style="display: none;">
+			                {{ csrf_field() }}
+			                <input name="_method" type="hidden" value="DELETE">
+			            </form>
 					</li>
-					
 				@endif
 			</ul>
 			<!-- Modal Invite Room -->
