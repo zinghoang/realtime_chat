@@ -33,7 +33,7 @@ class RoomController extends Controller
         $roomUser->room_id = $room->id;
         $roomUser->save();
 
-        return redirect()->route('frontend.room.index');
+        return redirect()->route('frontend.message.room', $room->id);
     }
 
     public function show($id)
