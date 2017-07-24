@@ -67,6 +67,8 @@ class MessengesController extends Controller
         $file->save();
 
         return redirect()->route('frontend.message.room', $id);
+    }
+        
     public function addRoomMessage(Request $request){
         return Messenges::create([
             'user_id' => $request['user']['id'],
