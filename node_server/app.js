@@ -17,10 +17,19 @@ io.on('connection',function(socket){
 	// 	}
 	// });
 
-	// socket.on('send message',function(room,data){
-	// 	console.log(room + ' -  '+ data);
-	// 	io.in(room).emit('update chat',"id: "+ socket.id + " - " +"room :" + room + " \n mess: "+data);
-	// });
+	socket.on('send room message',function(sender,data){
+		console.log(data);
+		// io.in('room-'+room.id).emit('receiver room mess', "room :" + room + " \n messeage: "+data);
+		socket.broadcast.to('room-'+data.room_id).emit('receiver room mess',sender,data);
+	});
+
+	socket.on('join room',function(data){
+		console.log('join room: ');
+		for(i=0; i<data.length; ++i){
+			console.log(data[i]);
+			socket.join('room-'+data[i].id);
+		}
+	});
 
 	//--------- PRIVATE CHAT ---------
 	socket.on('register',function(data){

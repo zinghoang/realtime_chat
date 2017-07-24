@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\RoomUser;
 use App\Room;
 use Auth;
+use App\Messenges;
 
 class MessengesController extends Controller
 {
@@ -26,5 +27,13 @@ class MessengesController extends Controller
     		$isJoin = 1;
     	}
     	return view('frontend.messenges.room', compact('isJoin', 'room'));
+    }
+
+    public function addRoomMessage(Request $request){
+        return Messenges::create([
+            'user_id' => $request['user']['id'],
+             'room_id' => $request['room']['id'], 
+             'content' => $request['message']
+             ]);
     }
 }

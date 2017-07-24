@@ -24,7 +24,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 	Route::group(['prefix' => 'message'], function(){
 		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
-		
+		Route::post('/add-room-message','MessengesController@addRoomMessage');
 	});
 
 	Route::group(['prefix' => 'room'], function(){
