@@ -17,10 +17,21 @@ io.on('connection',function(socket){
 	// 	}
 	// });
 
-	socket.on('send room message',function(sender,data){
-		console.log(data);
-		// io.in('room-'+room.id).emit('receiver room mess', "room :" + room + " \n messeage: "+data);
-		socket.broadcast.to('room-'+data.room_id).emit('receiver room mess',sender,data);
+	socket.on('send room message',function(type,sender,data){
+		if(type == 'message'){
+			//send message to other
+			socket.broadcast.to('room-'+data.room_id).emit('receiver room mess','message',sender,data);
+		} else if (type == 'register-room') {
+			//send notification to other that sender has joined
+			socket.join('room-'+data.id);
+		//	io.in('room-'+data.id).emit('receiver room mess','notif',sender,sender.name + ' has joined this room
+			socket.broadcast.to('room-'+data.id).emit('receiver room mess','notif',sender,sender.name + ' has joined this room');
+
+		} else if(type == 'leave-room') {
+			socket.broadcast.to('room-'+data.id).emit('receiver room mess','notif',sender,sender.name + ' has left this room');
+			socket.leave('room-'+data.id);
+		}
+	
 	});
 
 	socket.on('join room',function(data){

@@ -89,7 +89,7 @@ if($('#btn-room-reply').length){
 		request.done(function (response, textStatus, jqXHR){
 		  	console.log(response);
 
-		  	socket.emit('send room message',user,response);
+		  	socket.emit('send room message','message',user,response);
 		});
 
 		// Callback handler that will be called on failure
@@ -100,8 +100,30 @@ if($('#btn-room-reply').length){
 		$('#mess-content').val('');
 	})
 }
+//Join Event
+if($('#join').length){
+	$('#join').click(function(){
+		//Send join event to others
+		socket.emit('send room message','register-room',user,currentRoom);
+	})
+}
+//Leave Event
+if($('#leave-room').length){
+	$('#leave-room').click(function(){
+		//send leave event to others
+		socket.emit('send room message','leave-room',user,currentRoom);
+	});
+}
 
-socket.on('receiver room mess',function(sender,data){
+//Receiver message from server
+socket.on('receiver room mess',function(type,sender,data){
+	if(type == 'message'){
+
+	} else if (type == 'notif') {
+
+	}
 	console.log(sender);
 	console.log(data);
+	console.log(type);
 })
+

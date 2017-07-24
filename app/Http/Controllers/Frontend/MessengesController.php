@@ -77,7 +77,8 @@ class MessengesController extends Controller
         return Messenges::create([
             'user_id' => $request['user']['id'],
              'room_id' => $request['room']['id'], 
-             'content' => $request['message']
+             'content' => $request['message'],
+             'status' => true
         ]);
     }
 }
