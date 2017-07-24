@@ -17,11 +17,10 @@ io.on('connection',function(socket){
 	// 	}
 	// });
 
-	socket.on('send room message',function(room,data){
-		console.log(room + ' -  '+ data);
-		console.log('name ' + room.name);
+	socket.on('send room message',function(sender,data){
+		console.log(data);
 		// io.in('room-'+room.id).emit('receiver room mess', "room :" + room + " \n messeage: "+data);
-		socket.broadcast.to('room-'+room.id).emit('receiver room mess', "room :" + room + " \n messeage: "+data);
+		socket.broadcast.to('room-'+data.room_id).emit('receiver room mess',sender,data);
 	});
 
 	socket.on('join room',function(data){

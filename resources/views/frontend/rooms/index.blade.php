@@ -19,7 +19,7 @@
 				<span class="c-black">Chat</span>
 			</div>
 			<ul class="lv-actions actions list-unstyled list-inline">
-				<li><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> </a></li>
+				<li><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" title="Create room"><i class="fa fa-plus"></i> </a></li>
             </ul>
             <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
@@ -44,7 +44,6 @@
 	            			</div>
             			</form>
             		</div>
-
             	</div>
             </div>
 		</div>
@@ -53,70 +52,25 @@
 				<div class="col-md-12">
 				
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:550px;">
-						@if(1 == 1)
+						@if(count($listRoomJoined) > 0)
 						<div class="row">
 							<div class="col-md-12">
 								<h5 class="text-center">Room you was joined</h5>
 								<hr>
 							</div>
-							<div class="col-md-4 col-md-offset-2">
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to chat...</div>
+							@foreach($listRoomJoined as $key => $roomJoined)
+								<div class="col-md-4 col-md-offset-2">
+									<div class="lv-item media ">
+										<a href="{{ route('frontend.message.room', $roomJoined->room->id) }}" title="" style="text-decoration:none;">
+										<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+										<div class="media-body">
+											<div class="lv-title">{{ $roomJoined->room->name }}</div>
+											<div class="lv-small">Click here to join...</div>
+										</div>
+										</a>
 									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to chat...</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to chat...</div>
-									</div>
-									</a>
-								</div>
-							</div>
-							<div class="col-md-5 col-md-offset-1">
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to chat...</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to chat...</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to chat...</div>
-									</div>
-									</a>
-								</div>
-							</div>
+								</div>	
+							@endforeach
 						</div>
 							<hr>
 						@endif
@@ -126,64 +80,20 @@
 								<h5 class="text-center">Some room you can join...</h5>
 								<hr>
 							</div>
-							<div class="col-md-4 col-md-offset-2">
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to join...</div>
+							
+							@foreach($listRoomRandom as $key => $room)
+								<div class="col-md-4 col-md-offset-2">
+									<div class="lv-item media ">
+										<a href="{{ route('frontend.message.room', $room->id) }}" title="" style="text-decoration:none;">
+										<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
+										<div class="media-body">
+											<div class="lv-title">{{ $room->name }}</div>
+											<div class="lv-small">Click here to join...</div>
+										</div>
+										</a>
 									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to join...</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to join...</div>
-									</div>
-									</a>
-								</div>
-							</div>
-							<div class="col-md-5 col-md-offset-1">
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to join...</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to join...</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">Click here to join...</div>
-									</div>
-									</a>
-								</div>
-							</div>
+								</div>	
+							@endforeach
 						</div>
 					</div>
 				</div>

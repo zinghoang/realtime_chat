@@ -5,15 +5,28 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Room;
+use Illuminate\Support\Facades\DB;
 use App\RoomUser;
 use Auth;
 
 
 class RoomController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        return view('frontend.rooms.index');
+        $listRoomJoined = RoomUser::where('user_id', Auth::id())->get();
+
+        $arrayRoomJoin = array_pluck($listRoomJoined->toArray(), 'room_id');
+
+        $listRoomRandom = DB::table('rooms')->whereNotIn('id', $arrayRoomJoin)->get();
+
+
+        return view('frontend.rooms.index', compact('listRoomJoined', 'listRoomRandom'));
     }
 
     public function create()
@@ -33,7 +46,7 @@ class RoomController extends Controller
         $roomUser->room_id = $room->id;
         $roomUser->save();
 
-        return redirect()->route('frontend.room.index');
+        return redirect()->route('frontend.message.room', $room->id);
     }
 
     public function show($id)
@@ -70,12 +83,16 @@ class RoomController extends Controller
 
     public function edit($id)
     {
-        return view('frontend.rooms.edit');
+        return redirect()->route('frontend.message.room', $id);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $room = Room::find($id);
+        $room->name = $request->name;
+        $room->save();
+
+        return redirect()->route('frontend.message.room', $room->id);
     }
 
     public function destroy($id)

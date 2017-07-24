@@ -13,7 +13,40 @@
 				</div>
 			</div>
 			<div class="lvh-label hidden-xs">
-				<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div><span class="c-black">{{ $room->name }}</span>
+				<div class="lv-avatar pull-left"> 
+					<img src="{{ asset('images/home.png') }}" alt=""> 
+				</div>
+				<span class="c-black">{{ $room->name }}</span>
+				@if($isJoin == 1)
+				<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" title="Edit the name of room"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+
+				<!-- Modal -->
+	            <div class="modal fade" id="myModal" role="dialog">
+	            	<div class="modal-dialog">
+	            		<!-- Modal content-->
+	            		<div class="modal-content">
+	            			<div class="modal-header">
+	            				<button type="button" class="close" data-dismiss="modal">&times;</button>
+	            				<h4 class="modal-title">Edit name room...</h4>
+	            			</div>
+	            			<form method="post" action="{{ route('frontend.room.update', $room->id) }}">
+	            				{{ csrf_field() }}
+	            				<input type="hidden" name="_method" value="PUT">
+	            				<div class="modal-body">
+	            					<div class="form-group">
+		            					<label for="name">Name:</label>
+		            					<input type="text" class="form-control" name="name" id="name" value="{{ $room->name }}">
+	            					</div>
+		            			</div>
+		            			<div class="modal-footer">
+		            				<button type="submit" class="btn btn-info">Save</button>
+		            				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		            			</div>
+	            			</form>
+	            		</div>
+	            	</div>
+	            </div>
+	            @endif
 			</div>
 			@if($isJoin == 1)
 			<ul class="lv-actions actions list-unstyled list-inline">
