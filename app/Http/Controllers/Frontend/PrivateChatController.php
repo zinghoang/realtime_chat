@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Emotion;
+use App\FriendShip;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -38,6 +39,10 @@ class PrivateChatController extends Controller
         if ($toUser == null) {
             abort(404);
         }
+        $friendship = FriendShip::where('user_request','=',$user->id)
+                            ->where('user_accept','=',$toUser->id)
+                            ->get();
+        dd($friendship->count());
         $listPrivateChat = PrivateMessage::where('from', $user->id)->where('to', $toUser->id)->orWhere('from', $toUser->id)->where('to', $user->id)->get();
         foreach ($listPrivateChat as $key => $chat){
             $chat->content = self::getNewContent($chat->content);
