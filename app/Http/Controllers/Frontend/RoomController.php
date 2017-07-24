@@ -12,6 +12,11 @@ use Auth;
 
 class RoomController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $listRoomJoined = RoomUser::where('user_id', Auth::id())->get();

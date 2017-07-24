@@ -7,6 +7,17 @@ socket.on('receiver private mess',function(data){
 	console.log(data);
 	//nhan ve, giong respon
 
+    var mydate = new Date(data.created_at);
+
+    var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+    	            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+
+    var stringDivData = ' <div class="lv-item media"> ' + ' <div class="lv-avatar pull-left"> ' +
+    	  	' <img src="../storage/avatars/'+ toUser.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+    	  	' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
+    	  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
+
+    $('.content-message').append(stringDivData);
 
 })
 

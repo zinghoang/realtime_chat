@@ -11,7 +11,12 @@ use App\PrivateMessage;
 
 class PrivateChatController extends Controller
 {
-	public function index()
+    function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index()
 	{
 		return view('frontend.privatechat.index');
 	}
@@ -38,11 +43,6 @@ class PrivateChatController extends Controller
     	$privateMessage->save();
     	$privateMessage->content = self::getNewContent($privateMessage->content);
     	return $privateMessage;
-//    	return PrivateMessage::create([
-//    		'from' => $request['user']['id'],
-//    		'to' => $request['toUser']['id'],
-//    		'content' => $request['message']
-//    		]);
     }
     public static function getNewContent($content)
     {
