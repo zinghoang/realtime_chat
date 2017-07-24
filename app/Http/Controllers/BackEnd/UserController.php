@@ -112,11 +112,13 @@ class UserController extends Controller
                 File::delete('storage/avatars/'.$user->avatar);
             }
             //Up anh moi
-            Input::file('avatar')->move('storage/avatars', $image);
+            $image = $request->file('avatar')->store('public/avatars');
+            $arr_filename = explode("/",$image);
+            $filename = end($arr_filename);
         }else{
-            $image = $user->avatar;
+            $filename = $user->avatar;
         }
-        $user->avatar = $image;
+        $user->avatar = $filename;
         if($user->save()) {
             $request->session()->flash('success', 'User was updated successful');
         }else{

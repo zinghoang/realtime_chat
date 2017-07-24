@@ -4,7 +4,7 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Add Users
+            Update User
         </h1>
     </section>
 
