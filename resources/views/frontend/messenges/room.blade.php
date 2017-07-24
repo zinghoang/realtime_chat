@@ -118,71 +118,15 @@
 						<div class="list-video">
 
 							<ul class="show-list-video" style="list-style: none;">
-								<li class="active">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;It's gives the power to synthesis anything...
-									</a>
-								</li>
+								@foreach ($listFile as $key => $file)
+									
 								<li class="">
 									<a href="">
-										<i class="fa fa-volume-up" aria-hidden="true"></i> &nbsp;We are sharing this knowledge in all ...
+										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i> &nbsp;{{ $file->title }}
 									</a>
 								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-volume-up" aria-hidden="true"></i> &nbsp;Its the ultimate tool to solve any problem....
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;We help you excel in that by working with you.
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
+								@endforeach
+								
 							</ul>
 						</div>
 					</div>

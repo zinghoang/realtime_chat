@@ -29,11 +29,15 @@ class MessengesController extends Controller
     	}else{
     		$isJoin = 1;
     	}
-    	return view('frontend.messenges.room', compact('isJoin', 'room'));
+
+        $listFile = File::where('room_id', $id)->get();
+
+    	return view('frontend.messenges.room', compact('isJoin', 'room', 'listFile'));
     }
 
     public function uploadFile(FileRequest $request, $id)
     {
+
         $checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
 
         if($checkJoin == null){
