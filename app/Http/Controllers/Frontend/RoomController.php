@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Room;
+use Illuminate\Support\Facades\DB;
 use App\RoomUser;
 use Auth;
 
@@ -13,7 +14,14 @@ class RoomController extends Controller
 {
     public function index()
     {
-        return view('frontend.rooms.index');
+        $listRoomJoined = RoomUser::where('user_id', Auth::id())->get();
+
+        $arrayRoomJoin = array_pluck($listRoomJoined->toArray(), 'room_id');
+
+        $listRoomRandom = DB::table('rooms')->whereNotIn('id', $arrayRoomJoin)->get();
+
+
+        return view('frontend.rooms.index', compact('listRoomJoined', 'listRoomRandom'));
     }
 
     public function create()
