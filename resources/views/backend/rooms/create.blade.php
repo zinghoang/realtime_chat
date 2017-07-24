@@ -4,7 +4,7 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Rooms
+            Add Rooms
         </h1>
     </section>
 

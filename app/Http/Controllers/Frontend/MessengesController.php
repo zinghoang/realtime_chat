@@ -8,6 +8,7 @@ use App\RoomUser;
 use App\Room;
 use App\File;
 use Auth;
+use App\Messenges;
 
 use App\Http\Requests\FileRequest;
 
@@ -66,5 +67,11 @@ class MessengesController extends Controller
         $file->save();
 
         return redirect()->route('frontend.message.room', $id);
+    public function addRoomMessage(Request $request){
+        return Messenges::create([
+            'user_id' => $request['user']['id'],
+             'room_id' => $request['room']['id'], 
+             'content' => $request['message']
+        ]);
     }
 }

@@ -248,8 +248,8 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="lv-footer ms-reply">
-						<textarea rows="10" placeholder="Write messages..."></textarea>
-						<button class="">
+						<textarea rows="10" placeholder="Write messages..." id="mess-content"></textarea>
+						<button class="" id="btn-room-reply">
 							<span class="glyphicon glyphicon-send"></span>
 						</button>
 					</div>
@@ -270,4 +270,9 @@
 		</div>
 	</div>
 </div>
-@stop
+@endsection
+@section('script')
+<script type="text/javascript">
+	var currentRoom = {!!json_encode($room)!!};
+</script>
+@endsection

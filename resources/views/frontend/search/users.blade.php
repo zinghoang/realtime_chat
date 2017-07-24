@@ -42,7 +42,7 @@
 								</h3>
 								<hr>
 							</div>
-							@if($users->count())
+							@if($users->count()>0)
                         		@foreach($users as $key => $user)
 									<div class="col-md-4 col-md-offset-2">
 										<div class="lv-item media ">
