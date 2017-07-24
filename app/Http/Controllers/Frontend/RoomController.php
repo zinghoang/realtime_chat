@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Frontend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Room;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\RoomUser;
+use App\File;
+use App\Messenges;
 use Auth;
 
 
@@ -38,7 +41,7 @@ class RoomController extends Controller
     {
         $room = new Room;
         $room->name = $request->name;
-        $room->room_id = $room->id;
+        $room->user_id = Auth::id();
         $room->save();
 
 
@@ -89,7 +92,11 @@ class RoomController extends Controller
 
     public function update(Request $request, $id)
     {
-        $room = Room::find($id);
+        $room = Room::findOrFail($id);
+
+        if ($room->user_id != Auth::id()) {
+            abort(404);
+        }
         $room->name = $request->name;
         $room->save();
 
@@ -98,6 +105,22 @@ class RoomController extends Controller
 
     public function destroy($id)
     {
-        //
+        $room = Room::findOrFail($id);
+
+        if ($room->user_id != Auth::id()) {
+            abort(404);
+        }
+
+        RoomUser::where('room_id', $id)->delete();
+        Messenges::where('room_id', $id)->delete();
+        $files = File::where('room_id', $id)->get();
+
+        foreach ($files as $key => $file) {
+            Storage::delete('public/media/'.$file->name);
+        }
+
+        $room->delete();
+
+        return redirect()->route('frontend.room.index');
     }
 }

@@ -37,6 +37,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 		Route::get('/{room}', 'RoomController@edit')->name('frontend.room.edit');
 		Route::put('/{room}', 'RoomController@update')->name('frontend.room.update');
+		Route::delete('/{room}', 'RoomController@destroy')->name('frontend.room.destroy');
 
 
 		Route::get('/join/{room}', 'RoomController@join')->name('frontend.room.join');
