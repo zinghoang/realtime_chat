@@ -78,12 +78,16 @@ class RoomController extends Controller
 
     public function edit($id)
     {
-        return view('frontend.rooms.edit');
+        return redirect()->route('frontend.message.room', $id);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $room = Room::find($id);
+        $room->name = $request->name;
+        $room->save();
+
+        return redirect()->route('frontend.message.room', $room->id);
     }
 
     public function destroy($id)

@@ -19,7 +19,7 @@
 				<span class="c-black">Chat</span>
 			</div>
 			<ul class="lv-actions actions list-unstyled list-inline">
-				<li><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> </a></li>
+				<li><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" title="Create room"><i class="fa fa-plus"></i> </a></li>
             </ul>
             <!-- Modal -->
             <div class="modal fade" id="myModal" role="dialog">
@@ -44,7 +44,6 @@
 	            			</div>
             			</form>
             		</div>
-
             	</div>
             </div>
 		</div>
