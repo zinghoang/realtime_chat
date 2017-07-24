@@ -31,32 +31,21 @@ class PrivateChatController extends Controller
 
     public function addPrivateMess(Request $request){
     	\Log::info($request);
-       	return PrivateMessage::create([
-    		'from' => $request['user']['id'],
-    		'to' => $request['toUser']['id'],
-    		'content' => $request['message']
-    		]);
+    	$privateMessage = new PrivateMessage();
+    	$privateMessage->from = $request['user']['id'];
+    	$privateMessage->to = $request['toUser']['id'];
+    	$privateMessage->content = $request['message'];
+    	$privateMessage->save();
+    	$privateMessage->content = self::getNewContent($privateMessage->content);
+    	return $privateMessage;
+//    	return PrivateMessage::create([
+//    		'from' => $request['user']['id'],
+//    		'to' => $request['toUser']['id'],
+//    		'content' => $request['message']
+//    		]);
     }
     public static function getNewContent($content)
     {
-        $output = "";
-        $arr_text = explode(" ",$content);
-        foreach ($arr_text as $str){
-            $code = $str;
-            $image = Emotion::where('code','=',$code)
-                ->select('image')->first();
-            if($image == null){
-                $output = $output. " ".$code;
-            }else{
-                $output = $output. " "."<img src=\"../storage/emotions/$image->image\" alt=\"\" width=\"50px\" height=\"50px\"> ";
-            }
-            $image = null;
-        }
-        return $output;
-    }
-    public function getNewMsg(Request $request)
-    {
-        $content = $request->message;
         $output = "";
         $arr_text = explode(" ",$content);
         foreach ($arr_text as $str){
