@@ -67,8 +67,32 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
+        $files = File::where('room_id', $id)->where('user_id', Auth::id())->get();
+
+        foreach ($files as $key => $file) {
+            Storage::delete('public/media/'.$file->name);
+
+            File::findOrFail($file->id)->delete();
+        }
+
         $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
         $roomUser->delete();
+
+        $checkRoomMember = RoomUser::where('room_id', $id)->get();
+
+        if(count($checkRoomMember) == 0){
+            RoomUser::where('room_id', $id)->delete();
+            Messenges::where('room_id', $id)->delete();
+            $files = File::where('room_id', $id)->get();
+
+            foreach ($files as $key => $file) {
+                Storage::delete('public/media/'.$file->name);
+            }
+
+            $room->delete();
+
+            return redirect()->route('frontend.room.index');
+        }
 
         return redirect()->route('frontend.message.room', $id);
     }

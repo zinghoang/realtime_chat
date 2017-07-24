@@ -54,7 +54,7 @@
 			@if($isJoin == 1)
 			<ul class="lv-actions actions list-unstyled list-inline">
 				<li>
-					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room"> <i class="fa fa-share" aria-hidden="true"></i> </a>
+					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room" onclick="return confirm('Do you want to leave this room?')"> <i class="fa fa-share" aria-hidden="true"></i> </a>
 				</li>
 				<li>
 					<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="upload-file">
@@ -63,23 +63,7 @@
 							<i class="fa fa-upload" aria-hidden="true"></i> 
 							<input type="file" id="upload" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('upload-file').submit();">
 						</label>
-				    </form>
-
-				    @if($errors->count()>0)
-				    	@php
-				    		$errorAlert = '';
-				    	@endphp
-
-				    	@foreach($errors->all() as $error)
-		                    @php
-		                    	$errorAlert .= $error;
-		                    @endphp
-		                @endforeach
-				    	<script type="text/javascript">
-				    		alert('{{$errorAlert}}')
-			            </script>
-			        @endif
-					
+				    </form>					
 				</li>
 				<li>
 					<a href="javascript:void(0)" data-toggle="modal" data-target="#inviteFriend" title="Invite friend">
@@ -146,7 +130,14 @@
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				@if($isJoin == 1)
+
+			        
 				<div class="col-md-7">
+				@if($errors->count()>0)
+				    	@foreach($errors->all() as $error)
+		                    <div class="alert alert-danger" style="margin: 5px 10px 5px 5px;"><p><strong>{{ $error }}</strong></p></div>
+		                @endforeach
+			        @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
 						<div class="content-video">
 							<video width="100%" controls>
