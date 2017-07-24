@@ -25,6 +25,9 @@ Route::group(['namespace' => 'Frontend'], function(){
 	Route::group(['prefix' => 'message'], function(){
 		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
 		
+		Route::get('/room/upload/{room}', 'MessengesController@room');
+		Route::post('/room/upload/{room}', 'MessengesController@uploadFile')->name('frontend.message.uploadfile');
+		
 	});
 
 	Route::group(['prefix' => 'room'], function(){
