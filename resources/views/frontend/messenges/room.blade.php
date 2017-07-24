@@ -54,9 +54,29 @@
 					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room"> <i class="fa fa-share" aria-hidden="true"></i> </a>
 				</li>
 				<li>
-					<a href="#">
-						<i class="fa fa-upload" aria-hidden="true"></i> 
-					</a>
+					<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="upload-file">
+						{{ csrf_field() }}
+						<label for="upload">
+							<i class="fa fa-upload" aria-hidden="true"></i> 
+							<input type="file" id="upload" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('upload-file').submit();">
+						</label>
+				    </form>
+
+				    @if($errors->count()>0)
+				    	@php
+				    		$errorAlert = '';
+				    	@endphp
+
+				    	@foreach($errors->all() as $error)
+		                    @php
+		                    	$errorAlert .= $error;
+		                    @endphp
+		                @endforeach
+				    	<script type="text/javascript">
+				    		alert('{{$errorAlert}}')
+			            </script>
+			        @endif
+					
 				</li>
 				<li>
 					<a href="#" title="Invite friend">
