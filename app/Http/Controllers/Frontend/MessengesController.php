@@ -84,11 +84,12 @@ class MessengesController extends Controller
     }
         
     public function addRoomMessage(Request $request){
-        \Log::info($request);
+     //   \Log::info($request);
         $message = new Messenges();
         $message->user_id = $request['user']['id'];
         $message->room_id = $request['room']['id'];
         $message->content = $request['message'];
+        $message->status = true;
         $message->save();
 
         $message->content = self::getNewContent($message->content);
