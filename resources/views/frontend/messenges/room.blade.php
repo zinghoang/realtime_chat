@@ -82,19 +82,27 @@
 					<a href="javascript:void(0)" data-toggle="modal" data-target="#inviteFriend" title="Invite friend"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 				</li>
 
-				<li>
-					<a data-toggle="dropdown" href="#"> <i class="fa fa-list"></i>
-					</a>
-					<ul class="dropdown-menu user-detail" role="menu">
-						<li> <a href="">Latest</a> </li>
-						<li> <a href="">Oldest</a> </li>
-					</ul>
-				</li>
-				<li> <a data-toggle="dropdown" href="#" data-toggle="tooltip" data-placement="left" title="Tooltip on left"><span class="glyphicon glyphicon-trash"></span></a>
-					<ul class="dropdown-menu user-detail" role="menu">
-						<li> <a href="">Delete Messages</a> </li>
-					</ul>
-				</li>
+				@if($room->user_id == Auth::id())
+				
+					<li> 
+
+
+
+
+						<a href="{{ route('frontend.room.destroy', $room->id) }}" 
+			                onclick="event.preventDefault(); document.getElementById('destroy-room').submit();" style="text-decoration: none;">
+			                <span class="glyphicon glyphicon-trash"></span>
+			            </a>
+		            <form id="destroy-room" action="{{ route('frontend.room.destroy', $room->id) }}" method="POST" style="display: none;">
+		                {{ csrf_field() }}
+		                <input name="_method" type="hidden" value="DELETE">
+		            </form>
+
+
+
+					</li>
+					
+				@endif
 			</ul>
 			<!-- Modal Invite Room -->
 	            <div class="modal fade" id="inviteFriend" role="dialog">
