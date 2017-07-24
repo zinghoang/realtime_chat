@@ -78,6 +78,14 @@ class RoomController extends Controller
         $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
         $roomUser->delete();
 
+        //add message leave to db
+        Messenges::create([
+            'user_id' => Auth::id(),
+             'room_id' => $id, 
+             'content' => Auth::user()->name . ' has left',
+             'status' => false
+        ]);
+
         $checkRoomMember = RoomUser::where('room_id', $id)->get();
 
         if(count($checkRoomMember) == 0){
@@ -105,6 +113,13 @@ class RoomController extends Controller
         $roomUser->user_id = Auth::id();
         $roomUser->room_id = $id;
         $roomUser->save();
+
+        Messenges::create([
+            'user_id' => Auth::id(),
+             'room_id' => $id, 
+             'content' => Auth::user()->name . ' has joined',
+             'status' => false
+        ]);
 
         return redirect()->route('frontend.message.room', $id);
     }
