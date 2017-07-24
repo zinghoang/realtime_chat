@@ -6,16 +6,6 @@ server.listen(3000);
 var globalConnect = [];	
 io.on('connection',function(socket){
 	var currentUser;
-	//console.log('welcome ' + socket.id);
-
-	// socket.on('join-channel',function(data){
-	// 	console.log(data);
-	// 	for(i = 0 ; i < data.length; ++i){
-	// 		socket.join(data[i]);
-	// 		socket.broadcast.to(data[i]).emit('new user join', 'id:' + t +
-	// 		 'join room: ' + data[i]);
-	// 	}
-	// });
 
 	socket.on('send room message',function(sender,data){
 		console.log(data);
