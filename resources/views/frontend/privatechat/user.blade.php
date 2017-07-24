@@ -85,6 +85,5 @@
     var toUser = {!!json_encode($toUser)!!};
     console.log(toUser);
 </script>
-<script src="{{ asset('js/chat.js') }}"></script>
 
 @endsection

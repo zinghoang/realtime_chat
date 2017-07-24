@@ -20,3 +20,7 @@
 		</p>
 	</div>
 </div>
+<script>
+	var listRoom = {!!json_encode($listRoom) !!}
+	var roomJoined = {!!json_encode($roomJoined)!!}
+</script>
