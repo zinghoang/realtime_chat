@@ -55,9 +55,6 @@ if($("#btn-reply").length){
 		  	' <img src="../storage/avatars/'+ user.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
 		  	' <div class="ms-item"> ' + response.content + ' </div> ' + ' <small class="ms-date"> ' +
 		  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
-			
-
-
 
 			$('.content-message').append(stringDivData);
 
@@ -88,8 +85,21 @@ if($('#btn-room-reply').length){
 
 		request.done(function (response, textStatus, jqXHR){
 		  	console.log(response);
+			
+			var mydate = new Date(response.created_at);
 
-		  	socket.emit('send room message','message',user,response);
+            var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+            		  	mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+
+
+            var stringDivData = ' <div class="lv-item media right"> '+' <div class="lv-avatar pull-right"> '
+            +' <img src="../../storage/avatars/'+response.avatar +'" alt=""> '
+            +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+response.content+' </div> '+' <small class="ms-date"> '
+            +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
+            +' </small> '+' </div> '+' </div> ';
+            $('.room-contentt').append(stringDivData);
+
+            socket.emit('send room message','message',user,response);
 		});
 
 		// Callback handler that will be called on failure
@@ -118,12 +128,22 @@ if($('#leave-room').length){
 //Receiver message from server
 socket.on('receiver room mess',function(type,sender,data){
 	if(type == 'message'){
+		var mydate = new Date(data.created_at);
 
-	} else if (type == 'notif') {
+	    var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+	        	            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
 
+	    var stringDivData = ' <div class="lv-item media left"> '+' <div class="lv-avatar pull-left"> '
+	                +' <img src="../../storage/avatars/'+data.avatar +'" alt=""> '
+	                +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+data.content+' </div> '+' <small class="ms-date"> '
+	                +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
+	                +' </small> '+' </div> '+' </div> ';
+
+	    $('.room-contentt').append(stringDivData);
+	} else if ( type == 'notif') {
+		console.log(sender);
+		console.log(data);
+		console.log(type);
 	}
-	console.log(sender);
-	console.log(data);
-	console.log(type);
 })
 
