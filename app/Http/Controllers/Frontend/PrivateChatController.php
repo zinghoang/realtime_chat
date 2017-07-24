@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\User;
 use App\PrivateMessage;
+use Illuminate\Support\Collection;
 
 class PrivateChatController extends Controller
 {
@@ -18,7 +19,17 @@ class PrivateChatController extends Controller
 
     public function index()
 	{
-		return view('frontend.privatechat.index');
+	    $user_ids = PrivateMessage::distinct()->select('to')
+                ->where('from','=',Auth::user()->id)
+                ->get();
+	    $users = new Collection();
+	    if(count($user_ids) > 0){
+            foreach ($user_ids as $user_id){
+                $user = User::findOrFail($user_id)->first();
+                $users->push($user);
+            }
+        }
+		return view('frontend.privatechat.index')->with('users',$users);
 	}
     public function user($username)
     {	

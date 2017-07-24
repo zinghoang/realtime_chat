@@ -4,7 +4,7 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Emotions
+            Add Emotion
         </h1>
     </section>
 

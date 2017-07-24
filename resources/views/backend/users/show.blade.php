@@ -4,7 +4,7 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1 class="pull-left">
-            Users
+            User's Information
         </h1>
         <h1 class="pull-right">
             <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('users.create') }}">Add New</a>

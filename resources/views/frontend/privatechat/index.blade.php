@@ -22,9 +22,8 @@
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				<div class="col-md-12">
-				
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:550px;">
-						@if(1 == 0)
+						@if(count($users) == 0 )
 						<div class="row">
 							<div class="col-md-12">
 			                    <div class="border text-center">
@@ -35,70 +34,35 @@
 			                </div>
 						</div>
 						@else
-						<div class="row">
-							<div class="col-md-12">
-								<h5 class="text-center">Some recent message</h5>
-								<hr>
+							<div class="row">
+								<div class="col-md-12" style="background-color: #2c3b41">
+									<h3	 class="text-center">
+										<span style="color: #ffffff">Some recent contact</span>
+									</h3>
+									<hr>
+								</div>
+								@if(count($users) > 0)
+									@foreach($users as $user)
+										<div class="col-md-4 col-md-offset-2">
+											<div class="lv-item media ">
+												<a href="{{ route('private.user',$user->name) }}" title="" style="text-decoration:none;">
+													<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt=""> </div>
+													<div class="media-body">
+														<div class="lv-title">{{ $user->fullname }}</div>
+														<div class="lv-small">@ {{ $user->name }}</div>
+													</div>
+												</a>
+											</div>
+										</div>
+									@endforeach
+								@else
+									<div class="col-md-8 col-md-offset-2">
+										<h3	 class="text-center">
+											<span style="color: #761c19">NO DATA TO SHOW</span>
+										</h3>
+									</div>
+								@endif
 							</div>
-							<div class="col-md-4 col-md-offset-2">
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-							</div>
-							<div class="col-md-5 col-md-offset-1">
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-								<div class="lv-item media ">
-									<a href="#" title="" style="text-decoration:none;">
-									<div class="lv-avatar pull-left"> <img src="{{ asset('images/sumit.jpg') }}" alt=""> </div>
-									<div class="media-body">
-										<div class="lv-title">Nguyen Van An</div>
-										<div class="lv-small">@ anguyen</div>
-									</div>
-									</a>
-								</div>
-							</div>
-						</div>
 						@endif
 					</div>
 				</div>
