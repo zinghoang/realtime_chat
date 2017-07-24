@@ -38,6 +38,7 @@ class RoomController extends Controller
     {
         $room = new Room;
         $room->name = $request->name;
+        $room->room_id = $room->id;
         $room->save();
 
 

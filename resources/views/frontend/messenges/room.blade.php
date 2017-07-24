@@ -17,11 +17,11 @@
 					<img src="{{ asset('images/home.png') }}" alt=""> 
 				</div>
 				<span class="c-black">{{ $room->name }}</span>
-				@if($isJoin == 1)
-				<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" title="Edit the name of room"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+				@if($room->user_id == Auth::id())
+				<a href="javascript:void(0)" data-toggle="modal" data-target="#editNameRoom" title="Edit the name of room"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 
-				<!-- Modal -->
-	            <div class="modal fade" id="myModal" role="dialog">
+				<!-- Modal Edit Name Room -->
+	            <div class="modal fade" id="editNameRoom" role="dialog">
 	            	<div class="modal-dialog">
 	            		<!-- Modal content-->
 	            		<div class="modal-content">
@@ -79,9 +79,7 @@
 					
 				</li>
 				<li>
-					<a href="#" title="Invite friend">
-						<i class="fa fa-envelope" aria-hidden="true"></i>
-					</a>
+					<a href="javascript:void(0)" data-toggle="modal" data-target="#inviteFriend" title="Invite friend"><i class="fa fa-envelope" aria-hidden="true"></i></a>
 				</li>
 
 				<li>
@@ -98,6 +96,31 @@
 					</ul>
 				</li>
 			</ul>
+			<!-- Modal Invite Room -->
+	            <div class="modal fade" id="inviteFriend" role="dialog">
+	            	<div class="modal-dialog">
+	            		<!-- Modal content-->
+	            		<div class="modal-content">
+	            			<div class="modal-header">
+	            				<button type="button" class="close" data-dismiss="modal">&times;</button>
+	            				<h4 class="modal-title">Invite friend...</h4>
+	            			</div>
+	            			<form method="post" action="">
+	            				{{ csrf_field() }}
+	            				<div class="modal-body">
+	            					<div class="form-group">
+		            					<label for="name">Name:</label>
+		            					<input type="text" class="form-control" name="name" id="name" value="">
+	            					</div>
+		            			</div>
+		            			<div class="modal-footer">
+		            				<button type="submit" class="btn btn-info">Invite</button>
+		            				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		            			</div>
+	            			</form>
+	            		</div>
+	            	</div>
+	            </div>
 			@endif
 		</div>
 		<div class="lv-body">
