@@ -55,7 +55,17 @@ class RoomController extends Controller
 
     public function show($id)
     {
-        return view('frontend.rooms.show');
+        $room = Room::findOrFail($id);
+
+        $checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
+        if($checkJoin == null){
+            $isJoin = 0;
+        }else{
+            $isJoin = 1;
+        }
+
+        $listMemberOrRoom = RoomUser::where('room_id', $id)->get();
+        return view('frontend.rooms.show', compact('isJoin', 'room', 'listMemberOrRoom'));
     }
 
     public function invite($id)
