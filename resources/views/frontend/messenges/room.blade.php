@@ -71,22 +71,6 @@
 					</a>
 				</li>
 
-				<style type="text/css">
-					.lv-header-alt .lv-actions>li>a, .lv-header-alt .lv-actions>li>form {
-					    margin: 0 3px;
-					}
-
-					.actions>a, .actions>li>a, .actions>li>form {
-					    width: 30px;
-					    height: 30px;
-					    line-height: 35px;
-					    display: inline-block;
-					    text-align: center;
-					    position: relative;
-					}
-
-				</style>
-
 				@if($room->user_id == Auth::id())
 					<li> 
 						<a href="{{ route('frontend.room.destroy', $room->id) }}" 
