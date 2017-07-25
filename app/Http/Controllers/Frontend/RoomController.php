@@ -142,7 +142,7 @@ class RoomController extends Controller
         $room->name = $request->name;
         $room->save();
 
-        return redirect()->route('frontend.message.room', $room->id);
+        return $request->name;
     }
 
     public function destroy($id)
