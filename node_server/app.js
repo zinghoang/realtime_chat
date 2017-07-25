@@ -32,6 +32,19 @@ io.on('connection',function(socket){
 		}
 	});
 
+	//Invite User Join Room
+	socket.on('invite to room',function(user,userInvite,room){
+		//send join message to others 
+		io.in('room-'+room.id).emit('receiver room mess','notif',user,userInvite.name + ' has joined this room');
+	
+		//send notification to user if online
+		for(temp=0; temp< globalConnect.length;temp++){
+			if(globalConnect[temp].user.id == userInvite.id){
+				globalConnect[temp].socket.emit('receiver room mess','notif-join',user,user.name + ' added you to ' + room.name);
+			}
+		}
+	});
+
 	//--------- PRIVATE CHAT ---------
 	socket.on('register',function(data){
 		currentUser = new User(socket,data);

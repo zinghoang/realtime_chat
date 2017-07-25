@@ -68,7 +68,7 @@
 				    </form>					
 				</li>
 				<li>
-					<a href="javascript:void(0)" data-toggle="modal" data-target="#inviteFriend" title="Invite friend">
+					<a href="#" data-toggle="modal" data-target="#inviteFriend" title="Invite friend">
 						<i class="fa fa-envelope" aria-hidden="true"></i>
 					</a>
 				</li>
@@ -95,16 +95,19 @@
 	            				<button type="button" class="close" data-dismiss="modal">&times;</button>
 	            				<h4 class="modal-title">Invite friend...</h4>
 	            			</div>
-	            			<form method="post" action="">
-	            				{{ csrf_field() }}
+	            			<form method="post" action="javascript:void(0)" id="invite-form">
+	            				 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+	            				<div id="message-form">
+	            				</div>
 	            				<div class="modal-body">
 	            					<div class="form-group">
 		            					<label for="name">Name:</label>
-		            					<input type="text" class="form-control" name="name" id="name" value="">
+		            					<input type="text" class="form-control" name="name" id="name-search" value="">
+		            					<input type="hidden" name="room_id" id="room_id" value="{{ $room->id }}">
 	            					</div>
 		            			</div>
 		            			<div class="modal-footer">
-		            				<button type="submit" class="btn btn-info">Invite</button>
+		            				<button type="submit" class="btn btn-info" >Invite</button>
 		            				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		            			</div>
 	            			</form>
