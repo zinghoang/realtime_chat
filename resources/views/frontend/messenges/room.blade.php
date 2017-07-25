@@ -147,11 +147,12 @@
 				file_id: id,
 			},
 			success: function(data){
+
 				var vid = document.getElementById("myVideo");
 				vid.src = data;
 
-				alert(data);
 				vid.load();
+
 			},
 			error: function (){
 				alert('Có lỗi');

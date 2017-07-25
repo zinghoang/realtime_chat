@@ -171,6 +171,6 @@ class RoomController extends Controller
 
         $file = File::where('room_id', $room_id)->where('id', $file_id)->first();
 
-        return $file->name;
+        return asset('storage/media/'.$file->name);
     }
 }
