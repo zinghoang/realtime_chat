@@ -85,8 +85,8 @@ if($('#btn-room-reply').length){
 
 		request.done(function (response, textStatus, jqXHR){
 		  	console.log(response);
-
-            var mydate = new Date(response.created_at);
+			
+			var mydate = new Date(response.created_at);
 
             var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
             		  	mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
@@ -99,7 +99,7 @@ if($('#btn-room-reply').length){
             +' </small> '+' </div> '+' </div> ';
             $('.room-contentt').append(stringDivData);
 
-		  	socket.emit('send room message',user,response);
+            socket.emit('send room message','message',user,response);
 		});
 
 		// Callback handler that will be called on failure
@@ -110,20 +110,40 @@ if($('#btn-room-reply').length){
 		$('#mess-content').val('');
 	})
 }
+//Join Event
+if($('#join').length){
+	$('#join').click(function(){
+		//Send join event to others
+		socket.emit('send room message','register-room',user,currentRoom);
+	})
+}
+//Leave Event
+if($('#leave-room').length){
+	$('#leave-room').click(function(){
+		//send leave event to others
+		socket.emit('send room message','leave-room',user,currentRoom);
+	});
+}
 
-socket.on('receiver room mess',function(sender,data){
-	console.log(sender);
-	console.log(data);
-	var mydate = new Date(data.created_at);
+//Receiver message from server
+socket.on('receiver room mess',function(type,sender,data){
+	if(type == 'message'){
+		var mydate = new Date(data.created_at);
 
-    var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
-        	            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+	    var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+	        	            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
 
-    var stringDivData = ' <div class="lv-item media left"> '+' <div class="lv-avatar pull-left"> '
-                +' <img src="../../storage/avatars/'+data.avatar +'" alt=""> '
-                +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+data.content+' </div> '+' <small class="ms-date"> '
-                +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
-                +' </small> '+' </div> '+' </div> ';
+	    var stringDivData = ' <div class="lv-item media left"> '+' <div class="lv-avatar pull-left"> '
+	                +' <img src="../../storage/avatars/'+data.avatar +'" alt=""> '
+	                +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+data.content+' </div> '+' <small class="ms-date"> '
+	                +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
+	                +' </small> '+' </div> '+' </div> ';
 
-    $('.room-contentt').append(stringDivData);
+	    $('.room-contentt').append(stringDivData);
+	} else if ( type == 'notif') {
+		console.log(sender);
+		console.log(data);
+		console.log(type);
+	}
 })
+

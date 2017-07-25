@@ -56,7 +56,9 @@
 					</a>	
 				</li>
 				<li>
-					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room" onclick="return confirm('Do you want to leave this room?')"> <i class="fa fa-share" aria-hidden="true"></i> </a>
+					<a id="leave-room" href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room" onclick="return confirm('Do you want to leave this room?')"> 
+						<i class="fa fa-share" aria-hidden="true"></i> 
+					</a>
 				</li>
 				<li>
 					<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="upload-file">
@@ -187,7 +189,7 @@
 	                        <a href="{{ route('frontend.room.join', $room->id) }}" style="font-size: 340px; color: #cccccc;">
 	                            <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>
 	                        </a>
-	                        <h5><a href="{{ route('frontend.room.join', $room->id) }}" >CLICK HERE TO JOIN THIS ROOM</a></h5>
+	                        <h5><a id="join" href="{{ route('frontend.room.join', $room->id) }}" >CLICK HERE TO JOIN THIS ROOM</a></h5>
 	                    </div>
 					</div>
 				</div>

@@ -9,7 +9,7 @@ class Messenges extends Model
 {
 	use Searchable;
 
-    protected $fillable = ['user_id', 'room_id', 'content'];
+    protected $fillable = ['user_id', 'room_id', 'content','status'];
 
     public function searchableAs()
     {
