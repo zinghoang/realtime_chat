@@ -34,7 +34,7 @@ class MessengesController extends Controller
     	}
     	$messages = DB::table('messenges')
             ->join('users','users.id','=','messenges.user_id')
-            ->select('users.avatar', 'messenges.*')
+            ->select('users.avatar','users.name', 'messenges.*')
             ->take(100)
             ->orderBy('messenges.id','ASC')
             ->get();

@@ -128,14 +128,22 @@
 			        @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
 						<div class="content-video">
-							<video width="100%" controls>
-								<source src="{{ asset('storage/media/mov_bbb.mp4') }}" type="video/mp4">
-								Your browser does not support HTML5 video.
-							</video>
-							<audio width="100%" controls>
-								<source src="{{ asset('storage/media/horse.mp3') }}" type="audio/mpeg">
-								Your browser does not support the audio element.
-							</audio>
+							@if(count($listFile) == 0)
+								<div style="font-size: 350px; color: #cccccc; text-align: center;">
+									<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="choose-file">
+										{{ csrf_field() }}
+										<label for="choose">
+											<i class="fa fa-upload" aria-hidden="true"></i> 
+											<input type="file" id="choose" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('choose-file').submit();">
+										</label>
+								    </form>
+							    </div>
+							@else
+								<video width="100%" controls class="video-play">
+									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
+									Your browser does not support HTML5 video.
+								</video>
+							@endif
 						</div>
 						<div class="list-video">
 
@@ -143,34 +151,55 @@
 								@foreach ($listFile as $key => $file)
 									
 								<li class="">
-									<a href="">
-										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i> &nbsp;{{ $file->title }}
+									<a href="javascript:void(0)" class="change-video">
+										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i> &nbsp;<span class="video-id">
+											{{ $file->id }}
+										</span>
+										<span>
+											{{ $file->title }}
+										</span>
 									</a>
+									<em style="color: #cccccc;">- {{ $file->user->fullname }}</em>
 								</li>
 								@endforeach
 								
 							</ul>
 						</div>
 					</div>
+					<hr>
 				</div>
 				<div class="col-md-5 div-chat">
 					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;" class="room-contentt">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
-							<div class="lv-item media @if($message->user_id == Auth::id()) right @else left @endif">
-								<div class="lv-avatar @if($message->user_id == Auth::id()) pull-right @else pull-left @endif">
-									<img src="{{ url('../storage/avatars/',$message->avatar) }}" alt="">
-								</div>
-								<div class="media-body">
-									<div class="ms-item">
-										{!! $message->content !!}
+								@if($message->status == 0)
+									<div style="padding-left: 30px;">	
+										<h6>
+											<em style="color: #cccccc;">
+												{!! $message->content !!}
+											</em>
+										</h6>
 									</div>
-									<small class="ms-date">
-										<span class="glyphicon glyphicon-time"></span>
-										&nbsp; {{ $message->created_at }}
-									</small>
-								</div>
-							</div>
+								@else
+									<div class="lv-item media @if($message->user_id == Auth::id()) right @else left @endif">
+										<div class="lv-avatar @if($message->user_id == Auth::id()) pull-right @else pull-left @endif">
+											<img src="{{ url('../storage/avatars/',$message->avatar) }}" alt="">
+										</div>
+										<div class="media-body">
+											<div class="ms-item">
+												{!! $message->content !!}	
+												@if($message->name != Auth::user()->name)
+												<br>
+												<a href="{{ route('private.user', $message->name) }}"><em>{{ $message->name }}</em></a>
+												@endif
+											</div>
+											<small class="ms-date">
+												<span class="glyphicon glyphicon-time"></span>
+												&nbsp; {{ $message->created_at }}
+											</small>
+										</div>
+									</div>
+								@endif
 							@endforeach
 						@endif
 					</div>
@@ -203,6 +232,7 @@
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
 
+	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == 13) {
@@ -210,5 +240,7 @@
             $('#mess-content').reset();
         }
     });
+
+    @endif
 </script>
 @endsection

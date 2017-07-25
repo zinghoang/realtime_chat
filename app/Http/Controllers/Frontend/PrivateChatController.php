@@ -39,11 +39,15 @@ class PrivateChatController extends Controller
         if ($toUser == null) {
             abort(404);
         }
+
+        if($toUser->name == $user->name){
+            return redirect()->route('account.edit', $user->id);
+        }
         $friendship = FriendShip::where('user_request','=',$user->id)
-                            ->where('user_accept','=',$toUser->id)
-                            ->orWhere('user_request','=',$toUser->id)
-                            ->where('user_accept','=',$user->id)
-                            ->first();
+            ->where('user_accept','=',$toUser->id)
+            ->orWhere('user_request','=',$toUser->id)
+            ->where('user_accept','=',$user->id)
+            ->first();
 
         $listPrivateChat = PrivateMessage::where('from', $user->id)->where('to', $toUser->id)->orWhere('from', $toUser->id)->where('to', $user->id)->get();
         foreach ($listPrivateChat as $key => $chat){
