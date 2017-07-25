@@ -193,9 +193,8 @@
 												<a href="{{ route('private.user', $message->name) }}">
 													<strong>{{ $message->fullname }}</strong>
 												</a>
-												-
 												@if($message->user_id == $room->user_id)
-													<strong style="color: red;">[AD]</strong>
+													- <strong style="color: red;">[AD]</strong>
 												@endif
 												@endif
 											</div>
