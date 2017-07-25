@@ -24,7 +24,7 @@ class FileRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'mimes:mp4,avi,mp3|max:2000',
+            'title' => 'mimes:mp4,avi,mp3|max:200000',
         ];
     }
 }
