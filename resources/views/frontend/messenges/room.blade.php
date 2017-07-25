@@ -190,7 +190,12 @@
 												{!! $message->content !!}	
 												@if($message->name != Auth::user()->name)
 												<br>
-												<a href="{{ route('private.user', $message->name) }}"><em>{{ $message->name }}</em></a>
+												<a href="{{ route('private.user', $message->name) }}">
+													<strong>{{ $message->fullname }}</strong>
+												</a>
+												@if($message->user_id == $room->user_id)
+													- <strong style="color: red;">[AD]</strong>
+												@endif
 												@endif
 											</div>
 											<small class="ms-date">
