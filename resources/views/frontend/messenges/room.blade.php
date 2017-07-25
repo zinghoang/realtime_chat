@@ -77,18 +77,17 @@
 										</div>
 										<div class="media-body">
 											<div class="ms-item">
-												{!! $message->content !!}	
-												@if($message->name != Auth::user()->name)
-												<br>
-												<a href="{{ route('private.user', $message->name) }}">
-													<strong>{{ $message->fullname }}</strong>
-												</a>
-												@if($message->user_id == $room->user_id)
-													- <strong style="color: red;">[AD]</strong>
-												@endif
-												@endif
+												{!! $message->content !!}
 											</div>
 											<small class="ms-date">
+												@if($message->name != Auth::user()->name)
+													<a href="{{ route('private.user', $message->name) }}">
+														<strong style="font-size: 10px">{{ $message->fullname }}</strong>
+													</a>
+													@if($message->user_id == $room->user_id)
+														- <strong style="color: red;font-size: 10px">[AD]</strong>
+													@endif
+												@endif
 												<span class="glyphicon glyphicon-time"></span>
 												&nbsp; {{ $message->created_at }}
 											</small>

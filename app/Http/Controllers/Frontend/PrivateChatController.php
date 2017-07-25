@@ -10,6 +10,7 @@ use Auth;
 use App\User;
 use App\PrivateMessage;
 use Illuminate\Support\Collection;
+use phpDocumentor\Reflection\Types\Integer;
 
 class PrivateChatController extends Controller
 {

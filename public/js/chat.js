@@ -149,6 +149,16 @@ socket.on('receiver room mess',function(type,sender,data){
 		console.log(sender);
 		console.log(data); //join - leave
 		console.log(type);
+        var stringDivData = '<div style="padding-left: 30px;">'
+                            +'<h6>'+'<em style="color: #cccccc;">'+data+'</em>'+'<h6>'+'</div>';
+        $('.room-contentt').append(stringDivData);
+        var count = parseInt($('.countmember').text());
+        if(data.search("join")>=0){
+            count = count+1;
+        }else{
+            count = count-1;
+        }
+        $('.countmember').text(count);
 	} else if ( type == 'notif-join') {
 		alert(data);
 	}

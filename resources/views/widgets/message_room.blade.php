@@ -46,9 +46,7 @@
 	@if($isJoin == 1)
 	<ul class="lv-actions actions list-unstyled list-inline">
 		<li>
-			<a href="{{ route('frontend.room.show', $room->id) }}" title="Show all member of this room" style="border: 1px solid #adadad; border-radius: 50%; color: #adadad;">
-				{{ $countMember}}
-			</a>	
+			<a href="{{ route('frontend.room.show', $room->id) }}" title="Show all member of this room" style="border: 1px solid #adadad; border-radius: 50%; color: #adadad;" class="countmember">{{ $countMember}}</a>
 		</li>
 		<li>
 			<a id="leave-room" href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room" onclick="return confirm('Do you want to leave this room?')"> 
