@@ -49,7 +49,11 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/{username}', 'PrivateChatController@user')->name('private.user');
 		Route::post('/addprivatemess','PrivateChatController@addPrivateMess');
 	});
-    Route::resource('account', 'AccountController');
+
+    Route::resource('account', 'AccountController', ['only' => [
+	    'edit', 'update'
+	]]);
+    
 });
 
 Route::get('search', 'Search\SearchUserController@index')->name('SearchUser');
