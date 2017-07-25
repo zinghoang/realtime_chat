@@ -77,13 +77,13 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
-        $files = File::where('room_id', $id)->where('user_id', Auth::id())->get();
+        // $files = File::where('room_id', $id)->where('user_id', Auth::id())->get();
 
-        foreach ($files as $key => $file) {
-            Storage::delete('public/media/'.$file->name);
+        // foreach ($files as $key => $file) {
+        //     Storage::delete('public/media/'.$file->name);
 
-            File::findOrFail($file->id)->delete();
-        }
+        //     File::findOrFail($file->id)->delete();
+        // }
 
         $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
         $roomUser->delete();
@@ -96,6 +96,7 @@ class RoomController extends Controller
              'status' => false
         ]);
 
+        // Delete room when nobody in room
         $checkRoomMember = RoomUser::where('room_id', $id)->get();
 
         if(count($checkRoomMember) == 0){
@@ -171,5 +172,9 @@ class RoomController extends Controller
         $room->delete();
 
         return redirect()->route('frontend.room.index');
+    }
+
+    public function changeVideo($room_id, $file_id){
+        echo $room_id . ' ' . $file_id;
     }
 }

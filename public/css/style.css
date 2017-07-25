@@ -97,3 +97,6 @@ div.content-chat-video > div.col-md-7{
     font-size: 20px;
 }
 
+a{
+	text-decoration: none;
+}

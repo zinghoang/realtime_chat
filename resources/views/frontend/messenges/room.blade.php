@@ -129,7 +129,7 @@
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
 						<div class="content-video">
 							<video width="100%" controls>
-								<source src="{{ asset('storage/media/mov_bbb.mp4') }}" type="video/mp4">
+								<source src="{{ asset('storage/media/mayBay.mp4') }}" type="video/mp4">
 								Your browser does not support HTML5 video.
 							</video>
 							<audio width="100%" controls>
@@ -143,9 +143,15 @@
 								@foreach ($listFile as $key => $file)
 									
 								<li class="">
-									<a href="">
-										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i> &nbsp;{{ $file->title }}
+									<a href="javascript:void(0)" class="change-video">
+										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i> &nbsp;<span class="video-id">
+											{{ $file->id }}
+										</span>
+										<span>
+											{{ $file->title }}
+										</span>
 									</a>
+									<em style="color: #cccccc;">- {{ $file->user->fullname }}</em>
 								</li>
 								@endforeach
 								
@@ -157,20 +163,30 @@
 					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;" class="room-contentt">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
-							<div class="lv-item media @if($message->user_id == Auth::id()) right @else left @endif">
-								<div class="lv-avatar @if($message->user_id == Auth::id()) pull-right @else pull-left @endif">
-									<img src="{{ url('../storage/avatars/',$message->avatar) }}" alt="">
-								</div>
-								<div class="media-body">
-									<div class="ms-item">
-										{!! $message->content !!}
+								@if($message->status == 0)
+									<div style="padding-left: 30px;">	
+										<h6>
+											<em style="color: #cccccc;">
+												{!! $message->content !!}
+											</em>
+										</h6>
 									</div>
-									<small class="ms-date">
-										<span class="glyphicon glyphicon-time"></span>
-										&nbsp; {{ $message->created_at }}
-									</small>
-								</div>
-							</div>
+								@else
+									<div class="lv-item media @if($message->user_id == Auth::id()) right @else left @endif">
+										<div class="lv-avatar @if($message->user_id == Auth::id()) pull-right @else pull-left @endif">
+											<img src="{{ url('../storage/avatars/',$message->avatar) }}" alt="">
+										</div>
+										<div class="media-body">
+											<div class="ms-item">
+												{!! $message->content !!}									
+											</div>
+											<small class="ms-date">
+												<span class="glyphicon glyphicon-time"></span>
+												&nbsp; {{ $message->created_at }}
+											</small>
+										</div>
+									</div>
+								@endif
 							@endforeach
 						@endif
 					</div>
@@ -203,6 +219,7 @@
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
 
+	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == 13) {
@@ -210,5 +227,7 @@
             $('#mess-content').reset();
         }
     });
+
+    @endif
 </script>
 @endsection
