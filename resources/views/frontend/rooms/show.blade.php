@@ -52,13 +52,11 @@
 			<ul class="lv-actions actions list-unstyled list-inline">
 				<li>
 					<a href="{{ route('frontend.room.show', $room->id) }}" title="Show all member of this room" style="border: 1px solid #adadad; border-radius: 50%; color: #adadad;">
-						{{ $countMember}}
+						{{ count($listMemberOrRoom)}}
 					</a>	
 				</li>
 				<li>
-					<a id="leave-room" href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room" onclick="return confirm('Do you want to leave this room?')"> 
-						<i class="fa fa-share" aria-hidden="true"></i> 
-					</a>
+					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room" onclick="return confirm('Do you want to leave this room?')"> <i class="fa fa-share" aria-hidden="true"></i> </a>
 				</li>
 				<li>
 					<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="upload-file">
@@ -117,98 +115,34 @@
 		</div>
 		<div class="lv-body">
 			<div class="row content-chat-video">
-				@if($isJoin == 1)
-
-			        
-				<div class="col-md-7">
-				@if($errors->count()>0)
-				    	@foreach($errors->all() as $error)
-		                    <div class="alert alert-danger" style="margin: 5px 10px 5px 5px;"><p><strong>{{ $error }}</strong></p></div>
-		                @endforeach
-			        @endif
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
-						<div class="content-video">
-							<video width="100%" controls>
-								<source src="{{ asset('storage/media/mov_bbb.mp4') }}" type="video/mp4">
-								Your browser does not support HTML5 video.
-							</video>
-							<audio width="100%" controls>
-								<source src="{{ asset('storage/media/horse.mp3') }}" type="audio/mpeg">
-								Your browser does not support the audio element.
-							</audio>
-						</div>
-						<div class="list-video">
-
-							<ul class="show-list-video" style="list-style: none;">
-								@foreach ($listFile as $key => $file)
-									
-								<li class="">
-									<a href="">
-										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i> &nbsp;{{ $file->title }}
-									</a>
-								</li>
-								@endforeach
-								
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;" class="room-contentt">
-						@if($messages->count()>0)
-							@foreach($messages as $message)
-							<div class="lv-item media @if($message->user_id == Auth::id()) right @else left @endif">
-								<div class="lv-avatar @if($message->user_id == Auth::id()) pull-right @else pull-left @endif">
-									<img src="{{ url('../storage/avatars/',$message->avatar) }}" alt="">
-								</div>
-								<div class="media-body">
-									<div class="ms-item">
-										{!! $message->content !!}
-									</div>
-									<small class="ms-date">
-										<span class="glyphicon glyphicon-time"></span>
-										&nbsp; {{ $message->created_at }}
-									</small>
-								</div>
-							</div>
-							@endforeach
-						@endif
-					</div>
-					<div class="clearfix"></div>
-					<div class="lv-footer ms-reply">
-						<textarea rows="10" placeholder="Write messages..." id="mess-content"></textarea>
-						<button class="" id="btn-room-reply">
-							<span class="glyphicon glyphicon-send"></span>
-						</button>
-					</div>
-				</div>
-				@else
 				<div class="col-md-12">
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
-	                    <div class="border text-center">
-	                        <a href="{{ route('frontend.room.join', $room->id) }}" style="font-size: 340px; color: #cccccc;">
-	                            <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>
-	                        </a>
-	                        <h5><a id="join" href="{{ route('frontend.room.join', $room->id) }}" >CLICK HERE TO JOIN THIS ROOM</a></h5>
-	                    </div>
+						<div class="col-md-12">
+								
+							<h5 class="text-center">All the member of this room...</h5>
+							<hr>
+						</div>
+						
+						@foreach($listMemberOrRoom as $key => $member)
+						@php
+							//dd($member);
+						@endphp
+							<div class="col-md-4 col-md-offset-2">
+								<div class="lv-item media ">
+									<a href="{{ route('private.user', $member->user->name) }}" title="" style="text-decoration:none;">
+									<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $member->user->avatar) }}" alt=""> </div>
+									<div class="media-body">
+										<div class="lv-title">{{ $member->user->fullname }}</div>
+										<div class="lv-small">@ {{ $member->user->name }}</div>
+									</div>
+									</a>
+								</div>
+							</div>	
+						@endforeach
 					</div>
 				</div>
-				@endif
 			</div>
 		</div>
 	</div>
 </div>
-@endsection
-@section('script')
-<script type="text/javascript">
-	var currentRoom = {!!json_encode($room)!!};
-
-    $('#mess-content').keypress(function(event){
-        var keycode = (event.keyCode ? event.keyCode : event.which);
-        if (keycode == 13) {
-			$('#btn-room-reply').click();
-            $('#mess-content').reset();
-        }
-    });
-</script>
 @endsection

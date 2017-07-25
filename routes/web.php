@@ -35,10 +35,10 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/', 'RoomController@index')->name('frontend.room.index');
 		Route::post('/', 'RoomController@store')->name('frontend.room.store');
 
-		Route::get('/{room}', 'RoomController@edit')->name('frontend.room.edit');
+		Route::get('/{room}', 'RoomController@show')->name('frontend.room.show');
+		Route::get('/{room}/edit', 'RoomController@edit')->name('frontend.room.edit');
 		Route::put('/{room}', 'RoomController@update')->name('frontend.room.update');
 		Route::delete('/{room}', 'RoomController@destroy')->name('frontend.room.destroy');
-
 
 		Route::get('/join/{room}', 'RoomController@join')->name('frontend.room.join');
 		Route::get('/leave/{room}', 'RoomController@leave')->name('frontend.room.leave');
@@ -52,7 +52,11 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/deleteRelationship/{id}','PrivateChatController@deleteRelationship')->name('deleteRelationship');
 		Route::get('/acceptRelationship/{id}','PrivateChatController@acceptRelationship')->name('acceptRelationship');
 	});
-    Route::resource('account', 'AccountController');
+
+    Route::resource('account', 'AccountController', ['only' => [
+	    'edit', 'update'
+	]]);
+    
 });
 
 Route::get('search', 'Search\SearchUserController@index')->name('SearchUser');

@@ -16,7 +16,7 @@
 				<div class="lv-avatar pull-left"> 
 					<span style="color: #818181;"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
 				</div>
-				<span class="c-black">Chat</span>
+				<span class="c-black">Room</span>
 			</div>
 			<ul class="lv-actions actions list-unstyled list-inline">
 				<li><a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" title="Create room"><i class="fa fa-plus"></i> </a></li>
@@ -80,7 +80,13 @@
 								<h5 class="text-center">Some room you can join...</h5>
 								<hr>
 							</div>
-							
+							@if(count($listRoomRandom) == 0)
+								<div class="col-md-12">
+									<div class="lv-item media ">
+										<p class="text-center">No have other group</p>
+									</div>
+								</div>
+							@endif
 							@foreach($listRoomRandom as $key => $room)
 								<div class="col-md-4 col-md-offset-2">
 									<div class="lv-item media ">
