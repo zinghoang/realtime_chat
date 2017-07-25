@@ -142,7 +142,7 @@ socket.on('receiver room mess',function(type,sender,data){
 	    $('.room-contentt').append(stringDivData);
 	} else if ( type == 'notif') {
 		console.log(sender);
-		console.log(data);
+		console.log(data); //join - leave
 		console.log(type);
 	}
 })
