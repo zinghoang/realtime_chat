@@ -187,7 +187,11 @@
 										</div>
 										<div class="media-body">
 											<div class="ms-item">
-												{!! $message->content !!}									
+												{!! $message->content !!}	
+												@if($message->name != Auth::user()->name)
+												<br>
+												<a href="{{ route('private.user', $message->name) }}"><em>{{ $message->name }}</em></a>
+												@endif
 											</div>
 											<small class="ms-date">
 												<span class="glyphicon glyphicon-time"></span>
