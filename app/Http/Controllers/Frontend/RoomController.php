@@ -77,14 +77,6 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
-        // $files = File::where('room_id', $id)->where('user_id', Auth::id())->get();
-
-        // foreach ($files as $key => $file) {
-        //     Storage::delete('public/media/'.$file->name);
-
-        //     File::findOrFail($file->id)->delete();
-        // }
-
         $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
         $roomUser->delete();
 
@@ -179,6 +171,6 @@ class RoomController extends Controller
 
         $file = File::where('room_id', $room_id)->where('id', $file_id)->first();
 
-        return view('frontend.rooms.video', compact('file'));
+        return $file->name;
     }
 }
