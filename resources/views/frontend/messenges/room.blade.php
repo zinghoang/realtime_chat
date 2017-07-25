@@ -128,14 +128,22 @@
 			        @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
 						<div class="content-video">
-							<video width="100%" controls>
-								<source src="{{ asset('storage/media/mayBay.mp4') }}" type="video/mp4">
-								Your browser does not support HTML5 video.
-							</video>
-							<audio width="100%" controls>
-								<source src="{{ asset('storage/media/horse.mp3') }}" type="audio/mpeg">
-								Your browser does not support the audio element.
-							</audio>
+							@if(count($listFile) == 0)
+								<div style="font-size: 350px; color: #cccccc; text-align: center;">
+									<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="choose-file">
+										{{ csrf_field() }}
+										<label for="choose">
+											<i class="fa fa-upload" aria-hidden="true"></i> 
+											<input type="file" id="choose" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('choose-file').submit();">
+										</label>
+								    </form>
+							    </div>
+							@else
+								<video width="100%" controls class="video-play">
+									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
+									Your browser does not support HTML5 video.
+								</video>
+							@endif
 						</div>
 						<div class="list-video">
 
@@ -158,6 +166,7 @@
 							</ul>
 						</div>
 					</div>
+					<hr>
 				</div>
 				<div class="col-md-5 div-chat">
 					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;" class="room-contentt">

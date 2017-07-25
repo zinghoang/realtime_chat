@@ -29,7 +29,7 @@ class ListRoomChat extends AbstractWidget
 
         return view('frontend.layouts.widgets.list_room_chat', [
             'config' => $this->config,
-            'listRoom' => Room::all(),
+            'listRoom' => $roomJoined,
             'roomJoined' =>$roomJoined
         ]);
     }
