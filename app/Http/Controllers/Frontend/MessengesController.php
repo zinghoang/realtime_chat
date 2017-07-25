@@ -33,16 +33,20 @@ class MessengesController extends Controller
     		$isJoin = 1;
     	}
     	$messages = DB::table('messenges')
-                ->join('users','users.id','=','messenges.user_id')
-                ->select('users.avatar', 'messenges.*')
-                ->take(100)
-                ->orderBy('messenges.id','ASC')
-                ->get();
+            ->join('users','users.id','=','messenges.user_id')
+            ->select('users.avatar', 'messenges.*')
+            ->take(100)
+            ->orderBy('messenges.id','ASC')
+            ->get();
         foreach ($messages as $key => $chat){
             $chat->content = self::getNewContent($chat->content);
         }
+
+        $listMemberOrRoom = RoomUser::where('room_id', $id)->get()->toArray();
+        $countMember = count($listMemberOrRoom);
+
         $listFile = File::where('room_id', $id)->get();
-    	return view('frontend.messenges.room', compact('isJoin', 'room','messages','listFile'));
+    	return view('frontend.messenges.room', compact('isJoin', 'room','messages','listFile', 'countMember'));
     }
 
     public function uploadFile(FileRequest $request, $id)
