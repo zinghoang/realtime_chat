@@ -29,7 +29,7 @@
 								    </form>
 							    </div>
 							@else
-								<video width="100%" controls class="video-play">
+								<video width="100%" controls class="video-play" id="myVideo">
 									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
 									Your browser does not support HTML5 video.
 								</video>
@@ -50,7 +50,6 @@
 										</span>
 									</a>
 									<em style="color: #cccccc;">- {{ $file->user->fullname }}</em>
-									<img src="{{ asset('images/loading.gif') }}" class="loading" style="display: none;">
 								</li>
 								@endforeach
 								
@@ -139,8 +138,6 @@
     $('.change-video').click(function(){
     	var id = $(this).find('.video-id').html();
 
-    	$('.loading').show();
-
     	$.ajax({
 			url: "{{ route('frontend.room.changeVideo', $room->id) }}",
 			type: 'POST',
@@ -149,8 +146,12 @@
 				file_id: id,
 			},
 			success: function(data){
-				$('.loading').hide();
-				$('.video-play').html(data);
+
+				var vid = document.getElementById("myVideo");
+				vid.src = data;
+
+				vid.load();
+
 			},
 			error: function (){
 				alert('Có lỗi');

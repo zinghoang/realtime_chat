@@ -8,6 +8,9 @@ socket.emit('join room',roomJoined);
 
 socket.on('receiver private mess',function(data){
 	console.log(data);
+
+	// chat 2 nguoi
+	
     var mydate = new Date(data.created_at);
 
     var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
@@ -128,6 +131,8 @@ if($('#leave-room').length){
 //Receiver message from server
 socket.on('receiver room mess',function(type,sender,data){
 	if(type == 'message'){
+		console.log(data);
+		//chat room
 		var mydate = new Date(data.created_at);
 
 	    var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
