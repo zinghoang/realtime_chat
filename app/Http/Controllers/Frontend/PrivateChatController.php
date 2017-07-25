@@ -20,20 +20,33 @@ class PrivateChatController extends Controller
 
     public function index()
 	{
-	    $user_ids = PrivateMessage::distinct()->select('to')
-                ->where('from','=',Auth::user()->id)
-                ->get();
-	    $users = new Collection();
-	    if(count($user_ids) > 0){
-            foreach ($user_ids as $user_id){
-                $user = User::findOrFail($user_id)->first();
-                $users->push($user);
+        $ids = PrivateMessage::where('from','=',Auth::user()->id)
+            ->orderBy('created_at','DESC')
+            ->select('to')->get();
+        $arr_id = array();
+        foreach ($ids as $id){
+            array_push($arr_id,$id->to);
+        }
+        $arr_id = array_unique($arr_id);
+        $users = new Collection();
+        foreach ($arr_id as $id){
+            $user = User::findOrFail($id);
+            $users->push($user);
+        }
+        foreach ($users as $user){
+            $check = self::checkFriendship($user->id);
+            if($check != null){
+                $user->friend = 1;
+                $user->status = $check->status;
+                $user->user_request = $check->user_request;
+            }else{
+                $user->friend = 0;
             }
         }
 		return view('frontend.privatechat.index')->with('users',$users);
 	}
     public function user($username)
-    {	
+    {
     	$user = Auth::user();
     	$toUser = User::where('name',$username)->first();
         if ($toUser == null) {
@@ -91,27 +104,27 @@ class PrivateChatController extends Controller
         $friendship->user_accept = $to;
         $friendship->status = 0;
         $friendship->save();
-
-        $username = User::findOrFail($to);
-        return redirect()->route('private.user',$username->name);
+        return redirect()->back();
     }
     public function deleteRelationship($id){
         $friendship = FriendShip::findOrFail($id);
         $friendship->delete();
-        if(Auth::user()->id == $friendship->user_request){
-            $user = User::findOrFail($friendship->user_accept);
-        }else{
-            $user = User::findOrFail($friendship->user_request);
-        }
-        return redirect()->route('private.user',$user->name);
+        return redirect()->back();
     }
     public function acceptRelationship(Request $request,$id){
         $friendship = FriendShip::findOrFail($id);
         $friendship->status = 1;
         $friendship->save();
-        $user = User::findOrFail($friendship->user_request);
         $request->session()->flash('accept','You accepted the request! Let\'s send the first message');
-        return redirect()->route('private.user',$user->name);
+        return redirect()->back();
+    }
+    public static function checkFriendship($id){
+        return FriendShip::where('user_request','=',$id)
+                                ->where('user_accept','=',Auth::user()->id)
+                                ->orWhere('user_request','=',Auth::user()->id)
+                                ->where('user_accept','=',$id)
+                                ->select('status','user_request')
+                                ->first();
     }
 }
  

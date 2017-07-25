@@ -45,6 +45,22 @@
 									@foreach($users as $user)
 										<div class="col-md-4 col-md-offset-2">
 											<div class="lv-item media ">
+												@if($user->friend == 0)
+												<a href="{{ route('requestRelationship',$user->id) }}" title="Add friend" style="text-decoration:none;">
+													<i class="fa fa-plus" aria-hidden="true"></i>
+												</a>
+												@else
+													@if($user->status == 0 && $user->user_request == Auth::user()->id)
+														<i class="fa fa-clock-o" aria-hidden="true"></i>
+													@elseif($user->status == 0 && $user->user_request != Auth::user()->id)
+														<a href="{{ route('requestRelationship',$user->id) }}" title="Accept" style="text-decoration:none;">
+															<i class="fa fa-check" aria-hidden="true"></i>
+														</a>
+														<a href="{{ route('requestRelationship',$user->id) }}" title="Deny" style="text-decoration:none;">
+															<i class="fa fa-ban" aria-hidden="true"></i>
+														</a>
+													@endif
+												@endif
 												<a href="{{ route('private.user',$user->name) }}" title="" style="text-decoration:none;">
 													<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt=""> </div>
 													<div class="media-body">
