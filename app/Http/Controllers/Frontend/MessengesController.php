@@ -34,7 +34,7 @@ class MessengesController extends Controller
     	}
     	$messages = DB::table('messenges')
             ->join('users','users.id','=','messenges.user_id')
-            ->select('users.avatar', 'messenges.*')
+            ->select('users.avatar','users.name','users.fullname', 'messenges.*')
             ->take(100)
             ->orderBy('messenges.id','ASC')
             ->get();
@@ -79,11 +79,7 @@ class MessengesController extends Controller
         $file->type = $type;
         $file->title = $request->file('title')->getClientOriginalName();
         $file->user_id = Auth::id();
-
-
-
         $file->save();
-
         return redirect()->route('frontend.message.room', $id);
     }
         
@@ -114,7 +110,6 @@ class MessengesController extends Controller
             }else{
                 $output = $output. " "."<img src=\"../../storage/emotions/$image->image\" alt=\"\" width=\"50px\" height=\"50px\"> ";
             }
-            $image = null;
         }
         return $output;
     }
