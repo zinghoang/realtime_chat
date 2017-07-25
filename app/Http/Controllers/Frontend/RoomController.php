@@ -174,7 +174,11 @@ class RoomController extends Controller
         return redirect()->route('frontend.room.index');
     }
 
-    public function changeVideo($room_id, $file_id){
-        echo $room_id . ' ' . $file_id;
+    public function changeVideo($room_id, Request $request){
+        $file_id = $request->file_id;
+
+        $file = File::where('room_id', $room_id)->where('id', $file_id)->first();
+
+        return view('frontend.rooms.video', compact('file'));
     }
 }

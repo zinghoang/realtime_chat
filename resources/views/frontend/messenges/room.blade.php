@@ -152,7 +152,7 @@
 									
 								<li class="">
 									<a href="javascript:void(0)" class="change-video">
-										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i> &nbsp;<span class="video-id">
+										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
 											{{ $file->id }}
 										</span>
 										<span>
@@ -160,6 +160,7 @@
 										</span>
 									</a>
 									<em style="color: #cccccc;">- {{ $file->user->fullname }}</em>
+									<img src="{{ asset('images/loading.gif') }}" class="loading" style="display: none;">
 								</li>
 								@endforeach
 								
@@ -244,6 +245,28 @@
 			$('#btn-room-reply').click();
             $('#mess-content').reset();
         }
+    });
+
+    $('.change-video').click(function(){
+    	var id = $(this).find('.video-id').html();
+
+    	$('.loading').show();
+
+    	$.ajax({
+			url: "{{ route('frontend.room.changeVideo', $room->id) }}",
+			type: 'POST',
+			cache: false,
+			data: {
+				file_id: id,
+			},
+			success: function(data){
+				$('.loading').hide();
+				$('.video-play').html(data);
+			},
+			error: function (){
+				alert('Có lỗi');
+			}
+		}); 
     });
 
     @endif
