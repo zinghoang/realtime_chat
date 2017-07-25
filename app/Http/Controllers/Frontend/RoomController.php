@@ -23,12 +23,8 @@ class RoomController extends Controller
     public function index()
     {
         $listRoomJoined = RoomUser::where('user_id', Auth::id())->get();
-
         $arrayRoomJoin = array_pluck($listRoomJoined->toArray(), 'room_id');
-
         $listRoomRandom = DB::table('rooms')->whereNotIn('id', $arrayRoomJoin)->get();
-
-
         return view('frontend.rooms.index', compact('listRoomJoined', 'listRoomRandom'));
     }
 
@@ -44,12 +40,17 @@ class RoomController extends Controller
         $room->user_id = Auth::id();
         $room->save();
 
-
         $roomUser = new RoomUser;
         $roomUser->user_id = Auth::id();
         $roomUser->room_id = $room->id;
         $roomUser->save();
 
+        $message = new Messenges;
+        $message->user_id = Auth::user()->id;
+        $message->room_id = $room->id;
+        $message->content = Auth::user()->name . 'has created this room';
+        $message->status = 0;
+        $message->save();
         return redirect()->route('frontend.message.room', $room->id);
     }
 
@@ -63,7 +64,6 @@ class RoomController extends Controller
         }else{
             $isJoin = 1;
         }
-
         $listMemberOrRoom = RoomUser::where('room_id', $id)->get();
         return view('frontend.rooms.show', compact('isJoin', 'room', 'listMemberOrRoom'));
     }
@@ -76,14 +76,6 @@ class RoomController extends Controller
     public function leave($id)
     {
         $room = Room::findOrFail($id);
-
-        // $files = File::where('room_id', $id)->where('user_id', Auth::id())->get();
-
-        // foreach ($files as $key => $file) {
-        //     Storage::delete('public/media/'.$file->name);
-
-        //     File::findOrFail($file->id)->delete();
-        // }
 
         $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
         $roomUser->delete();
@@ -156,7 +148,6 @@ class RoomController extends Controller
     public function destroy($id)
     {
         $room = Room::findOrFail($id);
-
         if ($room->user_id != Auth::id()) {
             abort(404);
         }
@@ -176,9 +167,7 @@ class RoomController extends Controller
 
     public function changeVideo($room_id, Request $request){
         $file_id = $request->file_id;
-
         $file = File::where('room_id', $room_id)->where('id', $file_id)->first();
-
         return view('frontend.rooms.video', compact('file'));
     }
 }
