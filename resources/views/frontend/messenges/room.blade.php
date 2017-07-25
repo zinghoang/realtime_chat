@@ -70,7 +70,7 @@
 				    </form>					
 				</li>
 				<li>
-					<a href="javascript:void(0)" data-toggle="modal" data-target="#inviteFriend" title="Invite friend">
+					<a href="#" data-toggle="modal" data-target="#inviteFriend" title="Invite friend">
 						<i class="fa fa-envelope" aria-hidden="true"></i>
 					</a>
 				</li>

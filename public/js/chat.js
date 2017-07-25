@@ -144,6 +144,36 @@ socket.on('receiver room mess',function(type,sender,data){
 		console.log(sender);
 		console.log(data);
 		console.log(type);
+	} else if ( type == 'notif-join') {
+		alert(data);
 	}
 })
 
+if($('#invite-form').length){
+	$('#invite-form').submit(function(){
+		var room_id = $('#room_id').val();
+		var username = $('#name-search').val();
+		
+		$.ajax({
+			type: "GET",
+			url: '/inviteUser',
+			data: {
+				'username': username,
+				'room_id' : room_id
+			},
+			success: function(data){
+				if(data['status'] == 'success'){
+					console.log(data['user']);
+					socket.emit('invite to room',user,data['user'],data['room']);
+					$('#message-form').html('<div class="alert alert-success"> <strong>Success!</strong> Invite Success. </div>');
+					$('#name-search').val('');
+				} else {
+					$('#message-form').html('<div class="alert alert-danger"> <strong>Danger!</strong> Invalid Username. </div>')
+				}
+				$('#message-form').fadeIn('slow', function () {
+			   		 $(this).delay(3000).fadeOut('slow');
+			 	 });
+			}
+		});
+	});
+}
