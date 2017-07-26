@@ -15,24 +15,16 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height content-page-error">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
 
             <div class="content">
                 <div class="title m-b-md">
-                    Chat Blue Team
+                    Sorry!
                 </div>
 
                 <div style="font-size: 60px;">
-                    Welcome to blue team!
+                    405!!! Method not allowed!!!
+                    <br>
+                    <a href="{{ route('home') }}" style="text-decoration: none;">Go back</a>
                 </div>
             </div>
         </div>
