@@ -123,12 +123,9 @@
 </div>
 @endsection
 @section('script2')
+
 <script>
-	alert("121212");
-    console.log('room 23214');
 	var currentRoom = {!!json_encode($room)!!};
-	console.log('room');
-	console.log(currentRoom);
 	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
