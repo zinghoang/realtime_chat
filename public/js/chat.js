@@ -192,3 +192,4 @@ if($('#invite-form').length){
 		});
 	});
 }
+

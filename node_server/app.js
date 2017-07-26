@@ -32,6 +32,16 @@ io.on('connection',function(socket){
 		}
 	});
 
+	socket.on('send action',function(type,currentRoom,data,action){
+		if(action == 'load'){
+			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,action,data);
+		} else if (action == 'play') {
+			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,action,data);
+		} else if (action == 'pause') {
+			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,action,data);
+		}
+	});
+
 	//Invite User Join Room
 	socket.on('invite to room',function(user,userInvite,room){
 		//send join message to others 

@@ -29,6 +29,7 @@
 								    </form>
 							    </div>
 							@else
+
 								<video width="100%" controls class="video-play" id="myVideo">
 									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
 									Your browser does not support HTML5 video.
@@ -125,7 +126,10 @@
 @section('script2')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
-
+</script>
+@endsection
+@section('endscript')
+<script>
 	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -149,15 +153,36 @@
 
 				var vid = document.getElementById("myVideo");
 				vid.src = data;
-
 				vid.load();
 
+				socket.emit('send action','video',currentRoom,data,'load');
 			},
 			error: function (){
 				alert('Có lỗi');
 			}
 		}); 
     });
+
+    $('#myVideo').bind('play', function () {
+   		//whatever you want to do
+   		socket.emit('send action','video',currentRoom,null,'play');
+	});
+	$('#myVideo').bind('pause', function () {
+   		//whatever you want to do
+   		socket.emit('send action','video',currentRoom,null,'pause');
+	});
+
+    socket.on('receiver action',function(type,action,data){
+    	var vid = document.getElementById("myVideo");
+    	if( action == 'load'){
+				vid.src = data;
+				vid.load();
+    	} else if ( action == 'play') {
+    		vid.play();
+    	} else if ( action == "pause") {
+    		vid.pause();
+    	}
+    })
 
     @endif
 </script>
