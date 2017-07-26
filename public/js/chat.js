@@ -15,13 +15,53 @@ socket.on('receiver private mess',function(data){
 
     var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
     	            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+    alert(toUser.id);
+    if(typeof toUser !== 'undefined'){
+        if(parseInt(data.from) == toUser.id){
+            var stringDivData = ' <div class="lv-item media"> ' + ' <div class="lv-avatar pull-left"> ' +
+                    ' <img src="../storage/avatars/'+ toUser.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+                    ' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
+                    ' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
+            $('.content-message').append(stringDivData);
+        }
+    }
 
-    var stringDivData = ' <div class="lv-item media"> ' + ' <div class="lv-avatar pull-left"> ' +
-    	  	' <img src="../storage/avatars/'+ toUser.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
-    	  	' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
-    	  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
 
-    $('.content-message').append(stringDivData);
+    //cap nhat listUser
+    var pathname = window.location.pathname;
+        var arr_name = pathname.split('/');
+        var name = arr_name[arr_name.length-1];
+    var stringDivUser = '';
+    for(var i = 0; i< data.listUser.length;i++){
+        stringDivUser = stringDivUser + '<div class="lv-item media">'
+                            +'<div class="lv-avatar pull-left">'
+                            +'<img src="/storage/avatars/'+ data.listUser[i].avatar+'" alt="">'
+                            +'</div>'
+                            +'<div class="media-body">'
+                            +'<div class="lv-title">'
+                            +'<a href="/chat/'+data.listUser[i].name+'" title="" style="text-decoration:none;">'
+                            + data.listUser[i].fullname
+                            +'</a>';
+        if(data.listUser[i].notif == 1 && data.listUser[i].name != name){
+            stringDivUser = stringDivUser + '<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>';
+        }
+        stringDivUser = stringDivUser + '</div>'
+        +'<div class="lv-small">'+'@ '+data.listUser[i].name
+        +'</div>'
+        +'</div>'
+        +'</div>';
+    }
+    stringDivUser = stringDivUser + ' <div class="lv-item media">'
+                                     		+'<div class="media-body">'
+                                     			+'<p class="text-center" style="margin: 0px;">'
+                                     				+'<a href="/chat" title="" style="text-decoration:none;">'
+                                     					+'Show All Contacts'
+                                     				+'</a>'
+                                     			+'</p>'
+                                     		+'</div>'
+                                     	+'</div>';
+     $('.listUser').html(stringDivUser);
+
 })
 
 //Send private message 
@@ -33,7 +73,6 @@ $.ajaxSetup({
 if($("#btn-reply").length){
 	$('#btn-reply').click(function(){
 		var mess = $('#txt-mess-content').val();
-	  	
 	  	$('#txt-mess-content').val('');
 
 		var request = $.ajax({
@@ -41,7 +80,7 @@ if($("#btn-reply").length){
 			url: '/chat/addprivatemess',
 			data: {'user': user,
 				'toUser': toUser,
-				'message': mess
+				'message': mess,
 			}
 		});
 

@@ -1,13 +1,20 @@
 @if($listUser->count() > 0)
 	@foreach($listUser as $user)
 	<div class="lv-item media {{ Request::is('chat/' . $user->name) ? 'active' : '' }}">
-		<a href="{{ route('private.user', $user->name) }}" title="" style="text-decoration:none;">
-		<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt=""> </div>
+		<div class="lv-avatar pull-left">
+				<img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt="">
+		</div>
 		<div class="media-body">
-			<div class="lv-title">{{ $user->fullname }}</div>
+			<div class="lv-title">
+				<a href="{{ route('private.user', $user->name) }}" title="" style="text-decoration:none;">
+				{{ $user->fullname }}
+				</a>
+				@if($user->notif == 1)
+					<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>
+				@endif
+			</div>
 			<div class="lv-small">@ {{ $user->name }}</div>
 		</div>
-		</a>
 	</div>
 	@endforeach
 	<div class="lv-item media {{ Request::is('chat') ? 'active' : '' }}">
