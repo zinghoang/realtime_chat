@@ -25,24 +25,44 @@ Route::group(['namespace' => 'Frontend'], function(){
 	Route::group(['prefix' => 'message'], function(){
 		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
 		
+		Route::get('/room/upload/{room}', 'MessengesController@room');
+		Route::post('/room/upload/{room}', 'MessengesController@uploadFile')->name('frontend.message.uploadfile');
+		
+		Route::post('/add-room-message','MessengesController@addRoomMessage');
 	});
 
 	Route::group(['prefix' => 'room'], function(){
 		Route::get('/', 'RoomController@index')->name('frontend.room.index');
 		Route::post('/', 'RoomController@store')->name('frontend.room.store');
+
+		Route::get('/{room}', 'RoomController@show')->name('frontend.room.show');
+		Route::get('/{room}/edit', 'RoomController@edit')->name('frontend.room.edit');
+		Route::put('/{room}', 'RoomController@update')->name('frontend.room.update');
+		Route::delete('/{room}', 'RoomController@destroy')->name('frontend.room.destroy');
+
 		Route::get('/join/{room}', 'RoomController@join')->name('frontend.room.join');
 		Route::get('/leave/{room}', 'RoomController@leave')->name('frontend.room.leave');
+
+		Route::post('/video/{room}', 'RoomController@changeVideo')->name('frontend.room.changeVideo');
 	});
 
 	Route::group(['prefix' => 'chat'], function(){
 		Route::get('/', 'PrivateChatController@index')->name('frontend.private.index');
 		Route::get('/{username}', 'PrivateChatController@user')->name('private.user');
 		Route::post('/addprivatemess','PrivateChatController@addPrivateMess');
+		Route::get('/requestRelationship/{user_id}','PrivateChatController@requestRelationship')->name('requestRelationship');
+		Route::get('/deleteRelationship/{id}','PrivateChatController@deleteRelationship')->name('deleteRelationship');
+		Route::get('/acceptRelationship/{id}','PrivateChatController@acceptRelationship')->name('acceptRelationship');
 	});
-    Route::resource('account', 'AccountController');
+
+    Route::resource('account', 'AccountController', ['only' => [
+	    'edit', 'update'
+	]]);
+    
 });
 
 Route::get('search', 'Search\SearchUserController@index')->name('SearchUser');
+Route::get('inviteUser','Search\SearchUserController@inviteUser');
 
 Auth::routes();
 

@@ -75,3 +75,35 @@ ul.show-list-video > li.active > a{
 div.content-chat-video > div.col-md-7{
 	padding-right: 0px;
 }
+
+
+.lv-header-alt .lv-actions>li>form {
+    margin: 0 3px;
+}
+
+.actions>li>form {
+    width: 30px;
+    height: 30px;
+    line-height: 35px;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+}
+
+.actions>li>form>label>i {
+    transition: color;
+    transition-duration: 1.3s;
+    color: #adadad;
+    font-size: 20px;
+}
+
+a{
+	text-decoration: none;
+}
+
+.video-play{
+	background-image: url('../images/background-sound.jpg');
+	background-size: 100% 100%;
+	background-repeat: none;
+	background-color: #cccccc;
+}

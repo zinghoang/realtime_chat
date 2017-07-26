@@ -4,199 +4,103 @@
 
 <div class="ms-body">
 	<div class="listview lv-message">
-		<div class="lv-header-alt clearfix">
-			<div id="ms-menu-trigger">
-				<div class="line-wrap">
-					<div class="line top"></div>
-					<div class="line center"></div>
-					<div class="line bottom"></div>
-				</div>
-			</div>
-			<div class="lvh-label hidden-xs">
-				<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div><span class="c-black">{{ $room->name }}</span>
-			</div>
-			@if($isJoin == 1)
-			<ul class="lv-actions actions list-unstyled list-inline">
-				<li>
-					<a href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room"> <i class="fa fa-share" aria-hidden="true"></i> </a>
-				</li>
-				<li>
-					<a href="#">
-						<i class="fa fa-upload" aria-hidden="true"></i> 
-					</a>
-				</li>
-				<li>
-					<a href="#" title="Invite friend">
-						<i class="fa fa-envelope" aria-hidden="true"></i>
-					</a>
-				</li>
-
-				<li>
-					<a data-toggle="dropdown" href="#"> <i class="fa fa-list"></i>
-					</a>
-					<ul class="dropdown-menu user-detail" role="menu">
-						<li> <a href="">Latest</a> </li>
-						<li> <a href="">Oldest</a> </li>
-					</ul>
-				</li>
-				<li> <a data-toggle="dropdown" href="#" data-toggle="tooltip" data-placement="left" title="Tooltip on left"><span class="glyphicon glyphicon-trash"></span></a>
-					<ul class="dropdown-menu user-detail" role="menu">
-						<li> <a href="">Delete Messages</a> </li>
-					</ul>
-				</li>
-			</ul>
-			@endif
-		</div>
+		@widget('MessageRoom', ['id' => $room->id], $room->id)
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				@if($isJoin == 1)
+
+			        
 				<div class="col-md-7">
+				@if($errors->count()>0)
+				    	@foreach($errors->all() as $error)
+		                    <div class="alert alert-danger" style="margin: 5px 10px 5px 5px;"><p><strong>{{ $error }}</strong></p></div>
+		                @endforeach
+			        @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
 						<div class="content-video">
-							<video width="100%" controls>
-								<source src="{{ asset('storage/media/mov_bbb.mp4') }}" type="video/mp4">
-								Your browser does not support HTML5 video.
-							</video>
-							<audio width="100%" controls>
-								<source src="{{ asset('storage/media/horse.mp3') }}" type="audio/mpeg">
-								Your browser does not support the audio element.
-							</audio>
+							@if(count($listFile) == 0)
+								<div style="font-size: 350px; color: #cccccc; text-align: center;">
+									<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="choose-file">
+										{{ csrf_field() }}
+										<label for="choose">
+											<i class="fa fa-upload" aria-hidden="true"></i> 
+											<input type="file" id="choose" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('choose-file').submit();">
+										</label>
+								    </form>
+							    </div>
+							@else
+								<video width="100%" controls class="video-play" id="myVideo">
+									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
+									Your browser does not support HTML5 video.
+								</video>
+							@endif
 						</div>
 						<div class="list-video">
 
 							<ul class="show-list-video" style="list-style: none;">
-								<li class="active">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;It's gives the power to synthesis anything...
-									</a>
-								</li>
+								@foreach ($listFile as $key => $file)
+									
 								<li class="">
-									<a href="">
-										<i class="fa fa-volume-up" aria-hidden="true"></i> &nbsp;We are sharing this knowledge in all ...
+									<a href="javascript:void(0)" class="change-video">
+										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
+											{{ $file->id }}
+										</span>
+										<span>
+											{{ $file->title }}
+										</span>
 									</a>
+									<em style="color: #cccccc;">- {{ $file->user->fullname }}</em>
 								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-volume-up" aria-hidden="true"></i> &nbsp;Its the ultimate tool to solve any problem....
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;We help you excel in that by working with you.
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
-								<li class="">
-									<a href="">
-										<i class="fa fa-play-circle-o" aria-hidden="true"></i> &nbsp;Similique qui Saepe...
-									</a>
-								</li>
+								@endforeach
+								
 							</ul>
 						</div>
 					</div>
+					<hr>
 				</div>
 				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
-						<div class="lv-item media right">
-							<div class="lv-avatar pull-right"> 
-								<img src="{{ asset('images/avatar.jpg') }}" alt=""> 
-							</div>
-							<div class="media-body">
-								<div class="ms-item"> 
-									We started this site with clear mission that we want to deliver complete details knowledge of Programming to our audience. We are sharing this knowledge in all areas that you can see in our site. 
-								</div>
-								<small class="ms-date">
-									<span class="glyphicon glyphicon-time"></span>
-									&nbsp; 05/10/2015 at 09:30
-								</small> 
-							</div>
-						</div>
-						<div class="lv-item media">
-							<div class="lv-avatar pull-left"> 
-								<img src="{{ asset('images/bhai.jpg') }}" alt=""> 
-							</div>
-							<div class="media-body">
-								<div class="ms-item"> 
-									It's gives the power to synthesis anything anywhere you want to. Its the ultimate tool to solve any problem. And we help you excel in that by working with you. 
-								</div>
-								<small class="ms-date">
-									<span class="glyphicon glyphicon-time"></span>
-									&nbsp; 20/02/2015 at 09:33
-								</small> 
-							</div>
-						</div>
-						<div class="lv-item media">
-							<div class="lv-avatar pull-left"> 
-								<img src="{{ asset('images/bhai.jpg') }}" alt=""> 
-							</div>
-							<div class="media-body">
-								<div class="ms-item"> 
-									It's gives the power to synthesis anything anywhere you want to. Its the ultimate tool to solve any problem. And we help you excel in that by working with you. 
-								</div>
-								<small class="ms-date">
-									<span class="glyphicon glyphicon-time"></span>
-									&nbsp; 20/02/2015 at 09:33
-								</small> 
-							</div>
-						</div>
-						<div class="lv-item media">
-							<div class="lv-avatar pull-left"> 
-								<img src="{{ asset('images/bhai.jpg') }}" alt=""> 
-							</div>
-							<div class="media-body">
-								<div class="ms-item"> 
-									It's gives the power to synthesis anything anywhere you want to. Its the ultimate tool to solve any problem. And we help you excel in that by working with you. 
-								</div>
-								<small class="ms-date">
-									<span class="glyphicon glyphicon-time"></span>
-									&nbsp; 20/02/2015 at 09:33
-								</small> 
-							</div>
-						</div>
+					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;" class="room-contentt">
+						@if($messages->count()>0)
+							@foreach($messages as $message)
+								@if($message->status == 0)
+									<div style="padding-left: 30px;">	
+										<h6>
+											<em style="color: #cccccc;">
+												{!! $message->content !!}
+											</em>
+										</h6>
+									</div>
+								@else
+									<div class="lv-item media @if($message->user_id == Auth::id()) right @else left @endif">
+										<div class="lv-avatar @if($message->user_id == Auth::id()) pull-right @else pull-left @endif">
+											<img src="{{ url('../storage/avatars/',$message->avatar) }}" alt="">
+										</div>
+										<div class="media-body">
+											<div class="ms-item">
+												{!! $message->content !!}
+											</div>
+											<small class="ms-date">
+												@if($message->name != Auth::user()->name)
+													<a href="{{ route('private.user', $message->name) }}">
+														<strong style="font-size: 10px">{{ $message->fullname }}</strong>
+													</a>
+													@if($message->user_id == $room->user_id)
+														- <strong style="color: red;font-size: 10px">[AD]</strong>
+													@endif
+												@endif
+												<span class="glyphicon glyphicon-time"></span>
+												&nbsp; {{ $message->created_at }}
+											</small>
+										</div>
+									</div>
+								@endif
+							@endforeach
+						@endif
 					</div>
 					<div class="clearfix"></div>
 					<div class="lv-footer ms-reply">
-						<textarea rows="10" placeholder="Write messages..."></textarea>
-						<button class="">
+						<textarea rows="10" placeholder="Write messages..." id="mess-content"></textarea>
+						<button class="" id="btn-room-reply">
 							<span class="glyphicon glyphicon-send"></span>
 						</button>
 					</div>
@@ -208,7 +112,7 @@
 	                        <a href="{{ route('frontend.room.join', $room->id) }}" style="font-size: 340px; color: #cccccc;">
 	                            <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>
 	                        </a>
-	                        <h5><a href="{{ route('frontend.room.join', $room->id) }}" >CLICK HERE TO JOIN THIS ROOM</a></h5>
+	                        <h5><a id="join" href="{{ route('frontend.room.join', $room->id) }}" >CLICK HERE TO JOIN THIS ROOM</a></h5>
 	                    </div>
 					</div>
 				</div>
@@ -217,4 +121,44 @@
 		</div>
 	</div>
 </div>
-@stop
+@endsection
+@section('script2')
+<script type="text/javascript">
+	var currentRoom = {!!json_encode($room)!!};
+
+	@if($isJoin == 1)
+    $('#mess-content').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == 13) {
+			$('#btn-room-reply').click();
+            $('#mess-content').reset();
+        }
+    });
+
+    $('.change-video').click(function(){
+    	var id = $(this).find('.video-id').html();
+
+    	$.ajax({
+			url: "{{ route('frontend.room.changeVideo', $room->id) }}",
+			type: 'POST',
+			cache: false,
+			data: {
+				file_id: id,
+			},
+			success: function(data){
+
+				var vid = document.getElementById("myVideo");
+				vid.src = data;
+
+				vid.load();
+
+			},
+			error: function (){
+				alert('Có lỗi');
+			}
+		}); 
+    });
+
+    @endif
+</script>
+@endsection

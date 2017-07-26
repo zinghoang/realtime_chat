@@ -52,12 +52,13 @@ class EmotionController extends Controller
         $emotion = Emotion::where('code','=',$code)->first();
         if($emotion == null){
             $name = $request->name;
-            $image = Input::file('image')->getClientOriginalName();
-            Input::file('image')->move('storage/emotions', $image);
+            $image = $request->file('image')->store('public/emotions');
+            $arr_filename = explode("/",$image);
+            $filename = end($arr_filename);
             $emotion_add = new Emotion();
             $emotion_add->name = $name;
             $emotion_add->code = $code;
-            $emotion_add->image = $image;
+            $emotion_add->image = $filename;
             $emotion_add->save();
             $request->session()->flash('success','Emotion was added success!');
         }else{
@@ -108,17 +109,18 @@ class EmotionController extends Controller
         $emotion_check_code = Emotion::where('code','=',$code)->first();
         if($emotion_check_code !=null && $emotion_check_code->id === $emotion->id){ //khong trung
             if($request->file('image') != null){
-                $image = Input::file('image')->getClientOriginalName();
                 //Xoa anh cu~
                 File::delete('storage/emotions/'.$emotion->image);
                 //Up anh moi
-                Input::file('image')->move('storage/emotions', $image);
+                $image = $request->file('image')->store('public/emotions');
+                $arr_filename = explode("/",$image);
+                $filename = end($arr_filename);
             }else{
                 $image = $emotion->image;
             }
             $emotion->name = $name;
             $emotion->code = $code;
-            $emotion->image = $image;
+            $emotion->image = $filename;
             $emotion->save();
             $request->session()->flash('success','The emotion was updated successful!');
         }else{ //trung

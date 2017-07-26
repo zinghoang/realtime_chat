@@ -6,21 +6,44 @@ server.listen(3000);
 var globalConnect = [];	
 io.on('connection',function(socket){
 	var currentUser;
-	//console.log('welcome ' + socket.id);
 
-	// socket.on('join-channel',function(data){
-	// 	console.log(data);
-	// 	for(i = 0 ; i < data.length; ++i){
-	// 		socket.join(data[i]);
-	// 		socket.broadcast.to(data[i]).emit('new user join', 'id:' + t +
-	// 		 'join room: ' + data[i]);
-	// 	}
-	// });
+	socket.on('send room message',function(type,sender,data){
+		if(type == 'message'){
+			//send message to other
+			socket.broadcast.to('room-'+data.room_id).emit('receiver room mess','message',sender,data);
+		} else if (type == 'register-room') {
+			//send notification to other that sender has joined
+			socket.join('room-'+data.id);
+		//	io.in('room-'+data.id).emit('receiver room mess','notif',sender,sender.name + ' has joined this room
+			socket.broadcast.to('room-'+data.id).emit('receiver room mess','notif',sender,sender.name + ' has joined this room');
 
-	// socket.on('send message',function(room,data){
-	// 	console.log(room + ' -  '+ data);
-	// 	io.in(room).emit('update chat',"id: "+ socket.id + " - " +"room :" + room + " \n mess: "+data);
-	// });
+		} else if(type == 'leave-room') {
+			socket.broadcast.to('room-'+data.id).emit('receiver room mess','notif',sender,sender.name + ' has left this room');
+			socket.leave('room-'+data.id);
+		}
+	
+	});
+
+	socket.on('join room',function(data){
+		console.log('join room: ');
+		for(i=0; i<data.length; ++i){
+			console.log(data[i]);
+			socket.join('room-'+data[i].id);
+		}
+	});
+
+	//Invite User Join Room
+	socket.on('invite to room',function(user,userInvite,room){
+		//send join message to others 
+		io.in('room-'+room.id).emit('receiver room mess','notif',user,userInvite.name + ' has joined this room');
+	
+		//send notification to user if online
+		for(temp=0; temp< globalConnect.length;temp++){
+			if(globalConnect[temp].user.id == userInvite.id){
+				globalConnect[temp].socket.emit('receiver room mess','notif-join',user,user.name + ' added you to ' + room.name);
+			}
+		}
+	});
 
 	//--------- PRIVATE CHAT ---------
 	socket.on('register',function(data){

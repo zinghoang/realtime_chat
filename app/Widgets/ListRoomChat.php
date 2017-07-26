@@ -4,7 +4,8 @@ namespace App\Widgets;
 
 use Arrilot\Widgets\AbstractWidget;
 use App\Room;
-
+use Auth;
+use DB;
 class ListRoomChat extends AbstractWidget
 {
     /**
@@ -20,11 +21,16 @@ class ListRoomChat extends AbstractWidget
      */
     public function run()
     {
-        //
+        //get listroom user has join
+        $roomJoined = DB::table('rooms')->join('room_users','rooms.id','=','room_users.room_id')->where('room_users.user_id','=',Auth::user()->id)
+        ->select('rooms.id','rooms.name','room_users.user_id')
+        ->get();
+
 
         return view('frontend.layouts.widgets.list_room_chat', [
             'config' => $this->config,
-            'listRoom' => Room::all(),
+            'listRoom' => $roomJoined,
+            'roomJoined' =>$roomJoined
         ]);
     }
 }

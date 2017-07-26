@@ -36,15 +36,17 @@
 						</div>
 						@else
 						<div class="row">
-							<div class="col-md-12">
-								<h5 class="text-center">Result of {{ $nameSeach }}</h5>
+							<div class="col-md-12" style="background-color: #2c3b41">
+								<h3	 class="text-center">
+									<span style="color: #ffffff">RESULT OF   "{{ $nameSeach }}"</span>
+								</h3>
 								<hr>
 							</div>
-							@if($users->count())
+							@if($users->count()>0)
                         		@foreach($users as $key => $user)
 									<div class="col-md-4 col-md-offset-2">
 										<div class="lv-item media ">
-											<a href="#" title="" style="text-decoration:none;">
+											<a href="{{ route('private.user',$user->name) }}" title="" style="text-decoration:none;">
 											<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt=""> </div>
 											<div class="media-body">
 												<div class="lv-title">{{ $user->fullname }}</div>
@@ -55,7 +57,11 @@
 									</div>	
 								@endforeach
 		                    @else
-		                        There are no data.
+								<div class="col-md-8 col-md-offset-2">
+									<h3	 class="text-center">
+										<span style="color: #761c19">NO DATA TO SHOW</span>
+									</h3>
+								</div>
 		                    @endif
 						</div>
 						@endif

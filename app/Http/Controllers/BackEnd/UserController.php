@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BackEnd;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\User;
+use App\Room;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -112,11 +113,13 @@ class UserController extends Controller
                 File::delete('storage/avatars/'.$user->avatar);
             }
             //Up anh moi
-            Input::file('avatar')->move('storage/avatars', $image);
+            $image = $request->file('avatar')->store('public/avatars');
+            $arr_filename = explode("/",$image);
+            $filename = end($arr_filename);
         }else{
-            $image = $user->avatar;
+            $filename = $user->avatar;
         }
-        $user->avatar = $image;
+        $user->avatar = $filename;
         if($user->save()) {
             $request->session()->flash('success', 'User was updated successful');
         }else{
@@ -134,6 +137,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+
+        Room::where('user_id', $id)->delete();
+
         if($user->avatar != 'avatar.png'){
             //Xoa anh trong folder
             File::delete('storage/avatars/'.$user->avatar);
@@ -142,12 +148,6 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index');
     }
-    /* Check admin */
-    public static function check()
-    {
-        if(Auth::user()->level == 0){
-            return redirect()->route('home');
-        }
-        dd(0);
-    }
+    
+
 }
