@@ -24,7 +24,7 @@ class RoomController extends Controller
     {
         $listRoomJoined = RoomUser::where('user_id', Auth::id())->get();
         $arrayRoomJoin = array_pluck($listRoomJoined->toArray(), 'room_id');
-        $listRoomRandom = DB::table('rooms')->whereNotIn('id', $arrayRoomJoin)->get();
+        $listRoomRandom = DB::table('rooms')->whereNotIn('id', $arrayRoomJoin)->orderByRaw("RAND()")->take(16)->get();
         return view('frontend.rooms.index', compact('listRoomJoined', 'listRoomRandom'));
     }
 
