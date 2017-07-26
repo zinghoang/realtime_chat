@@ -24,6 +24,7 @@ io.on('connection',function(socket){
 	
 	});
 
+	//join to list rooms
 	socket.on('join room',function(data){
 		console.log('join room: ');
 		for(i=0; i<data.length; ++i){
@@ -55,18 +56,33 @@ io.on('connection',function(socket){
 		}
 	});
 
-	//--------- PRIVATE CHAT ---------
-	socket.on('register',function(data){
-		currentUser = new User(socket,data);
+	
+	socket.on('register',function(user,currentRoom){
+		if(currentRoom){
+			currentUser = new User(socket,user,currentRoom);
+			sendInfor(user,currentRoom);
+
+		} else {
+			currentUser = new User(socket,user);
+		}
 		globalConnect.push(currentUser) ;
 	});
 
-	socket.on('send private message',function(message){
-
-		for(temp=0; temp< globalConnect.length;temp++){
-			if(globalConnect[temp].user.id == message.to){
-				console.log(message);
-				globalConnect[temp].socket.emit('receiver private mess',message);
+	//--------- PRIVATE CHAT ---------
+	socket.on('send private message',function(type,message){
+		if(type == 'message'){
+			for(temp=0; temp< globalConnect.length;temp++){
+				if(globalConnect[temp].user.id == message.to){
+					console.log(message);
+					globalConnect[temp].socket.emit('receiver private mess',type,message);
+				}
+			}
+		} else if (type == 'room infor'){
+			console.log(type);
+			console.log(message);
+			var index = globalConnect.findIndex(obj =>obj.user.id == message[0].id);
+			if(index>=0){
+				globalConnect[index].socket.emit('receiver private mess',type,message);
 			}
 		}
 	})
@@ -82,9 +98,19 @@ io.on('connection',function(socket){
 })
 
 //-- Object User
-function User(socket,user){
+function User(socket,user,current = null){
 	this.socket = socket;
 	this.user = user;
+	this.current = current;
 }
 
 
+/*get information of this room
+* server send message that user in room to receiver infor
+*/
+function sendInfor(user,room){
+	var index = globalConnect.findIndex(obj =>obj.current.id == room.id);
+	if(index >=0){
+		globalConnect[index].socket.emit('receiver room mess','get room infor',user,null);
+	}
+}
