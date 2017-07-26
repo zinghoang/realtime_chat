@@ -17,7 +17,9 @@ class SearchUserController extends Controller
         $nameSeach = $request->search;
 
         $users = User::whereRaw('fullname LIKE "%'.$nameSeach.'%"')
-            ->where('name','!=',Auth::user()->name)->paginate(5);
+            ->orWhereRaw('name LIKE "%'.$nameSeach.'%"')
+            ->orWhereRaw('email LIKE "%'.$nameSeach.'%"')
+            ->where('name','!=',Auth::user()->name)->take(20)->get();
         return view('frontend.search.users', compact('users', 'nameSeach'));
     }
 

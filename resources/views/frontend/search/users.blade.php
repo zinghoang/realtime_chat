@@ -65,9 +65,6 @@
 		                    @endif
 						</div>
 						@endif
-						<div class="col-md-11">
-							<div class="pull-right">{{ $users->links() }}</div>
-						</div>
 					</div>
 				</div>
 				<div class="clearfix"></div>
