@@ -16,7 +16,7 @@
 		                    <div class="alert alert-danger" style="margin: 5px 10px 5px 5px;"><p><strong>{{ $error }}</strong></p></div>
 		                @endforeach
 			        @endif
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
@@ -29,6 +29,7 @@
 								    </form>
 							    </div>
 							@else
+
 								<video width="100%" controls class="video-play" id="myVideo">
 									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
 									Your browser does not support HTML5 video.
@@ -56,10 +57,9 @@
 							</ul>
 						</div>
 					</div>
-					<hr>
 				</div>
 				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;" class="room-contentt">
+					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
 								@if($message->status == 0)
@@ -107,7 +107,7 @@
 				</div>
 				@else
 				<div class="col-md-12">
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 	                    <div class="border text-center">
 	                        <a href="{{ route('frontend.room.join', $room->id) }}" style="font-size: 340px; color: #cccccc;">
 	                            <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>
@@ -123,9 +123,12 @@
 </div>
 @endsection
 @section('script2')
-
-<script>
+<script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
+</script>
+@endsection
+@section('endscript')
+<script>
 	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -146,18 +149,38 @@
 				file_id: id,
 			},
 			success: function(data){
-
-				var vid = document.getElementById("myVideo");
-				vid.src = data;
-
-				vid.load();
-
+				
+				var video = $('#myVideo')[0];
+				video.src = data;
+				video.load();
+				socket.emit('send action','video',currentRoom,data,'load');
 			},
 			error: function (){
 				alert('Có lỗi');
 			}
 		});
     });
+
+    $('#myVideo').bind('play', function () {
+   		//whatever you want to do
+   		socket.emit('send action','video',currentRoom,null,'play');
+	});
+	$('#myVideo').bind('pause', function () {
+   		//whatever you want to do
+   		socket.emit('send action','video',currentRoom,null,'pause');
+	});
+
+    socket.on('receiver action',function(type,action,data){
+    	var vid = document.getElementById("myVideo");
+    	if( action == 'load'){
+				vid.src = data;
+				vid.load();
+    	} else if ( action == 'play') {
+    		vid.play();
+    	} else if ( action == "pause") {
+    		vid.pause();
+    	}
+    })
 
     @endif
 </script>

@@ -7,6 +7,7 @@
 @yield('script')
 @yield('script2')
 <script src="{{ asset('js/chat.js') }}"></script>
+@yield('endscript')
 </body>
 
 </html>

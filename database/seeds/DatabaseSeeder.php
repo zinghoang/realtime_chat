@@ -16,6 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PrivatesTableSeeder::class);
         $this->call(MessengesTableSeeder::class);
         $this->call(FilesTableSeeder::class);
-        /*$this->call(EmotionsTableSeeder::class);*/
+        $this->call(EmotionsTableSeeder::class);
     }
 }

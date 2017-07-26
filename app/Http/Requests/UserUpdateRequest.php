@@ -26,7 +26,9 @@ class UserUpdateRequest extends FormRequest
         return [
             'name' => 'required|min:2|max:32',
             'email' => 'required|email|min:10|max:200',
-            'fullname' => 'required|min:2|max:100'
+            'fullname' => 'required|min:2|max:100',
+            'level' => 'required|numeric|integer|between:0,1',
+            'password' => 'max:32|confirmed',
         ];
     }
 }
