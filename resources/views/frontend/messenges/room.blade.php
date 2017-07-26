@@ -16,7 +16,7 @@
 		                    <div class="alert alert-danger" style="margin: 5px 10px 5px 5px;"><p><strong>{{ $error }}</strong></p></div>
 		                @endforeach
 			        @endif
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
@@ -57,10 +57,9 @@
 							</ul>
 						</div>
 					</div>
-					<hr>
 				</div>
 				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;" class="room-contentt">
+					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
 								@if($message->status == 0)
@@ -108,7 +107,7 @@
 				</div>
 				@else
 				<div class="col-md-12">
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:580px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 	                    <div class="border text-center">
 	                        <a href="{{ route('frontend.room.join', $room->id) }}" style="font-size: 340px; color: #cccccc;">
 	                            <i class="fa fa-chevron-circle-up" aria-hidden="true"></i>
