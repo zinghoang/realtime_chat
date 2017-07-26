@@ -23,11 +23,11 @@
 		</form>
 	</div>
 	<hr/>
-	<div class="listview lv-user m-t-20">
+	<div class="listview lv-user m-t-20 listRoom">
 		@widget('listRoomChat')
 	</div>
 	<hr>
-	<div class="listview lv-user m-t-20">
+	<div class="listview lv-user m-t-20 listUser">
 		@widget('listUserChat')
 	</div>
 </div>

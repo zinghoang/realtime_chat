@@ -158,7 +158,7 @@
 			error: function (){
 				alert('Có lỗi');
 			}
-		}); 
+		});
     });
 
     $('#myVideo').bind('play', function () {
