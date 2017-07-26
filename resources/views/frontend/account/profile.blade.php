@@ -19,7 +19,7 @@
             </div>
 
 
-            <div class="lv-body list-message-room" id="list-message-room" style="overflow:scroll; overflow-x: hidden; height:520px;">
+            <div class="lv-body list-message-room" id="list-message-room" style="overflow:scroll; overflow-x: hidden; height:500px;">
                 <div class="clearfix"></div>
                 <div class="row" style="margin: 5px 0px;">
                     <div class="col-md-12">
@@ -38,7 +38,7 @@
                     @endif
                     </div>
                 </div>
-                <form method="POST" action="{{ route('account.update',Auth::user()->id) }}" accept-charset="UTF-8" id="user_update" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('account.update',Auth::user()->id) }}" accept-charset="UTF-8" id="user_update" enctype="multipart/form-data" style="margin: 5px 0px;">
                     {{ csrf_field() }}
                     <input type="hidden" name="_method" value="PUT">
                     <div class="form-group">

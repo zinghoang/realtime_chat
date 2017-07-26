@@ -51,7 +51,7 @@
 			<div class="row content-chat-video">
 				<div class="col-md-12">
 				
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:550px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 						@if(count($listRoomJoined) > 0)
 						<div class="row">
 							<div class="col-md-12">
