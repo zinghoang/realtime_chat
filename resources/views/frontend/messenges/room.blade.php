@@ -29,7 +29,7 @@
 								    </form>
 							    </div>
 							@else
-								<video width="100%" controls autoplay class="video-play" id="myVideo">
+								<video width="100%" controls  class="video-play" id="myVideo">
 									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
 									Your browser does not support HTML5 video.
 								</video>
@@ -126,7 +126,10 @@
 @section('script')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
-
+</script>
+@endsection
+@section('endscript')
+<script>
 	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -150,9 +153,9 @@
 
 				var vid = document.getElementById("myVideo");
 				vid.src = data;
-
 				vid.load();
 
+				socket.emit('send action',currentRoom,data,'load');
 			},
 			error: function (){
 				alert('Có lỗi');

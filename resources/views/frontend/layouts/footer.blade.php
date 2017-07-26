@@ -6,6 +6,7 @@
 @widget('GetUserLogin')
 @yield('script')
 <script src="{{ asset('js/chat.js') }}"></script>
+@yield('endscript')
 </body>
 
 </html>

@@ -177,3 +177,4 @@ if($('#invite-form').length){
 		});
 	});
 }
+

@@ -32,6 +32,10 @@ io.on('connection',function(socket){
 		}
 	});
 
+	// socket.on('send action',function(currentRoom,data,'load'){
+		
+	// });
+
 	//Invite User Join Room
 	socket.on('invite to room',function(user,userInvite,room){
 		//send join message to others 
