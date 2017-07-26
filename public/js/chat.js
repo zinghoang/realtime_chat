@@ -1,27 +1,45 @@
 //user , toUser, currentRoom
 
 var socket = io('http://127.0.0.1:3000');
-socket.emit('register',user);
+
+if(typeof currentRoom !== 'undefined'){
+	//register user and current room
+	socket.emit('register',user,currentRoom);
+} else {
+	//register user
+	socket.emit('register',user,null);
+}
+
+
 
 //Join room
 socket.emit('join room',roomJoined);
 
-socket.on('receiver private mess',function(data){
-	console.log(data);
-
+socket.on('receiver private mess',function(type,data){
 	// chat 2 nguoi
-	
-    var mydate = new Date(data.created_at);
+	if(type == 'message'){
+	    var mydate = new Date(data.created_at);
 
-    var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
-    	            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+	    var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+	    	            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
 
-    var stringDivData = ' <div class="lv-item media"> ' + ' <div class="lv-avatar pull-left"> ' +
-    	  	' <img src="../storage/avatars/'+ toUser.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
-    	  	' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
-    	  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
+	    var stringDivData = ' <div class="lv-item media"> ' + ' <div class="lv-avatar pull-left"> ' +
+	    	  	' <img src="../storage/avatars/'+ toUser.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+	    	  	' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
+	    	  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
 
-    $('.content-message').append(stringDivData);
+	    $('.content-message').append(stringDivData);
+	} else if( type =='room infor'){
+		console.log(type);
+		console.log(data);
+		var video = $('#myVideo')[0];
+		video.src = data[1];
+		video.load();
+		video.currentTime = data[3];
+		if(!data[2]){
+			video.play(); 
+		}
+	}
 })
 
 //Send private message 
@@ -61,7 +79,7 @@ if($("#btn-reply").length){
 
 			$('.content-message').append(stringDivData);
 
-		  	socket.emit('send private message',response);
+		  	socket.emit('send private message','message',response);
 		});
 
 		// Callback handler that will be called on failure
@@ -161,6 +179,9 @@ socket.on('receiver room mess',function(type,sender,data){
         $('.countmember').text(count);
 	} else if ( type == 'notif-join') {
 		alert(data);
+	} else if (type == 'get room infor') {
+		 var video = $('#myVideo')[0];
+		socket.emit('send private message','room infor',[sender,video.src,video.paused,video.currentTime]);
 	}
 })
 

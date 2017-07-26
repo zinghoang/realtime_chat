@@ -149,11 +149,10 @@
 				file_id: id,
 			},
 			success: function(data){
-
-				var vid = document.getElementById("myVideo");
-				vid.src = data;
-				vid.load();
-
+				
+				var video = $('#myVideo')[0];
+				video.src = data;
+				video.load();
 				socket.emit('send action','video',currentRoom,data,'load');
 			},
 			error: function (){
