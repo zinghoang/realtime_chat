@@ -29,7 +29,8 @@
 								    </form>
 							    </div>
 							@else
-								<video width="100%" controls  class="video-play" id="myVideo">
+
+								<video width="100%" controls class="video-play" id="myVideo">
 									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
 									Your browser does not support HTML5 video.
 								</video>
@@ -77,18 +78,17 @@
 										</div>
 										<div class="media-body">
 											<div class="ms-item">
-												{!! $message->content !!}	
-												@if($message->name != Auth::user()->name)
-												<br>
-												<a href="{{ route('private.user', $message->name) }}">
-													<strong>{{ $message->fullname }}</strong>
-												</a>
-												@if($message->user_id == $room->user_id)
-													- <strong style="color: red;">[AD]</strong>
-												@endif
-												@endif
+												{!! $message->content !!}
 											</div>
 											<small class="ms-date">
+												@if($message->name != Auth::user()->name)
+													<a href="{{ route('private.user', $message->name) }}">
+														<strong style="font-size: 10px">{{ $message->fullname }}</strong>
+													</a>
+													@if($message->user_id == $room->user_id)
+														- <strong style="color: red;font-size: 10px">[AD]</strong>
+													@endif
+												@endif
 												<span class="glyphicon glyphicon-time"></span>
 												&nbsp; {{ $message->created_at }}
 											</small>
@@ -123,7 +123,7 @@
 	</div>
 </div>
 @endsection
-@section('script')
+@section('script2')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
 </script>
@@ -155,13 +155,34 @@
 				vid.src = data;
 				vid.load();
 
-				socket.emit('send action',currentRoom,data,'load');
+				socket.emit('send action','video',currentRoom,data,'load');
 			},
 			error: function (){
 				alert('Có lỗi');
 			}
 		}); 
     });
+
+    $('#myVideo').bind('play', function () {
+   		//whatever you want to do
+   		socket.emit('send action','video',currentRoom,null,'play');
+	});
+	$('#myVideo').bind('pause', function () {
+   		//whatever you want to do
+   		socket.emit('send action','video',currentRoom,null,'pause');
+	});
+
+    socket.on('receiver action',function(type,action,data){
+    	var vid = document.getElementById("myVideo");
+    	if( action == 'load'){
+				vid.src = data;
+				vid.load();
+    	} else if ( action == 'play') {
+    		vid.play();
+    	} else if ( action == "pause") {
+    		vid.pause();
+    	}
+    })
 
     @endif
 </script>

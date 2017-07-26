@@ -10,7 +10,7 @@
 		<div class="lv-avatar pull-left"> 
 			<img src="{{ asset('images/home.png') }}" alt=""> 
 		</div>
-		<span class="c-black">{{ $room->name }}</span>
+		<span class="c-black" id="showNameRoom">{{ $room->name }}</span>
 		@if($room->user_id == Auth::id())
 		<a href="javascript:void(0)" data-toggle="modal" data-target="#editNameRoom" title="Edit the name of room"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 
@@ -23,13 +23,13 @@
         				<button type="button" class="close" data-dismiss="modal">&times;</button>
         				<h4 class="modal-title">Edit name room...</h4>
         			</div>
-        			<form method="post" action="{{ route('frontend.room.update', $room->id) }}">
+        			<form method="post" action="javascript:void(0)" id="form-edit-name-room">
         				{{ csrf_field() }}
         				<input type="hidden" name="_method" value="PUT">
         				<div class="modal-body">
         					<div class="form-group">
             					<label for="name">Name:</label>
-            					<input type="text" class="form-control" name="name" id="name" value="{{ $room->name }}">
+            					<input type="text" class="form-control" name="name" id="nameRoom" value="{{ $room->name }}">
         					</div>
             			</div>
             			<div class="modal-footer">
@@ -37,6 +37,7 @@
             				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             			</div>
         			</form>
+        			
         		</div>
         	</div>
         </div>
@@ -45,9 +46,7 @@
 	@if($isJoin == 1)
 	<ul class="lv-actions actions list-unstyled list-inline">
 		<li>
-			<a href="{{ route('frontend.room.show', $room->id) }}" title="Show all member of this room" style="border: 1px solid #adadad; border-radius: 50%; color: #adadad;">
-				{{ $countMember}}
-			</a>	
+			<a href="{{ route('frontend.room.show', $room->id) }}" title="Show all member of this room" style="border: 1px solid #adadad; border-radius: 50%; color: #adadad;" class="countmember">{{ $countMember}}</a>
 		</li>
 		<li>
 			<a id="leave-room" href="{{ route('frontend.room.leave', $room->id) }}" title="Leave this room" onclick="return confirm('Do you want to leave this room?')"> 
@@ -112,3 +111,30 @@
         </div>
 	@endif
 </div>
+
+@section('script')
+<script type="text/javascript">
+	$('#form-edit-name-room').on('submit', function(){
+		$.ajax({
+			url: "{{ route('frontend.room.update', $room->id) }}",
+			type: 'POST',
+			cache: false,
+			data: {
+				_method: 'PUT',
+				name: $('#nameRoom').val(),
+			},
+			success: function(data){
+				$( '#showNameRoom' ).text( data );
+
+				
+				$("#editNameRoom .close").click()
+				
+
+			},
+			error: function (){
+				alert('Error!');
+			}
+		}); 
+	});
+</script>
+@endsection

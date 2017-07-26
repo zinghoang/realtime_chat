@@ -8,6 +8,9 @@ socket.emit('join room',roomJoined);
 
 socket.on('receiver private mess',function(data){
 	console.log(data);
+
+	// chat 2 nguoi
+	
     var mydate = new Date(data.created_at);
 
     var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
@@ -128,6 +131,8 @@ if($('#leave-room').length){
 //Receiver message from server
 socket.on('receiver room mess',function(type,sender,data){
 	if(type == 'message'){
+		console.log(data);
+		//chat room
 		var mydate = new Date(data.created_at);
 
 	    var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
@@ -144,6 +149,16 @@ socket.on('receiver room mess',function(type,sender,data){
 		console.log(sender);
 		console.log(data); //join - leave
 		console.log(type);
+        var stringDivData = '<div style="padding-left: 30px;">'
+                            +'<h6>'+'<em style="color: #cccccc;">'+data+'</em>'+'<h6>'+'</div>';
+        $('.room-contentt').append(stringDivData);
+        var count = parseInt($('.countmember').text());
+        if(data.search("join")>=0){
+            count = count+1;
+        }else{
+            count = count-1;
+        }
+        $('.countmember').text(count);
 	} else if ( type == 'notif-join') {
 		alert(data);
 	}

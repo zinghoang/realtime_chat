@@ -20,7 +20,7 @@
 									<a href="{{ route('private.user', $member->user->name) }}" title="" style="text-decoration:none;">
 									<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $member->user->avatar) }}" alt=""> </div>
 									<div class="media-body">
-										<div class="lv-title">{{ $member->user->fullname }}</div>
+										<div class="lv-title">{{ $member->user->fullname }} {!! ($room->user_id == $member->user->id)?'<span style="color:red">[AD]</span>':'' !!}</div>
 										<div class="lv-small">@ {{ $member->user->name }}</div>
 									</div>
 									</a>
