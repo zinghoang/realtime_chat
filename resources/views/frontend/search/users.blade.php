@@ -37,7 +37,7 @@
 						@else
 						<div class="row">
 							<div class="col-md-12">
-								<h5 class="text-center">RESULT OF   "{{ $nameSeach }}"</h5>
+								<h5 class="text-center">RESULT OF "{{ $nameSeach }}"</h5>
 								<hr>
 							</div>
 							@if($users->count()>0)
