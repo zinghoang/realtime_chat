@@ -134,7 +134,7 @@
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == 13) {
 			$('#btn-room-reply').click();
-            $('#mess-content').reset();
+            $('#mess-content').val('');
         }
     });
 

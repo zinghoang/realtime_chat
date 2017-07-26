@@ -63,7 +63,7 @@ io.on('connection',function(socket){
 			sendInfor(user,currentRoom);
 
 		} else {
-			currentUser = new User(socket,user);
+			currentUser = new User(socket,user,null);
 		}
 		globalConnect.push(currentUser) ;
 	});
@@ -98,7 +98,7 @@ io.on('connection',function(socket){
 })
 
 //-- Object User
-function User(socket,user,current = null){
+function User(socket,user,current){
 	this.socket = socket;
 	this.user = user;
 	this.current = current;
