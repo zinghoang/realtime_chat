@@ -36,9 +36,7 @@
 						@else
 							<div class="row">
 								<div class="col-md-12">
-									<h3	 class="text-center">
-										<span style="">Some recent contact</span>
-									</h3>
+									<h5 class="text-center">Some recent contact</h5>
 									<hr>
 								</div>
 								@if(count($users) > 0)

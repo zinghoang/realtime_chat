@@ -36,10 +36,8 @@
 						</div>
 						@else
 						<div class="row">
-							<div class="col-md-12" style="background-color: #2c3b41">
-								<h3	 class="text-center">
-									<span style="color: #ffffff">RESULT OF   "{{ $nameSeach }}"</span>
-								</h3>
+							<div class="col-md-12">
+								<h5 class="text-center">RESULT OF   "{{ $nameSeach }}"</h5>
 								<hr>
 							</div>
 							@if($users->count()>0)
