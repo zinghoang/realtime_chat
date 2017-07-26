@@ -41,14 +41,21 @@
                                 <label for="password">Password:</label>
                                 <input class="form-control" name="password" type="password" id="password" value="">
                             </div>
+
+                            <!-- Password Confirmation Field -->
+                            <div class="col-sm-6">
+                                <label for="password_confirmation">Password Confirmation:</label>
+                                <input class="form-control" name="password_confirmation" type="password" id="password_confirmation" value="">
+                            </div>
+                            
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
                             <!-- Fullname Field -->
                             <div class="col-sm-6">
                                 <label for="fullname">Fullname:</label>
                                 <input class="form-control" name="fullname" type="text" id="fullname" value="{{ $user->fullname }}">
                             </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="form-group">
                             <!-- Level Field -->
                             <div class="col-sm-6">
                                 <label for="level">Level:</label>

@@ -13,18 +13,31 @@
                     </div>
                 </div>
                 <div class="lvh-label hidden-xs" style="width: 100%">
-                @if(Session::has('success'))
-                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
-                @endif
-                @if(Session::has('fail'))
-                    <div class="alert alert-danger"><p><strong>{{ Session::get('fail') }}</strong></p></div>
-                @endif
+                
                 <H3><span class="c-black">YOUR PROFILE</span></H3>
                 </div>
             </div>
 
+
             <div class="lv-body list-message-room" id="list-message-room" style="overflow:scroll; overflow-x: hidden; height:520px;">
                 <div class="clearfix"></div>
+                <div class="row" style="margin: 5px 0px;">
+                    <div class="col-md-12">
+                    @if(Session::has('success'))
+                        <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
+                    @endif
+                    @if(Session::has('fail'))
+                        <div class="alert alert-danger"><p><strong>{{ Session::get('fail') }}</strong></p></div>
+                    @endif
+                    @if($errors->count()>0)
+                        <ul class="alert alert-danger" style="list-style-type: none">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    </div>
+                </div>
                 <form method="POST" action="{{ route('account.update',Auth::user()->id) }}" accept-charset="UTF-8" id="user_update" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <input type="hidden" name="_method" value="PUT">
@@ -47,14 +60,20 @@
                             <label for="password">Password:</label>
                             <input class="form-control" name="password" type="password" id="password" value="">
                         </div>
+                        <!-- Password Field -->
+                        <div class="col-sm-6">
+                            <label for="password_confirmation">Password Confirmation:</label>
+                            <input class="form-control" name="password_confirmation" type="password" id="password_confirmation" value="">
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
                         <!-- Fullname Field -->
                         <div class="col-sm-6">
                             <label for="fullname">Fullname:</label>
                             <input class="form-control" name="fullname" type="text" id="fullname" value="{{ Auth::user()->fullname }}">
                         </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="form-group">
                         <!-- Avatar Field -->
                         <div class="col-sm-6">
                             <label for="avatar">Avatar:</label>
