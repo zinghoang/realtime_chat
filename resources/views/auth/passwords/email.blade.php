@@ -1,46 +1,78 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>InfyOm Laravel Generator</title>
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="{{ asset('admin/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset('admin/css/font-awesome.min.css') }}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{{ asset('admin/css/ionicons.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('admin/css/AdminLTE.min.css') }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ asset('admin/css/blue.css') }}">
 
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
-                        {{ csrf_field() }}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href="{{ url('/home') }}"><b>Chat </b>Blue Team</a>
+    </div>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Enter Email to reset password</p>
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+        <form method="post" action="{{ url('/password/email') }}">
+            {!! csrf_field() !!}
+
+            <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
+                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                @if ($errors->has('email'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </span>
+                @endif
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary pull-right">
+                        <i class="fa fa-btn fa-envelope"></i> Send Password Reset Link
+                    </button>
                 </div>
             </div>
-        </div>
+
+        </form>
+
     </div>
+    <!-- /.login-box-body -->
 </div>
-@endsection
+<!-- /.login-box -->
+
+<script src="{{ asset('admin/js/jquery.min.js') }}"></script>
+<script src="{{ asset('admin/js/bootstrap.min.js') }}"></script>
+
+<!-- AdminLTE App -->
+<script src="{{ asset('admin/js/app.min.js') }}"></script>
+</body>
+</html>
