@@ -96,12 +96,11 @@
 <script>
     var toUser = {!!json_encode($toUser)!!};
     console.log(toUser);
-
     $('#txt-mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == 13) {
             $('#btn-reply').click();
-            $('#txt-mess-content').reset();
+            $('#content-message').val('');
         }
     });
 </script>
