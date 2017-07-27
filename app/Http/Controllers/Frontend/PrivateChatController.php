@@ -24,27 +24,36 @@ class PrivateChatController extends Controller
     public function index()
 	{
         $ids = PrivateMessage::where('from','=',Auth::user()->id)
+            ->orWhere('to','=',Auth::user()->id)
             ->orderBy('created_at','DESC')
-            ->select('to')->get();
+            ->select('from','to')->get();
         $arr_id = array();
         foreach ($ids as $id){
-            array_push($arr_id,$id->to);
+            if(Auth::user()->id == $id->to){
+                array_push($arr_id,$id->from);
+            }else{
+                array_push($arr_id,$id->to);
+            }
         }
         $arr_id = array_unique($arr_id);
+        $del_key = array_search(Auth::user()->id, $arr_id);
+        if($del_key !== false){
+            unset($arr_id[$del_key]);
+        }
         $users = new Collection();
         foreach ($arr_id as $id){
             $user = User::findOrFail($id);
-            $users->push($user);
-        }
-        foreach ($users as $user){
-            $check = self::checkFriendship($user->id);
-            if($check != null){
-                $user->friend = 1;
-                $user->status = $check->status;
-                $user->user_request = $check->user_request;
+            //kiem tra user co thong bao hay khong
+            $status = DB::table('notifprivate')
+                ->join('users','users.id','=','notifprivate.from')
+                ->where('notifprivate.from','=',$user->id)
+                ->where('notifprivate.to','=',Auth::user()->id)->first();
+            if($status != null){
+                $user->notif = 1;
             }else{
-                $user->friend = 0;
+                $user->notif = 0;
             }
+            $users->push($user);
         }
 		return view('frontend.privatechat.index')->with('users',$users);
 	}
@@ -145,6 +154,41 @@ class PrivateChatController extends Controller
             $users->push($user);
         }
         $privateMessage->listUser = $users;
+
+        //cap nhat list lien lac gan day cua user gui~
+        $ids = PrivateMessage::where('from','=',$request['user']['id'])
+            ->orWhere('to','=',$request['user']['id'])
+            ->orderBy('created_at','DESC')
+            ->select('from','to')->get();
+        $arr_id = array();
+        foreach ($ids as $id){
+            if($request['user']['id'] == $id->to){
+                array_push($arr_id,$id->from);
+            }else{
+                array_push($arr_id,$id->to);
+            }
+        }
+        $arr_id = array_unique($arr_id);
+        $del_key = array_search($request['user']['id'], $arr_id);
+        if($del_key !== false){
+            unset($arr_id[$del_key]);
+        }
+        $arr_id = array_slice($arr_id,0,5);
+        $users = new Collection();
+        foreach ($arr_id as $id){
+            $user = User::findOrFail($id);
+            //kiem tra user co thong bao hay khong
+            $status = DB::table('notifprivate')
+                ->join('users','users.id','=','notifprivate.from')
+                ->where('notifprivate.from','=',$user->id)->first();
+            if($status != null){
+                $user->notif = 1;
+            }else{
+                $user->notif = 0;
+            }
+            $users->push($user);
+        }
+        $privateMessage->listUserFrom = $users;
     	return $privateMessage;
     }
     public static function getNewContent($content)
