@@ -3,16 +3,27 @@
 		<div class="ms-user"> 
 			<img src="{{ url('storage/avatars/' . Auth::user()->avatar ) }}" alt="">
 			<h5 class="q-title" align="center">
-				<a href="{{ route('account.edit', Auth::id()) }}">{{ Auth::user()->fullname }} <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-				<br />                                    
-            <a href="{!! url('/logout') !!}" 
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="text-decoration: none;">
-                Sign out <i class="fa fa-sign-out" aria-hidden="true"></i>
-            </a>
-            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                {{ csrf_field() }}
-            </form>
-				</h5> 
+				<div class="dropdown">
+					<button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" id="dropdown-name" >
+						{{ Auth::user()->fullname }}
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<li>
+							<a href="{{ route('account.edit', Auth::id()) }}">Edit profile <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+						</li>
+						<li>
+							<a href="{!! url('/logout') !!}" 
+				                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="text-decoration: none;">
+				                Sign out <i class="fa fa-sign-out" aria-hidden="true"></i>
+				            </a>
+				            <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+				                {{ csrf_field() }}
+				            </form>
+						</li>
+					</ul>
+				</div>   
+			</h5> 
 		</div>
 	</div>
 	<div class="ms-block"> 
