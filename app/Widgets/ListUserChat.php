@@ -44,7 +44,7 @@ class ListUserChat extends AbstractWidget
         if($del_key !== false){
             unset($arr_id[$del_key]);
         }
-        $arr_id = array_slice($arr_id,0,5);
+        $arr_id = array_slice($arr_id,0,3);
         $users = new Collection();
         foreach ($arr_id as $id){
             $user = User::findOrFail($id);
