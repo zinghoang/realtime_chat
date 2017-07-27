@@ -5,7 +5,7 @@
 			<h5 class="q-title" align="center">
 				<div class="dropdown">
 					<button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" id="dropdown-name" >
-						{{ Auth::user()->fullname }}
+						{{ str_limit(Auth::user()->fullname, 10) }}
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
