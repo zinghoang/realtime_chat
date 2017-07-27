@@ -151,7 +151,7 @@
 			success: function(data){
 				
 				var video = $('#myVideo')[0];
-				video.src = data;
+				$("#myVideo source").attr("src",data)
 				video.load();
 				socket.emit('send action','video',currentRoom,data,'load');
 			},
@@ -173,8 +173,9 @@
     socket.on('receiver action',function(type,action,data){
     	var vid = document.getElementById("myVideo");
     	if( action == 'load'){
-				vid.src = data;
-				vid.load();
+			console.log(data);
+			$("#myVideo source").attr("src",data)
+			vid.load();
     	} else if ( action == 'play') {
     		vid.play();
     	} else if ( action == "pause") {
