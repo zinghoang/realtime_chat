@@ -46,6 +46,12 @@
 	@if($isJoin == 1)
 	<ul class="lv-actions actions list-unstyled list-inline">
 		<li>
+			<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" title="Create room">
+				<i class="fa fa-plus"></i>
+			</a>
+		</li>
+        
+		<li>
 			<a href="{{ route('frontend.room.show', $room->id) }}" title="Show all member of this room" style="border: 1px solid #adadad; border-radius: 50%; color: #adadad;" class="countmember">{{ $countMember}}</a>
 		</li>
 		<li>
@@ -81,34 +87,60 @@
 			</li>
 		@endif
 	</ul>
-	<!-- Modal Invite Room -->
-        <div class="modal fade" id="inviteFriend" role="dialog">
-        	<div class="modal-dialog">
-        		<!-- Modal content-->
-        		<div class="modal-content">
-        			<div class="modal-header">
-        				<button type="button" class="close" data-dismiss="modal">&times;</button>
-        				<h4 class="modal-title">Invite friend...</h4>
+
+	<!-- Modal Create room -->
+    <div class="modal fade" id="myModal" role="dialog">
+    	<div class="modal-dialog">
+    		<!-- Modal content-->
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+    				<h4 class="modal-title">Create room...</h4>
+    			</div>
+    			<form method="post" action="{{ route('frontend.room.store') }}">
+    				{{ csrf_field() }}
+    				<div class="modal-body">
+    					<div class="form-group">
+        					<label for="name">Name:</label>
+        					<input type="text" class="form-control" name="name" id="name">
+    					</div>
         			</div>
-        			<form method="post" action="javascript:void(0)" id="invite-form">
-        				 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        				<div id="message-form">
-        				</div>
-        				<div class="modal-body">
-        					<div class="form-group">
-            					<label for="name">Name:</label>
-            					<input type="text" class="form-control" name="name" id="name-search" value="">
-            					<input type="hidden" name="room_id" id="room_id" value="{{ $room->id }}">
-        					</div>
-            			</div>
-            			<div class="modal-footer">
-            				<button type="submit" class="btn btn-info" >Invite</button>
-            				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            			</div>
-        			</form>
-        		</div>
-        	</div>
-        </div>
+        			<div class="modal-footer">
+        				<button type="submit" class="btn btn-info">Save</button>
+        				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        			</div>
+    			</form>
+    		</div>
+    	</div>
+    </div>
+	<!-- Modal Invite Room -->
+    <div class="modal fade" id="inviteFriend" role="dialog">
+    	<div class="modal-dialog">
+    		<!-- Modal content-->
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal">&times;</button>
+    				<h4 class="modal-title">Invite friend...</h4>
+    			</div>
+    			<form method="post" action="javascript:void(0)" id="invite-form">
+    				 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    				<div id="message-form">
+    				</div>
+    				<div class="modal-body">
+    					<div class="form-group">
+        					<label for="name">Name:</label>
+        					<input type="text" class="form-control" name="name" id="name-search" value="">
+        					<input type="hidden" name="room_id" id="room_id" value="{{ $room->id }}">
+    					</div>
+        			</div>
+        			<div class="modal-footer">
+        				<button type="submit" class="btn btn-info" >Invite</button>
+        				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        			</div>
+    			</form>
+    		</div>
+    	</div>
+    </div>
 	@endif
 </div>
 

@@ -71,14 +71,16 @@ socket.on('receiver private mess',function(type,data){
 	} else if( type =='room infor'){
 		console.log(type);
 		console.log(data);
+		
 		var video = $('#myVideo')[0];
-		video.src = data[1];
+		$("#myVideo source").attr("src",data.src);
 		video.load();
-		video.currentTime = data[3];
-		if(!data[2]){
+		video.currentTime = data.currentTime;
+		if(!data.paused){
 			video.play(); 
 		}
 	}
+	
 
 })
 
@@ -164,7 +166,7 @@ if($("#btn-reply").length){
 
 //Send room message
 if($('#btn-room-reply').length){
-	$('#btn-room-reply').click(function(){
+ 	$('#btn-room-reply').click(function(){
 		var message = $('#mess-content').val();
 
 		//add to database
@@ -213,7 +215,7 @@ if($('#join').length){
 }
 //Leave Event
 if($('#leave-room').length){
-	$('#leave-room').click(function(){
+ 	$('#leave-room').click(function(){
 		//send leave event to others
 		socket.emit('send room message','leave-room',user,currentRoom);
 	});
@@ -254,7 +256,16 @@ socket.on('receiver room mess',function(type,sender,data){
 		alert(data);
 	} else if (type == 'get room infor') {
 		 var video = $('#myVideo')[0];
-		socket.emit('send private message','room infor',[sender,video.src,video.paused,video.currentTime]);
+		 var data = null;
+		 if(typeof video !== 'undefined'){
+		 	data = new Object;
+		 	data.sender = sender;
+			data.src = $("#myVideo source").attr("src");
+		 	data.paused = video.paused;
+		 	data.currentTime = video.currentTime; 
+		 }
+
+		socket.emit('send private message','room infor',data);
 	}
 })
 

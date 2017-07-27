@@ -24,6 +24,7 @@ class ListRoomChat extends AbstractWidget
         //get listroom user has join
         $roomJoined = DB::table('rooms')->join('room_users','rooms.id','=','room_users.room_id')->where('room_users.user_id','=',Auth::user()->id)
         ->select('rooms.id','rooms.name','room_users.user_id')
+        ->take(2)
         ->get();
 
 
