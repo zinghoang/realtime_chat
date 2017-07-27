@@ -168,7 +168,7 @@ class RoomController extends Controller
     public function changeVideo($room_id, Request $request){
         $file_id = $request->file_id;
         $file = File::where('room_id', $room_id)->where('id', $file_id)->first();
-        
+
         return asset('storage/media/'.$file->name);
     }
 }
