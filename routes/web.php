@@ -63,7 +63,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 });
 
 Route::get('search', 'Search\SearchUserRoomController@index')->name('SearchUser');
-Route::get('inviteUser','Search\SearchUserController@inviteUser');
+Route::get('inviteUser','Search\SearchUserRoomController@inviteUser');
 
 Auth::routes();
 
