@@ -113,17 +113,24 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
-        $roomUser = new RoomUser;
-        $roomUser->user_id = Auth::id();
-        $roomUser->room_id = $id;
-        $roomUser->save();
+        //Check Joined RoomUser 
+        $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
 
-        Messenges::create([
-            'user_id' => Auth::id(),
-            'room_id' => $id, 
-            'content' => Auth::user()->name . ' has joined',
-            'status' => false
-        ]);
+        if ($roomUser == null) {
+            
+            //Add RoomUser
+            $roomUser = new RoomUser;
+            $roomUser->user_id = Auth::id();
+            $roomUser->room_id = $id;
+            $roomUser->save();
+
+            Messenges::create([
+                'user_id' => Auth::id(),
+                'room_id' => $id, 
+                'content' => Auth::user()->name . ' has joined',
+                'status' => false
+            ]);
+        }
 
         return redirect()->route('frontend.message.room', $id);
     }
