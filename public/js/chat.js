@@ -182,8 +182,11 @@ if($('#join').length){
 //Leave Event
 if($('#leave-room').length){
  	$('#leave-room').click(function(){
-		//send leave event to others
-		socket.emit('send room message','leave-room',user,currentRoom);
+ 		var result = confirm("Want to leave");
+		if (result) {
+		   	//send leave event to others
+			socket.emit('send room message','leave-room',user,currentRoom);
+		} else return false;
 	});
 }
 
@@ -230,7 +233,7 @@ socket.on('receiver room mess',function(type,sender,data){
 		 	data.paused = video.paused;
 		 	data.currentTime = video.currentTime; 
 		 }
-
+		 //send back status of room to user
 		socket.emit('send private message','room infor',data);
 	}
 })
