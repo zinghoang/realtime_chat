@@ -11,8 +11,8 @@ class PrivatesTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-        factory(App\PrivateMessage::class, 20)
-        ->create();
+        // $faker = Faker\Factory::create();
+        // factory(App\PrivateMessage::class, 20)
+        // ->create();
     }
 }
