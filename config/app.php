@@ -180,6 +180,8 @@ return [
 
         Arrilot\Widgets\ServiceProvider::class,
 
+        'Barryvdh\Debugbar\ServiceProvider',
+
     ],
 
     /*
@@ -231,6 +233,7 @@ return [
 
         'Widget'       => Arrilot\Widgets\Facade::class,
         'AsyncWidget'  => Arrilot\Widgets\AsyncFacade::class,
+        'Debugbar' => 'Barryvdh\Debugbar\Facade',
     ],
 
 ];
