@@ -108,3 +108,8 @@ a{
 	background-color: #cccccc;
 }
 
+#dropdown-name{
+	background-color: #a6e1ec; 
+	border-color: #a6e1ec;     
+	color: #466482;
+}

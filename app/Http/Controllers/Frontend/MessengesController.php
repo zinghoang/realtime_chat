@@ -52,7 +52,7 @@ class MessengesController extends Controller
 
     public function uploadFile(FileRequest $request, $id)
     {
-
+        //Check Join the room
         $checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
 
         if($checkJoin == null){
@@ -74,13 +74,25 @@ class MessengesController extends Controller
             $type = 'nas';
         }
 
+        //Get name file
+        $nameFileSave = $request->file('title')->getClientOriginalName();
+        $nameFileSave = str_replace('.' . $formatFile, '', $nameFileSave);
+
         $file = new File();
         $file->room_id = $id;
         $file->name = $nameFile;
         $file->type = $type;
-        $file->title = $request->file('title')->getClientOriginalName();
+        $file->title = $nameFileSave;
         $file->user_id = Auth::id();
         $file->save();
+
+        $message = new Messenges;
+        $message->user_id = Auth::user()->id;
+        $message->room_id = $id;
+        $message->content = Auth::user()->name . ' has uploaded file: ' . $nameFileSave;
+        $message->status = 0;
+        $message->save();
+
         return redirect()->route('frontend.message.room', $id);
     }
         

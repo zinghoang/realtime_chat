@@ -8,6 +8,7 @@ use App\Room;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\RoomUser;
+use App\Http\Requests\RoomRequest;
 use App\File;
 use App\Messenges;
 use Auth;
@@ -33,7 +34,7 @@ class RoomController extends Controller
     	return view('frontend.rooms.create');
     }
 
-    public function store(Request $request)
+    public function store(RoomRequest $request)
     {
         $room = new Room;
         $room->name = $request->name;
@@ -48,7 +49,7 @@ class RoomController extends Controller
         $message = new Messenges;
         $message->user_id = Auth::user()->id;
         $message->room_id = $room->id;
-        $message->content = Auth::user()->name . 'has created this room';
+        $message->content = Auth::user()->name . ' has created this room';
         $message->status = 0;
         $message->save();
         return redirect()->route('frontend.message.room', $room->id);
@@ -112,17 +113,24 @@ class RoomController extends Controller
     {
         $room = Room::findOrFail($id);
 
-        $roomUser = new RoomUser;
-        $roomUser->user_id = Auth::id();
-        $roomUser->room_id = $id;
-        $roomUser->save();
+        //Check Joined RoomUser 
+        $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
 
-        Messenges::create([
-            'user_id' => Auth::id(),
-             'room_id' => $id, 
-             'content' => Auth::user()->name . ' has joined',
-             'status' => false
-        ]);
+        if ($roomUser == null) {
+            
+            //Add RoomUser
+            $roomUser = new RoomUser;
+            $roomUser->user_id = Auth::id();
+            $roomUser->room_id = $id;
+            $roomUser->save();
+
+            Messenges::create([
+                'user_id' => Auth::id(),
+                'room_id' => $id, 
+                'content' => Auth::user()->name . ' has joined',
+                'status' => false
+            ]);
+        }
 
         return redirect()->route('frontend.message.room', $id);
     }
@@ -132,7 +140,7 @@ class RoomController extends Controller
         return redirect()->route('frontend.message.room', $id);
     }
 
-    public function update(Request $request, $id)
+    public function update(RoomRequest $request, $id)
     {
         $room = Room::findOrFail($id);
 
