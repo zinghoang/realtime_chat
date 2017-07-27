@@ -17,7 +17,7 @@
                 </li>
                 <li class="user-footer">
                     <div class="pull-left">
-                        <a href="{{ route('users.edit',Auth::user()->id) }}" class="btn btn-default btn-flat">Chỉnh sửa</a>
+                        <a href="{{ route('users.edit',Auth::user()->id) }}" class="btn btn-default btn-flat">Edit profile</a>
                     </div>
                     <div class="pull-right">
                         <a href="{!! url('/logout') !!}" class="btn btn-default btn-flat"

@@ -26,7 +26,7 @@ class EmotionController extends Controller
      */
     public function index()
     {
-        $emotions = Emotion::orderBy('id','DESC')->paginate(10);
+        $emotions = Emotion::orderBy('id','DESC')->paginate(15);
         return view('backend.emotions.index')->with('emotions',$emotions);
     }
 

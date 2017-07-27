@@ -24,7 +24,7 @@ class FileController extends Controller
             ->join('users','users.id','=','files.user_id')
             ->join('rooms','rooms.id','=','files.room_id')
             ->select('files.id','files.title','files.type','users.fullname','rooms.name as roomname')
-            ->paginate(1);
+            ->paginate(15);
 
         return view('backend.files.index')->with('files',$files);
     }
