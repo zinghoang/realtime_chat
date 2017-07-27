@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Emotion;
+use App\NotifRoom;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -24,7 +25,15 @@ class MessengesController extends Controller
 
     public function room($id)
     {
-    	$room = Room::findOrFail($id);
+        //xoa thong bao tu room -> auth::user
+        $notif = NotifRoom::where('roomid','=',$id)
+                        ->where('userid','=',Auth::user()->id)
+                        ->first();
+        if($notif != null){
+            $notif = NotifRoom::findOrFail($notif->id);
+            $notif->delete();
+        }
+        $room = Room::findOrFail($id);
 
     	$checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
     	if($checkJoin == null){
@@ -104,7 +113,23 @@ class MessengesController extends Controller
         $message->content = $request['message'];
         $message->status = true;
         $message->save();
-
+        //1- gui thong bao den cac thanh vien trong room
+            $user_ids = RoomUser::where('room_id','=',$request['room']['id'])
+                                    ->where('user_id','!=',Auth::user()->id)
+                                    ->select('user_id')->get();
+            foreach ($user_ids as $user_id){
+                $notifRoom = NotifRoom::where('roomid','=',$request['room']['id'])
+                                        ->where('userid','=',$user_id->user_id)
+                                        ->first();
+                if($notifRoom == null){
+                    $notifRoom = new NotifRoom;
+                    $notifRoom->roomid = $request['room']['id'];
+                    $notifRoom->userid = $user_id->user_id;
+                    $notifRoom->status = 0;
+                    $notifRoom->save();
+                }
+            }
+        //end -1
         $message->content = self::getNewContent($message->content);
         $avatar = User::where('id','=',$message->user_id)->select('avatar')->first();
         $message->avatar = $avatar->avatar;

@@ -5,7 +5,12 @@
 			<img src="{{ asset('images/home.png') }}" alt=""> 
 		</div>
 		<div class="media-body">
-			<div class="lv-title">{{ $room->name }}</div>
+			<div class="lv-title">
+				{{ $room->name }}
+				@if($room->notif == 1)
+					<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>
+				@endif
+			</div>
 			<div class="lv-small"> Click here to chat... </div>
 		</div>
 	</a>
