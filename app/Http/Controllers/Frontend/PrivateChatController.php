@@ -51,6 +51,7 @@ class PrivateChatController extends Controller
     public function user($username)
     {
         $userid = User::where('name','=',$username)->select('id')->first();
+
         //xoa thong bao tu user nay neu co
         $notif = NotifPrivate::where('from','=',$userid->id)
                                 ->where('to','=',Auth::user()->id)
@@ -90,6 +91,13 @@ class PrivateChatController extends Controller
     	$privateMessage->save();
     	$privateMessage->content = self::getNewContent($privateMessage->content);
 
+    	//xóa thông báo từ bạn chat nếu có
+        $notif = NotifPrivate::where('from','=',$request['toUser']['id'])
+                                ->where('to','=',$request['user']['id'])
+                                ->first();
+        if($notif != null){
+            $notif->delete();
+        }
     	//luu thong bao
         $notifprivate = NotifPrivate::where('from','=',$request['user']['id'])
             ->where('to','=',$request['toUser']['id'])->first();
@@ -184,6 +192,17 @@ class PrivateChatController extends Controller
                                 ->where('user_accept','=',$id)
                                 ->select('status','user_request')
                                 ->first();
+    }
+    public function deleteNotif(Request $request){
+        $from = $request->userfrom;
+        $to = $request->userto;
+        $notif = NotifPrivate::where('from','=',$from)
+                                ->where('to','=',$to)
+                                ->first();
+        if($notif != null){
+            $delete = NotifPrivate::findOrFail($notif->id);
+            $delete->delete();
+        }
     }
 }
  

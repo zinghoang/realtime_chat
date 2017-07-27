@@ -53,6 +53,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/requestRelationship/{user_id}','PrivateChatController@requestRelationship')->name('requestRelationship');
 		Route::get('/deleteRelationship/{id}','PrivateChatController@deleteRelationship')->name('deleteRelationship');
 		Route::get('/acceptRelationship/{id}','PrivateChatController@acceptRelationship')->name('acceptRelationship');
+        Route::post('/deleteNotif','PrivateChatController@deleteNotif')->name('deleteNotif');
 	});
 
     Route::resource('account', 'AccountController', ['only' => [
