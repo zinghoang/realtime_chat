@@ -47,10 +47,10 @@
 											{{ $file->id }}
 										</span>
 										<span>
-											{{ $file->title }}
+											{{ str_limit($file->title, 40) }}
 										</span>
 									</a>
-									<em style="color: #cccccc;">- {{ $file->user->fullname }}</em>
+									<em>- {{ str_limit($file->user->fullname, 20) }}</em>
 								</li>
 								@endforeach
 								

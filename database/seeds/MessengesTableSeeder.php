@@ -193,6 +193,16 @@ class MessengesTableSeeder extends Seeder
             'updated_at' => date("Y-m-d H:i:s")
         ]);
 
+        //Some message
+        DB::table('messenges')->insert([
+            'user_id' => '1',
+            'room_id' => '1',
+            'content' => 'Tempora nihil est voluptatem magni nihil sit dolor',
+            'status' => '1',
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
+        ]);
+
         // Join the room
 
         DB::table('messenges')->insert([
@@ -209,6 +219,16 @@ class MessengesTableSeeder extends Seeder
             'room_id' => '1',
             'content' => 'thangnp has joined',
             'status' => '0',
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
+        ]);
+
+        //Some message
+        DB::table('messenges')->insert([
+            'user_id' => '2',
+            'room_id' => '1',
+            'content' => 'Odio dolores numquam esse sint officiis nisi labore asperiores aspernatur dolor ea laboriosam occaecat et id hic ad et',
+            'status' => '1',
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s")
         ]);
@@ -240,10 +260,20 @@ class MessengesTableSeeder extends Seeder
             'updated_at' => date("Y-m-d H:i:s")
         ]);
 
+        //Some message
+        DB::table('messenges')->insert([
+            'user_id' => '5',
+            'room_id' => '1',
+            'content' => 'Nostrum sed quam ea nostrum',
+            'status' => '1',
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
+        ]);
 
-        $faker = Faker\Factory::create();
-        factory(App\Messenges::class, 20)
-        ->create();
+
+        // $faker = Faker\Factory::create();
+        // factory(App\Messenges::class, 20)
+        // ->create();
 
         //Upload file 
          
@@ -252,6 +282,16 @@ class MessengesTableSeeder extends Seeder
             'room_id' => '1',
             'content' => 'admin has uploaded file: CGI Animated Short Film HD',
             'status' => '0',
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
+        ]);
+
+        //Some message
+        DB::table('messenges')->insert([
+            'user_id' => '5',
+            'room_id' => '4',
+            'content' => 'In aute nulla excepturi id laborum blanditiis',
+            'status' => '1',
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s")
         ]);
@@ -274,11 +314,31 @@ class MessengesTableSeeder extends Seeder
             'updated_at' => date("Y-m-d H:i:s")
         ]);
 
+        //Some message
+        DB::table('messenges')->insert([
+            'user_id' => '5',
+            'room_id' => '6',
+            'content' => 'Quisquam est omnis esse qui eligendi sit est dolores ullamco',
+            'status' => '1',
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
+        ]);
+
         DB::table('messenges')->insert([
             'user_id' => '4',
             'room_id' => '1',
             'content' => 'linhnm has uploaded file: Happy New Year',
             'status' => '0',
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
+        ]);
+
+        //Some message
+        DB::table('messenges')->insert([
+            'user_id' => '3',
+            'room_id' => '1',
+            'content' => 'In aute nulla excepturi id laborum blanditiis',
+            'status' => '1',
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s")
         ]);

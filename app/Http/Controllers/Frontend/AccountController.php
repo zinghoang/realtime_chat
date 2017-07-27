@@ -41,8 +41,7 @@ class AccountController extends Controller
             $request->session()->flash('fail','You must not to access to another\'s profile!');
         }else{
             $user = User::findOrFail($id);
-            //Lay thong tin tu form
-            $user->name = $request->name;
+            //Lay thong tin tu form            
             $user->email = $request->email;
             $user->fullname = $request->fullname;
             if($request->email != null){
