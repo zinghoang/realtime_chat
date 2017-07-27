@@ -114,7 +114,6 @@
                 'userto' : to
             },
             success : function (result){
-
             },error: function (){
                 alert("Error");
             }
