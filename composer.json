@@ -8,6 +8,7 @@
         "php": ">=5.6.4",
         "algolia/algoliasearch-client-php": "^1.18",
         "arrilot/laravel-widgets": "^3.7",
+        "barryvdh/laravel-debugbar": "^2.4",
         "fzaninotto/faker": "^1.6",
         "laravel/framework": "5.4.*",
         "laravel/scout": "^3.0",
