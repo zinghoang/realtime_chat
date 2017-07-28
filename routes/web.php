@@ -12,14 +12,19 @@
 */
 
 Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
+
     Route::resource('users', 'UserController');
     Route::resource('rooms', 'RoomController');
     Route::resource('emotions', 'EmotionController');
-    Route::resource('files', 'FileController');
+    Route::resource('files', 'FileController', ['only' => [
+	    'index', 'show', 'destroy'
+	]]);
+
     Route::get('/index','HomeController@index')->name('admin.index')->middleware('CheckAdmin');
 });
 
 Route::group(['namespace' => 'Frontend'], function(){
+	
 	Route::get('/home', 'HomeController@index')->name('home');
 
 	Route::group(['prefix' => 'message'], function(){
@@ -70,7 +75,6 @@ Route::group(['namespace' => 'Frontend'], function(){
 });
 
 Route::get('search', 'Search\SearchUserRoomController@index')->name('SearchUser');
-
 
 Auth::routes();
 

@@ -56,6 +56,7 @@ class UserController extends Controller
         $user->fullname = $request->fullname;
         $user->level = $request->level;
         $user->avatar = 'avatar.png';
+
         if($user->save()) {
             $request->session()->flash('success', 'User was created successful');
         }else{
@@ -98,16 +99,19 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         $user = User::findOrFail($id);
+
         //Lay thong tin tu form
         $user->name = $request->name;
         $user->email = $request->email;
         $user->fullname = $request->fullname;
         $user->level = $request->level;
-        if($request->email != null){
+
+        if($request->password != null){
             $user->password = bcrypt($request->password);
         }
+
         if($request->file('avatar') != null){
-            $image = Input::file('avatar')->getClientOriginalName();
+
             if($user->avatar != 'avatar.png'){
                 //Xoa anh cu~
                 File::delete('storage/avatars/'.$user->avatar);
@@ -119,7 +123,9 @@ class UserController extends Controller
         }else{
             $filename = $user->avatar;
         }
+
         $user->avatar = $filename;
+
         if($user->save()) {
             $request->session()->flash('success', 'User was updated successful');
         }else{
@@ -144,6 +150,7 @@ class UserController extends Controller
             //Xoa anh trong folder
             File::delete('storage/avatars/'.$user->avatar);
         }
+
         //Xoa record trong database
         $user->delete();
         return redirect()->route('users.index');
