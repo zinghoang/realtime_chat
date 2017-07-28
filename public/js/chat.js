@@ -120,6 +120,40 @@ if($("#btn-reply").length){
 
 			$('.content-message').append(stringDivData);
 
+
+            //cap nhat listUser
+                var pathname = window.location.pathname;
+                    var arr_name = pathname.split('/');
+                    var name = arr_name[arr_name.length-1];
+                var stringDivUser = '';
+                for(var i = 0; i< response.listUserFrom.length;i++){
+                    stringDivUser = stringDivUser + '<div class="lv-item media">'
+                                        +'<div class="lv-avatar pull-left">'
+                                        +'<img src="/storage/avatars/'+ response.listUserFrom[i].avatar+'" alt="">'
+                                        +'</div>'
+                                        +'<div class="media-body">'
+                                        +'<div class="lv-title">'
+                                        +'<a href="/chat/'+response.listUserFrom[i].name+'" title="" style="text-decoration:none;">'
+                                        + response.listUserFrom[i].fullname
+                                        +'</a>';
+                    stringDivUser = stringDivUser + '</div>'
+                    +'<div class="lv-small">'+'@ '+response.listUserFrom[i].name
+                    +'</div>'
+                    +'</div>'
+                    +'</div>';
+                }
+                stringDivUser = stringDivUser + ' <div class="lv-item media">'
+                                                 		+'<div class="media-body">'
+                                                 			+'<p class="text-center" style="margin: 0px;">'
+                                                 				+'<a href="/chat" title="" style="text-decoration:none;">'
+                                                 					+'Show All Contacts'
+                                                 				+'</a>'
+                                                 			+'</p>'
+                                                 		+'</div>'
+                                                 	+'</div>';
+                 $('.listUser').html(stringDivUser);
+
+
 		  	socket.emit('send private message','message',response);
 		});
 
