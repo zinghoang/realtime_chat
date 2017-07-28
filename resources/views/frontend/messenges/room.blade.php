@@ -182,19 +182,22 @@
    		//whatever you want to do
    		socket.emit('send action','video',currentRoom,null,'pause');
 	});
-
-    socket.on('receiver action',function(type,action,data){
-    	var vid = document.getElementById("myVideo");
-    	if( action == 'load'){
-			console.log(data);
-			$("#myVideo source").attr("src",data)
-			vid.load();
-    	} else if ( action == 'play') {
-    		vid.play();
-    	} else if ( action == "pause") {
-    		vid.pause();
+	
+    socket.on('receiver action',function(type,room,action,data){
+    	var vid = $('#myVideo')[0];
+    	if(currentRoom.id == room.id){
+    		if( action == 'load'){
+				console.log(data);
+				$("#myVideo source").attr("src",data)
+				vid.load();
+	    	} else if ( action == 'play') {
+	    		vid.play();
+	    	} else if ( action == "pause") {
+	    		vid.pause();
+	    	} 
     	}
     });
+
 
     @endif
 
