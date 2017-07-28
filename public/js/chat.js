@@ -29,6 +29,9 @@ socket.on('receiver private mess',function(type,data){
                     ' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
                     ' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
             $('.content-message').append(stringDivData);
+            if($('.room-contett').length){
+               scroll('.room-contentt');
+            }
         }
     }
 
@@ -119,7 +122,9 @@ if($("#btn-reply").length){
 		  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
 
 			$('.content-message').append(stringDivData);
-
+            if($('.room-contett').length){
+                        scroll('.room-contentt');
+            	    }
 
             //cap nhat listUser
                 var pathname = window.location.pathname;
@@ -194,7 +199,9 @@ if($('#btn-room-reply').length){
             +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
             +' </small> '+' </div> '+' </div> ';
             $('.room-contentt').append(stringDivData);
-
+            if($('.room-contett').length){
+                        scroll('.room-contentt');
+            	    }
             //cap nhat listRoom
             	    var stringDivRooms = '';
             	    for( var i=0;i<response.roomsFrom.length;i++){
@@ -223,10 +230,11 @@ if($('#btn-room-reply').length){
             	                                        +' <div class="media-body"> '
             	                                            +' <p class="text-center" style="margin: 0px;"> '
             	                                                +' <a href="/room" title="" style="text-decoration:none;"> '
-            	                                                    +'SHOW ALL ROOMS'
-                                                       			+' </a> '
-                                                       		+' </p> '
-                                                       	+' </div></div> ';
+            	                                                    +'SHOW ALL ROOMS';
+                    if(response.moreNotif > 0){
+                        stringDivRooms = stringDivRooms + '<span style="color: #aa1111">[ '+response.moreNotif+' ]</span>';
+                    }
+                    stringDivRooms = stringDivRooms +' </a> </p> </div></div> ';
                     $('.listRoom').html(stringDivRooms);
 
 
@@ -276,7 +284,9 @@ socket.on('receiver room mess',function(type,sender,data){
 	                +' </small> '+' </div> '+' </div> ';
 
 	    $('.room-contentt').append(stringDivData);
-
+	    if($('.room-contett').length){
+            scroll('.room-contentt');
+	    }
         $.ajax({
                     url : "/room/reloadListRoom",
                     type : "post",
@@ -352,3 +362,8 @@ if($('#invite-form').length){
 	});
 }
 
+function scroll(element) {
+    $(element).animate({
+            scrollTop: $(element)[0].scrollHeight
+    });
+}

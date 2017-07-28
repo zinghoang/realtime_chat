@@ -12,7 +12,9 @@
 					<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>
 				@endif
 			</div>
-			<div class="lv-small"> Click here to chat... </div>
+			<div class="lv-small">
+				Click here to chat...
+			</div>
 		</div>
 </div>
 @endforeach
@@ -22,6 +24,9 @@
 			<a href="{{ route('frontend.room.index') }}" title="" style="text-decoration:none;">
 				SHOW ALL ROOMS
 			</a>
+			@if($moreNotif > 0)
+				<span style="color: #aa1111">[ {{ $moreNotif }} ]</span>
+			@endif
 		</p>
 	</div>
 </div>

@@ -190,9 +190,9 @@ class MessengesController extends Controller
             array_push($arr_roomid,$room->id);
         }
         $arr_roomid = array_unique($arr_roomid);
-        $arr_roomid = array_slice($arr_roomid,0,3);
+        $arr_roomidLoad = array_slice($arr_roomid,0,3);
         $roomsFrom = new Collection();
-        foreach ($arr_roomid as $roomid){
+        foreach ($arr_roomidLoad as $roomid){
             $room = Room::findOrFail($roomid);
             if($room != null){
                 $notifRoom = NotifRoom::where('roomid','=',$roomid)
@@ -204,6 +204,21 @@ class MessengesController extends Controller
         }
         $message->roomsFrom = $roomsFrom;
 
+        //kiem tra xem con thong bao nao nua~ hay khong
+        $moreNotif = 0; //mac dinh la khong co
+        if(count($arr_roomid) > 3){
+            $arr_roomidUnload = array_slice($arr_roomid,3,count($arr_roomid)-3);
+            //kiem tra nhung room con lai co thong bao hay khong
+            foreach ($arr_roomidUnload as $roomid){
+                $notif = NotifRoom::where('roomid','=',$roomid)
+                    ->where('userid','=',Auth::user()->id)
+                    ->first();
+                if($notif != null){
+                    $moreNotif++;
+                }
+            }
+        }
+        $message->moreNotif = $moreNotif;
         $message->content = self::getNewContent($message->content);
         $avatar = User::where('id','=',$message->user_id)->select('avatar')->first();
         $message->avatar = $avatar->avatar;
