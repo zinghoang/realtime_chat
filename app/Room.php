@@ -7,14 +7,7 @@ use Laravel\Scout\Searchable;
 
 class Room extends Model
 {
-    use Searchable;
-
     protected $fillable = ['name'];
-
-    public function searchableAs()
-    {
-        return 'rooms_index';
-    }
 
     public function roomusers()
     {
