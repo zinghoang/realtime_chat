@@ -23,7 +23,7 @@ class GetUserLogin extends AbstractWidget
     {
         //
 
-        return view('widgets.get_user_login', [
+        return view('frontend.layouts.widgets.get_user_login', [
             'config' => $this->config,
             'user' => Auth::user(),
         ]);
