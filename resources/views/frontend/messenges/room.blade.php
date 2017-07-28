@@ -58,7 +58,7 @@
 										</a>
 
 										<form id="deletefile-form" action="{{ route('frontend.message.deletefile', $file->id) }}" method="POST" style="display: none;">
-							                <input type="hidden" name="_token" value="GKxqKzD7t6PWbHXtYwgQKa2gcRrHYWxoC3OVInHy">
+							                {{ csrf_field() }}
 							                <input type="hidden" name="_method" value="DELETE">
 							            </form>
 									@endif

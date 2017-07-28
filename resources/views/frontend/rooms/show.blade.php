@@ -21,7 +21,13 @@
 									<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $member->user->avatar) }}" alt=""> </div>
 									<div class="media-body">
 										<div class="lv-title">{{ $member->user->fullname }} {!! ($room->user_id == $member->user->id)?'<span style="color:red">[AD]</span>':'' !!}</div>
-										<div class="lv-small">@ {{ $member->user->name }}</div>
+										<div class="lv-small">
+											@ {{ $member->user->name }}
+
+											@if($room->user_id == Auth::id())
+												<a href="{{ route('frontend.room.ban', ['user' => $member->user->id, 'room' => $room->id]) }}">Ban</a>
+											@endif
+										</div>
 									</div>
 									</a>
 								</div>
