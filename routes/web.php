@@ -48,6 +48,8 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::post('/video/{room}', 'RoomController@changeVideo')->name('frontend.room.changeVideo');
 	});
 
+	Route::get('inviteUser','RoomController@inviteUser');
+
 	Route::group(['prefix' => 'chat'], function(){
 		Route::get('/', 'PrivateChatController@index')->name('frontend.private.index');
 		Route::get('/{username}', 'PrivateChatController@user')->name('private.user');
@@ -65,7 +67,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 });
 
 Route::get('search', 'Search\SearchUserRoomController@index')->name('SearchUser');
-Route::get('inviteUser','Search\SearchUserRoomController@inviteUser');
+
 
 Auth::routes();
 
