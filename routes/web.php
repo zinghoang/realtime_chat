@@ -25,8 +25,9 @@ Route::group(['namespace' => 'Frontend'], function(){
 	Route::group(['prefix' => 'message'], function(){
 		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
 		
-		Route::get('/room/upload/{room}', 'MessengesController@room');
 		Route::post('/room/upload/{room}', 'MessengesController@uploadFile')->name('frontend.message.uploadfile');
+
+		Route::delete('/room/delete-file/{room}', 'MessengesController@deleteFile')->name('frontend.message.deletefile');
 		
 		Route::post('/add-room-message','MessengesController@addRoomMessage');
 	});
@@ -42,6 +43,9 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 		Route::get('/join/{room}', 'RoomController@join')->name('frontend.room.join');
 		Route::get('/leave/{room}', 'RoomController@leave')->name('frontend.room.leave');
+		Route::get('/ban/{user}/{room}', 'RoomController@ban')->name('frontend.room.ban');
+
+
 		Route::post('/video/{room}', 'RoomController@changeVideo')->name('frontend.room.changeVideo');
         Route::post('/deleteNotifRoom','RoomController@deleteNotifRoom')->name('deleteNotifRoom');
         Route::post('/reloadListRoom','RoomController@reloadListRoom')->name('reloadListRoom');
@@ -63,17 +67,10 @@ Route::group(['namespace' => 'Frontend'], function(){
     
 });
 
-Route::get('search', 'Search\SearchUserController@index')->name('SearchUser');
-Route::get('inviteUser','Search\SearchUserController@inviteUser');
+Route::get('search', 'Search\SearchUserRoomController@index')->name('SearchUser');
+Route::get('inviteUser','Search\SearchUserRoomController@inviteUser');
 
 Auth::routes();
-
-
-//Route::get('/home', 'HomeController@index')->name('home');
-
-//Route::get('/', 'HomeController@index')->name('frontend.home.index');
- 
-//Route::get('/', 'HomeController@index')->name('frontend.home.index');
 
 Route::get('/', function () {
     return view('welcome');

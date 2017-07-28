@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\RoomUser;
 use App\Http\Requests\RoomRequest;
 use App\File;
+use App\User;
 use App\Messenges;
 use Auth;
 
@@ -76,19 +77,55 @@ class RoomController extends Controller
     	//
     }
 
-    public function leave($id)
+    public function ban($user_id, $room_id, Request $request)
     {
-        $room = Room::findOrFail($id);
+        $room = Room::findOrFail($room_id);
+        $user = User::findOrFail($user_id);
 
-        $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
+
+
+        //Khong phai chu phong thi ko cos quyen
+        if ($room->id != Auth::id()) {
+            $request->session()->flash('danger','You must not to do this action!');
+            return redirect()->route('frontend.room.show', $room_id);
+        }
+
+        //Ban chinh minh thi leave group
+        if ($user_id == Auth::id()) {
+            return $this->leave($room_id);
+        }
+
+        $roomUser = RoomUser::where('user_id', $user_id)->where('room_id', $room_id)->first();
         $roomUser->delete();
 
         //add message leave to db
         Messenges::create([
             'user_id' => Auth::id(),
-             'room_id' => $id, 
-             'content' => Auth::user()->name . ' has left',
-             'status' => false
+            'room_id' => $room_id, 
+            'content' => Auth::user()->name . ' has banned user ' . $user->name . ' out the room',
+            'status' => false
+        ]);
+
+        return redirect()->route('frontend.room.show', $room_id);
+    }
+
+    public function leave($id)
+    {
+        $room = Room::findOrFail($id);
+
+        $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
+        if($roomUser != null){
+            $roomUser->delete();
+        }else{
+            return redirect()->route('frontend.message.room', $id);
+        }
+
+        //add message leave to db
+        Messenges::create([
+            'user_id' => Auth::id(),
+            'room_id' => $id, 
+            'content' => Auth::user()->name . ' has left',
+            'status' => false
         ]);
 
         // Delete room when nobody in room

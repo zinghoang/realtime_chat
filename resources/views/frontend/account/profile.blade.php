@@ -45,7 +45,7 @@
                         <!-- Name Field -->
                         <div class="col-sm-6">
                             <label for="name">Name:</label>
-                            <input class="form-control" name="name" type="text" id="name" value="{{ Auth::user()->name }}">
+                            <input class="form-control" name="name" type="text" id="name" value="{{ Auth::user()->name }}" readonly>
                         </div>
                         <!-- Email Field -->
                         <div class="col-sm-6">

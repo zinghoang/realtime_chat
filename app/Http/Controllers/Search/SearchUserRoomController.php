@@ -10,7 +10,7 @@ use App\Messenges;
 use App\RoomUser;
 use App\Room;
 
-class SearchUserController extends Controller
+class SearchUserRoomController extends Controller
 {
     public function index(Request $request)
     {
@@ -19,8 +19,12 @@ class SearchUserController extends Controller
         $users = User::whereRaw('fullname LIKE "%'.$nameSeach.'%"')
             ->orWhereRaw('name LIKE "%'.$nameSeach.'%"')
             ->orWhereRaw('email LIKE "%'.$nameSeach.'%"')
-            ->where('name','!=',Auth::user()->name)->take(20)->get();
-        return view('frontend.search.users', compact('users', 'nameSeach'));
+            ->where('name','!=',Auth::user()->name)->take(10)->get();
+
+        $rooms = Room::whereRaw('name LIKE "%'.$nameSeach.'%"')
+            ->take(10)->get();
+
+        return view('frontend.search.users', compact('users', 'nameSeach', 'rooms'));
     }
 
 
