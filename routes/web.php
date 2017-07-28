@@ -45,7 +45,10 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/leave/{room}', 'RoomController@leave')->name('frontend.room.leave');
 		Route::get('/ban/{user}/{room}', 'RoomController@ban')->name('frontend.room.ban');
 
+
 		Route::post('/video/{room}', 'RoomController@changeVideo')->name('frontend.room.changeVideo');
+        Route::post('/deleteNotifRoom','RoomController@deleteNotifRoom')->name('deleteNotifRoom');
+        Route::post('/reloadListRoom','RoomController@reloadListRoom')->name('reloadListRoom');
 	});
 
 	Route::get('inviteUser','RoomController@inviteUser');

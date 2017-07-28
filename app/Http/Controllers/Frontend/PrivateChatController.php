@@ -181,11 +181,7 @@ class PrivateChatController extends Controller
             $status = DB::table('notifprivate')
                 ->join('users','users.id','=','notifprivate.from')
                 ->where('notifprivate.from','=',$user->id)->first();
-            if($status != null){
-                $user->notif = 1;
-            }else{
-                $user->notif = 0;
-            }
+            $status != null ? $user->notif = 1 : $user->notif = 0;
             $users->push($user);
         }
         $privateMessage->listUserFrom = $users;

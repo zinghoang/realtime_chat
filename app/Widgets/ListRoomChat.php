@@ -35,6 +35,7 @@ class ListRoomChat extends AbstractWidget
             array_push($arr_roomid,$room->id);
         }
         $arr_roomid = array_unique($arr_roomid);
+        $arr_roomid = array_slice($arr_roomid,0,3);
         $rooms = new Collection();
         foreach ($arr_roomid as $roomid){
             $room = Room::findOrFail($roomid);
@@ -45,7 +46,6 @@ class ListRoomChat extends AbstractWidget
                 $notifRoom != null ? $room->notif = 1 : $room->notif = 0;
                 $rooms->push($room);
             }
-
         }
         return view('frontend.layouts.widgets.list_room_chat', [
             'config' => $this->config,
