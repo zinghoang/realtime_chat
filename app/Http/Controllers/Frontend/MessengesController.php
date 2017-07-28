@@ -83,6 +83,8 @@ class MessengesController extends Controller
 
         //Save file
         $name = $request->file('title')->store('public/media');
+        $ar_name = explode('/', $name);
+        $nameFile = end($ar_name);
 
         //Get type of file
         if ($formatFile === 'mp4' || $formatFile === 'avi') {
@@ -98,7 +100,7 @@ class MessengesController extends Controller
 
         $file = new File();
         $file->room_id = $id;
-        $file->name = $name;
+        $file->name = $nameFile;
         $file->type = $type;
         $file->title = $nameFileSave;
         $file->user_id = Auth::id();
@@ -112,6 +114,13 @@ class MessengesController extends Controller
         $message->save();
 
         return redirect()->route('frontend.message.room', $id);
+    }
+
+    public function deleteFile($id)
+    {
+        $file = File::find($id);
+        dd($file);
+
     }
         
     public function addRoomMessage(Request $request){
