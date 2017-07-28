@@ -8,6 +8,7 @@ use Arrilot\Widgets\AbstractWidget;
 use App\User;
 use Auth;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 
 class ListUserChat extends AbstractWidget
@@ -47,6 +48,16 @@ class ListUserChat extends AbstractWidget
         $users = new Collection();
         foreach ($arr_id as $id){
             $user = User::findOrFail($id);
+            //kiem tra user co thong bao hay khong
+            $status = DB::table('notifprivate')
+                ->join('users','users.id','=','notifprivate.from')
+                ->where('notifprivate.from','=',$user->id)
+                ->where('notifprivate.to','=',Auth::user()->id)->first();
+            if($status != null){
+                $user->notif = 1;
+            }else{
+                $user->notif = 0;
+            }
             $users->push($user);
         }
         return view('frontend.layouts.widgets.list_user_chat', [

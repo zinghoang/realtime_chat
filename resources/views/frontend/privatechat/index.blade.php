@@ -22,7 +22,7 @@
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				<div class="col-md-12">
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:550px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 						@if(count($users) == 0 )
 						<div class="row">
 							<div class="col-md-12">
@@ -35,10 +35,8 @@
 						</div>
 						@else
 							<div class="row">
-								<div class="col-md-12" style="background-color: #2c3b41">
-									<h3	 class="text-center">
-										<span style="color: #ffffff">Some recent contact</span>
-									</h3>
+								<div class="col-md-12">
+									<h5 class="text-center">Some recent contact</h5>
 									<hr>
 								</div>
 								@if(count($users) > 0)

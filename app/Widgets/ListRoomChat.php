@@ -2,10 +2,13 @@
 
 namespace App\Widgets;
 
+use App\NotifRoom;
 use Arrilot\Widgets\AbstractWidget;
 use App\Room;
 use Auth;
 use DB;
+use Illuminate\Support\Collection;
+
 class ListRoomChat extends AbstractWidget
 {
     /**
@@ -21,16 +24,33 @@ class ListRoomChat extends AbstractWidget
      */
     public function run()
     {
-        //get listroom user has join
-        $roomJoined = DB::table('rooms')->join('room_users','rooms.id','=','room_users.room_id')->where('room_users.user_id','=',Auth::user()->id)
-        ->select('rooms.id','rooms.name','room_users.user_id')
-        ->get();
+        $listRoom = DB::table('rooms')
+            ->join('room_users','rooms.id','=','room_users.room_id')
+            ->join('messenges','rooms.id','=','messenges.room_id')
+            ->where('room_users.user_id','=',Auth::user()->id)
+            ->orderBy('messenges.created_at','DESC')
+            ->select('rooms.id')->get();
+        $arr_roomid = array();
+        foreach ($listRoom as $room){
+            array_push($arr_roomid,$room->id);
+        }
+        $arr_roomid = array_unique($arr_roomid);
+        $rooms = new Collection();
+        foreach ($arr_roomid as $roomid){
+            $room = Room::findOrFail($roomid);
+            if($room != null){
+                $notifRoom = NotifRoom::where('roomid','=',$roomid)
+                    ->where('userid','=',Auth::user()->id)
+                    ->first();
+                $notifRoom != null ? $room->notif = 1 : $room->notif = 0;
+                $rooms->push($room);
+            }
 
-
+        }
         return view('frontend.layouts.widgets.list_room_chat', [
             'config' => $this->config,
-            'listRoom' => $roomJoined,
-            'roomJoined' =>$roomJoined
+            'listRoom' => $rooms,
+            'roomJoined' =>$rooms
         ]);
     }
 }

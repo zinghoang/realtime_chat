@@ -53,6 +53,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/requestRelationship/{user_id}','PrivateChatController@requestRelationship')->name('requestRelationship');
 		Route::get('/deleteRelationship/{id}','PrivateChatController@deleteRelationship')->name('deleteRelationship');
 		Route::get('/acceptRelationship/{id}','PrivateChatController@acceptRelationship')->name('acceptRelationship');
+        Route::post('/deleteNotif','PrivateChatController@deleteNotif')->name('deleteNotif');
 	});
 
     Route::resource('account', 'AccountController', ['only' => [
@@ -61,8 +62,8 @@ Route::group(['namespace' => 'Frontend'], function(){
     
 });
 
-Route::get('search', 'Search\SearchUserController@index')->name('SearchUser');
-Route::get('inviteUser','Search\SearchUserController@inviteUser');
+Route::get('search', 'Search\SearchUserRoomController@index')->name('SearchUser');
+Route::get('inviteUser','Search\SearchUserRoomController@inviteUser');
 
 Auth::routes();
 

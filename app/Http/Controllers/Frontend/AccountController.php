@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\AccountRequest;
 
 class AccountController extends Controller
 {
@@ -34,14 +35,13 @@ class AccountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AccountRequest $request, $id)
     {
         if($id != Auth::user()->id){
             $request->session()->flash('fail','You must not to access to another\'s profile!');
         }else{
             $user = User::findOrFail($id);
-            //Lay thong tin tu form
-            $user->name = $request->name;
+            //Lay thong tin tu form            
             $user->email = $request->email;
             $user->fullname = $request->fullname;
             if($request->email != null){

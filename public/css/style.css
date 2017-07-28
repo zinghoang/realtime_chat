@@ -65,7 +65,11 @@ ul.show-list-video{
 
 
 ul.show-list-video > li{
-	font-size: 20px;
+	font-size: 15px;
+}
+ul.show-list-video > li em{
+	color: #cccccc;
+	font-size: 13px;
 }
 
 ul.show-list-video > li.active > a{
@@ -106,4 +110,10 @@ a{
 	background-size: 100% 100%;
 	background-repeat: none;
 	background-color: #cccccc;
+}
+
+#dropdown-name{
+	background-color: #a6e1ec; 
+	border-color: #a6e1ec;     
+	color: #466482;
 }

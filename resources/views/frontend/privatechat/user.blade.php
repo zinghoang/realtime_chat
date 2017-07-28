@@ -55,7 +55,7 @@
         <div class="lv-body">
             <div class="row content-chat-video">
                 <div class="col-md-12">
-                    <div id="ms-scrollbar" class="content-message" style="overflow:scroll; overflow-x: hidden; height:530px;">
+                    <div id="ms-scrollbar" class="content-message" style="overflow:scroll; overflow-x: hidden; height:480px;" onmouseenter="return deleteNotif({{ $toUser->id }},{{ $user->id }})">
                         @foreach ($listPrivateChat as $key => $chat)
                         <div class="lv-item media @if($chat->from == Auth::id()) right @endif">
                             <div class="lv-avatar @if($chat->from == Auth::id()) pull-right @else pull-left @endif">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="lv-footer ms-reply">
-                            <textarea rows="10" placeholder="Write messages..." id="txt-mess-content"></textarea>
+                            <textarea rows="10" placeholder="Write messages..." id="txt-mess-content" onclick="return deleteNotif({{ $toUser->id }},{{ $user->id }})"></textarea>
                             <button class="" id='btn-reply'>
                                 <span class="glyphicon glyphicon-send"></span>
                             </button>
@@ -101,9 +101,24 @@
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == 13) {
             $('#btn-reply').click();
-            $('#txt-mess-content').reset();
+            $('#content-message').val('');
         }
     });
+    function deleteNotif(from,to) {
+        $.ajax({
+            url : "{{ route('deleteNotif') }}",
+            type : "post",
+            dataType:"text",
+            data : {
+                'userfrom' : from,
+                'userto' : to
+            },
+            success : function (result){
+            },error: function (){
+                alert("Error");
+            }
+        });
+    }
 </script>
 
 @endsection

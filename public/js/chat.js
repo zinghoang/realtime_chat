@@ -1,27 +1,87 @@
 //user , toUser, currentRoom
 
 var socket = io('http://127.0.0.1:3000');
-socket.emit('register',user);
+
+if(typeof currentRoom !== 'undefined'){
+	//register user and current room
+	socket.emit('register',user,currentRoom);
+} else {
+	//register user
+	socket.emit('register',user,null);
+}
+
+
 
 //Join room
 socket.emit('join room',roomJoined);
 
-socket.on('receiver private mess',function(data){
-	console.log(data);
-
+socket.on('receiver private mess',function(type,data){
 	// chat 2 nguoi
-	
-    var mydate = new Date(data.created_at);
+	if(type == 'message'){
+	    var mydate = new Date(data.created_at);
 
     var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
     	            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+    if(typeof toUser !== 'undefined'){
+        if(parseInt(data.from) == toUser.id){
+            var stringDivData = ' <div class="lv-item media"> ' + ' <div class="lv-avatar pull-left"> ' +
+                    ' <img src="../storage/avatars/'+ toUser.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+                    ' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
+                    ' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
+            $('.content-message').append(stringDivData);
+        }
+    }
 
-    var stringDivData = ' <div class="lv-item media"> ' + ' <div class="lv-avatar pull-left"> ' +
-    	  	' <img src="../storage/avatars/'+ toUser.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
-    	  	' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
-    	  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
 
-    $('.content-message').append(stringDivData);
+    //cap nhat listUser
+    var pathname = window.location.pathname;
+        var arr_name = pathname.split('/');
+        var name = arr_name[arr_name.length-1];
+    var stringDivUser = '';
+    for(var i = 0; i< data.listUser.length;i++){
+        stringDivUser = stringDivUser + '<div class="lv-item media">'
+                            +'<div class="lv-avatar pull-left">'
+                            +'<img src="/storage/avatars/'+ data.listUser[i].avatar+'" alt="">'
+                            +'</div>'
+                            +'<div class="media-body">'
+                            +'<div class="lv-title">'
+                            +'<a href="/chat/'+data.listUser[i].name+'" title="" style="text-decoration:none;">'
+                            + data.listUser[i].fullname
+                            +'</a>';
+        if(data.listUser[i].notif == 1 && data.listUser[i].name != name){
+            stringDivUser = stringDivUser + '<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>';
+        }
+        stringDivUser = stringDivUser + '</div>'
+        +'<div class="lv-small">'+'@ '+data.listUser[i].name
+        +'</div>'
+        +'</div>'
+        +'</div>';
+    }
+    stringDivUser = stringDivUser + ' <div class="lv-item media">'
+                                     		+'<div class="media-body">'
+                                     			+'<p class="text-center" style="margin: 0px;">'
+                                     				+'<a href="/chat" title="" style="text-decoration:none;">'
+                                     					+'Show All Contacts'
+                                     				+'</a>'
+                                     			+'</p>'
+                                     		+'</div>'
+                                     	+'</div>';
+     $('.listUser').html(stringDivUser);
+
+	} else if( type =='room infor'){
+		console.log(type);
+		console.log(data);
+		
+		var video = $('#myVideo')[0];
+		$("#myVideo source").attr("src",data.src);
+		video.load();
+		video.currentTime = data.currentTime;
+		if(!data.paused){
+			video.play(); 
+		}
+	}
+	
+
 })
 
 //Send private message 
@@ -33,7 +93,6 @@ $.ajaxSetup({
 if($("#btn-reply").length){
 	$('#btn-reply').click(function(){
 		var mess = $('#txt-mess-content').val();
-	  	
 	  	$('#txt-mess-content').val('');
 
 		var request = $.ajax({
@@ -41,7 +100,7 @@ if($("#btn-reply").length){
 			url: '/chat/addprivatemess',
 			data: {'user': user,
 				'toUser': toUser,
-				'message': mess
+				'message': mess,
 			}
 		});
 
@@ -61,7 +120,41 @@ if($("#btn-reply").length){
 
 			$('.content-message').append(stringDivData);
 
-		  	socket.emit('send private message',response);
+
+            //cap nhat listUser
+                var pathname = window.location.pathname;
+                    var arr_name = pathname.split('/');
+                    var name = arr_name[arr_name.length-1];
+                var stringDivUser = '';
+                for(var i = 0; i< response.listUserFrom.length;i++){
+                    stringDivUser = stringDivUser + '<div class="lv-item media">'
+                                        +'<div class="lv-avatar pull-left">'
+                                        +'<img src="/storage/avatars/'+ response.listUserFrom[i].avatar+'" alt="">'
+                                        +'</div>'
+                                        +'<div class="media-body">'
+                                        +'<div class="lv-title">'
+                                        +'<a href="/chat/'+response.listUserFrom[i].name+'" title="" style="text-decoration:none;">'
+                                        + response.listUserFrom[i].fullname
+                                        +'</a>';
+                    stringDivUser = stringDivUser + '</div>'
+                    +'<div class="lv-small">'+'@ '+response.listUserFrom[i].name
+                    +'</div>'
+                    +'</div>'
+                    +'</div>';
+                }
+                stringDivUser = stringDivUser + ' <div class="lv-item media">'
+                                                 		+'<div class="media-body">'
+                                                 			+'<p class="text-center" style="margin: 0px;">'
+                                                 				+'<a href="/chat" title="" style="text-decoration:none;">'
+                                                 					+'Show All Contacts'
+                                                 				+'</a>'
+                                                 			+'</p>'
+                                                 		+'</div>'
+                                                 	+'</div>';
+                 $('.listUser').html(stringDivUser);
+
+
+		  	socket.emit('send private message','message',response);
 		});
 
 		// Callback handler that will be called on failure
@@ -73,7 +166,7 @@ if($("#btn-reply").length){
 
 //Send room message
 if($('#btn-room-reply').length){
-	$('#btn-room-reply').click(function(){
+ 	$('#btn-room-reply').click(function(){
 		var message = $('#mess-content').val();
 
 		//add to database
@@ -122,9 +215,12 @@ if($('#join').length){
 }
 //Leave Event
 if($('#leave-room').length){
-	$('#leave-room').click(function(){
-		//send leave event to others
-		socket.emit('send room message','leave-room',user,currentRoom);
+ 	$('#leave-room').click(function(){
+ 		var result = confirm("Want to leave");
+		if (result) {
+		   	//send leave event to others
+			socket.emit('send room message','leave-room',user,currentRoom);
+		} else return false;
 	});
 }
 
@@ -161,6 +257,18 @@ socket.on('receiver room mess',function(type,sender,data){
         $('.countmember').text(count);
 	} else if ( type == 'notif-join') {
 		alert(data);
+	} else if (type == 'get room infor') {
+		 var video = $('#myVideo')[0];
+		 var data = null;
+		 if(typeof video !== 'undefined'){
+		 	data = new Object;
+		 	data.sender = sender;
+			data.src = $("#myVideo source").attr("src");
+		 	data.paused = video.paused;
+		 	data.currentTime = video.currentTime; 
+		 }
+		 //send back status of room to user
+		socket.emit('send private message','room infor',data);
 	}
 })
 
@@ -192,3 +300,4 @@ if($('#invite-form').length){
 		});
 	});
 }
+
