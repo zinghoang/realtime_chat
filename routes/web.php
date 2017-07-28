@@ -42,8 +42,9 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 		Route::get('/join/{room}', 'RoomController@join')->name('frontend.room.join');
 		Route::get('/leave/{room}', 'RoomController@leave')->name('frontend.room.leave');
-
 		Route::post('/video/{room}', 'RoomController@changeVideo')->name('frontend.room.changeVideo');
+        Route::post('/deleteNotifRoom','RoomController@deleteNotifRoom')->name('deleteNotifRoom');
+        Route::post('/reloadListRoom','RoomController@reloadListRoom')->name('reloadListRoom');
 	});
 
 	Route::group(['prefix' => 'chat'], function(){

@@ -59,7 +59,7 @@
 					</div>
 				</div>
 				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt">
+					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt" onmouseenter="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
 								@if($message->status == 0)
@@ -99,7 +99,7 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="lv-footer ms-reply">
-						<textarea rows="10" placeholder="Write messages..." id="mess-content"></textarea>
+						<textarea rows="10" placeholder="Write messages..." id="mess-content" onclick="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})"></textarea>
 						<button class="" id="btn-room-reply">
 							<span class="glyphicon glyphicon-send"></span>
 						</button>
@@ -183,6 +183,21 @@
     	}
     })
 
+    function deleteNotifRoom(roomid,userid) {
+        $.ajax({
+            url : "{{ route('deleteNotifRoom') }}",
+            type : "post",
+            dataType:"text",
+            data : {
+                'roomid' : roomid,
+                'userid' : userid
+            },
+            success : function (result){
+            },error: function (){
+                alert("Error");
+            }
+        });
+    }
     @endif
 </script>
 @endsection
