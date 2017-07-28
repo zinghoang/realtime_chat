@@ -14,6 +14,9 @@
 					@if(Session::has('danger'))
 	                    <div class="alert alert-danger"><p><strong>{{ Session::get('danger') }}</strong></p></div>
 	                @endif
+	                @if(Session::has('success'))
+	                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
+	                @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
@@ -49,6 +52,16 @@
 										</span>
 									</a>
 									<em>- {{ str_limit($file->user->fullname, 20) }}</em>
+									@if($file->user_id == Auth::id())
+										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form').submit();" style="text-decoration: none;">
+											<span class="glyphicon glyphicon-trash"></span>
+										</a>
+
+										<form id="deletefile-form" action="{{ route('frontend.message.deletefile', $file->id) }}" method="POST" style="display: none;">
+							                <input type="hidden" name="_token" value="GKxqKzD7t6PWbHXtYwgQKa2gcRrHYWxoC3OVInHy">
+							                <input type="hidden" name="_method" value="DELETE">
+							            </form>
+									@endif
 								</li>
 								@endforeach
 								

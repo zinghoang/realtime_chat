@@ -26,6 +26,8 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/room/{room}', 'MessengesController@room')->name('frontend.message.room');
 		
 		Route::post('/room/upload/{room}', 'MessengesController@uploadFile')->name('frontend.message.uploadfile');
+
+		Route::delete('/room/delete-file/{room}', 'MessengesController@deleteFile')->name('frontend.message.deletefile');
 		
 		Route::post('/add-room-message','MessengesController@addRoomMessage');
 	});

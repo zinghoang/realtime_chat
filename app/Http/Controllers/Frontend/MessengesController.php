@@ -116,10 +116,32 @@ class MessengesController extends Controller
         return redirect()->route('frontend.message.room', $id);
     }
 
-    public function deleteFile($id)
-    {
-        $file = File::find($id);
-        dd($file);
+    public function deleteFile($id, Request $request)
+    {        
+        $file = File::findOrFail($id);
+        $room = Room::findOrFail($file->room_id);
+        
+
+        if ($file->user_id != Auth::id() && $room->user_id != Auth::id()) {
+            $request->session()->flash('danger','You must not to do this action!');
+            return redirect()->route('frontend.message.room', $file->room_id);
+        }
+        //Xoa file
+        \Illuminate\Support\Facades\File::delete('storage/media/'.$file->name);
+        
+        //Xoa record trong CSDL
+        $file->delete();
+
+        //add message
+        $message = new Messenges;
+        $message->user_id = Auth::user()->id;
+        $message->room_id = $file->room_id;
+        $message->content = Auth::user()->name . ' has deleted file: ' . $file->title;
+        $message->status = 0;
+        $message->save();
+
+        $request->session()->flash('success','Removed Successful');
+        return redirect()->route('frontend.message.room', $file->room_id);
 
     }
         
