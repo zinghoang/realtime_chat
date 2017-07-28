@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 		Route::get('/join/{room}', 'RoomController@join')->name('frontend.room.join');
 		Route::get('/leave/{room}', 'RoomController@leave')->name('frontend.room.leave');
+		Route::get('/ban/{user}/{room}', 'RoomController@ban')->name('frontend.room.ban');
 
 		Route::post('/video/{room}', 'RoomController@changeVideo')->name('frontend.room.changeVideo');
 	});
