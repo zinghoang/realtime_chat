@@ -16,9 +16,9 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function view(User $user, User $user)
+    public function view(User $user, User $user2)
     {
-        if($user->level == 1){
+        if($user->level == 2){
             return true;
         }
         return false;
@@ -32,7 +32,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        if($user->level){
+        if($user->level === 2){
             return true;
         }
         return false;
@@ -45,9 +45,9 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function update(User $user, User $user)
+    public function update(User $user, User $user2)
     {
-        if($user->level){
+        if($user->level == 2 || $user2->id == $user->id){
             return true;
         }
         return false;
@@ -60,9 +60,9 @@ class UserPolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function delete(User $user, User $user)
+    public function delete(User $user, User $user2)
     {
-        if($user->level){
+        if($user->level == 2){
             return true;
         }
         return false;
