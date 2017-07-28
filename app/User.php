@@ -8,7 +8,7 @@ use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-    use Notifiable, Searchable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -27,11 +27,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    public function searchableAs()
-    {
-        return 'users_index';
-    }
 
     public function roomusers()
     {
