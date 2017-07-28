@@ -94,6 +94,7 @@ class MessengesController extends Controller
         }
 
         //Get name file
+        $nameFileSave = str_replace('.' . $formatFile, '', $nameFileSave);
 
         $file = new File();
         $file->room_id = $id;
