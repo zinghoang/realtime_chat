@@ -113,7 +113,9 @@ class MessengesController extends Controller
         $message->status = 0;
         $message->save();
 
-        return redirect()->route('frontend.message.room', $id);
+        $request->session()->flash('fileUpload',$file->id."|".$file->title."|".$file->type."|".$message->content."|".Auth::user()->fullname);
+
+       return redirect()->route('frontend.message.room', $id);
     }
 
     public function deleteFile($id, Request $request)

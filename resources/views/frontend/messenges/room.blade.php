@@ -43,7 +43,7 @@
 								@foreach ($listFile as $key => $file)
 									
 								<li class="">
-									<a href="javascript:void(0)" class="change-video">
+									<a href="javascript:void(0)" class="change-video" >
 										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
 											{{ $file->id }}
 										</span>
@@ -194,13 +194,28 @@
 	    		vid.play();
 	    	} else if ( action == "pause") {
 	    		vid.pause();
-	    	} 
+	    	} else if ( action == "uploaded") {
+	    		//receiver uploaded file
+	    		console.log(data);
+	    		//add message
+       			$('.room-contentt').append('<div style="padding-left: 30px;">'
+                            +'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>');
+	    		//add to video list
+	    		var videoDiv = '<li class=""> <a href="javascript:void(0)" class="change-video"> <i class="fa fa-play-circle-o" aria-hidden="true"></i><span class="video-id hidden">'+ data[0] + '</span> <span>'+ data[1] + '</span> </a> <em>- '+ data[4] +'</em> </li>';
+
+	    		$('.show-list-video').append(videoDiv);
+	    	}
     	}
     });
 
-
     @endif
-
+    @if(Session::has('fileUpload'))
+		var str = "{!!Session::get('fileUpload') !!}";
+		var fileInfor = str.split("|");
+		console.log(fileInfor);
+		//send to other that file is uploaded
+		socket.emit('send room message','file uploaded',currentRoom,fileInfor);
+    @endif
 
 </script>
 
@@ -210,3 +225,7 @@
 
 @endif
 @endsection
+
+
+
+
