@@ -12,6 +12,7 @@ use App\Room;
 use App\File;
 use Auth;
 use App\Messenges;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests\FileRequest;
@@ -155,15 +156,23 @@ class MessengesController extends Controller
         $message->content = $request['message'];
         $message->status = true;
         $message->save();
+        //xoa thong bao tu room, neu co
+        $notif = NotifRoom::where('roomid','=',$message->room_id)
+                            ->where('userid','=',Auth::user()->id)
+                            ->first();
+        if ($notif != null){
+            $notif = NotifRoom::findOrFail($notif->id);
+            $notif->delete();
+        }
         //1- gui thong bao den cac thanh vien trong room
             $user_ids = RoomUser::where('room_id','=',$request['room']['id'])
                                     ->where('user_id','!=',Auth::user()->id)
                                     ->select('user_id')->get();
-            foreach ($user_ids as $user_id){
-                $notifRoom = NotifRoom::where('roomid','=',$request['room']['id'])
-                                        ->where('userid','=',$user_id->user_id)
-                                        ->first();
-                if($notifRoom == null){
+            foreach ($user_ids as $user_id) {
+                $notifRoom = NotifRoom::where('roomid', '=', $request['room']['id'])
+                    ->where('userid', '=', $user_id->user_id)
+                    ->first();
+                if ($notifRoom == null) {
                     $notifRoom = new NotifRoom;
                     $notifRoom->roomid = $request['room']['id'];
                     $notifRoom->userid = $user_id->user_id;
@@ -171,7 +180,32 @@ class MessengesController extends Controller
                     $notifRoom->save();
                 }
             }
-        //end -1
+        //cap nhat list room cua user gui~
+        $listRoomFrom = DB::table('rooms')
+            ->join('room_users','rooms.id','=','room_users.room_id')
+            ->join('messenges','rooms.id','=','messenges.room_id')
+            ->where('room_users.user_id','=',Auth::user()->id)
+            ->orderBy('messenges.created_at','DESC')
+            ->select('rooms.id')->get();
+        $arr_roomid = array();
+        foreach ($listRoomFrom as $room){
+            array_push($arr_roomid,$room->id);
+        }
+        $arr_roomid = array_unique($arr_roomid);
+        $arr_roomid = array_slice($arr_roomid,0,3);
+        $roomsFrom = new Collection();
+        foreach ($arr_roomid as $roomid){
+            $room = Room::findOrFail($roomid);
+            if($room != null){
+                $notifRoom = NotifRoom::where('roomid','=',$roomid)
+                    ->where('userid','=',$request['user']['id'])
+                    ->first();
+                $notifRoom != null ? $room->notif = 1 : $room->notif = 0;
+                $roomsFrom->push($room);
+            }
+        }
+        $message->roomsFrom = $roomsFrom;
+
         $message->content = self::getNewContent($message->content);
         $avatar = User::where('id','=',$message->user_id)->select('avatar')->first();
         $message->avatar = $avatar->avatar;

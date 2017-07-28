@@ -9,11 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class FileController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('CheckAdmin');
-    }    /**
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -36,7 +38,7 @@ class FileController extends Controller
      */
     public function create()
     {
-        return view('backend.files.create');
+        
     }
 
     /**
@@ -65,7 +67,11 @@ class FileController extends Controller
             ->select('files.*','users.fullname','rooms.name as roomname')
             ->get();
 
-        return view('backend.files.show')->with('file',$file);
+        if (!isset($file[0])) {
+            abort(404);
+        }    
+
+        return view('backend.files.show')->with('file', $file);
     }
 
     /**
@@ -100,11 +106,14 @@ class FileController extends Controller
     public function destroy(Request $request,$id)
     {
         $file = File::findOrFail($id);
-        //Xoa file
+        
+        //Delete file
         \Illuminate\Support\Facades\File::delete('storage/media/'.$file->name);
-        //Xoa record trong CSDL
+        
+        //Delete record in database
         $file->delete();
         $request->session()->flash('success','Removed Successful');
+
         return redirect()->route("files.index");
     }
 }

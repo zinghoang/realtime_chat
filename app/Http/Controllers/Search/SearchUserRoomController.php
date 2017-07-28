@@ -24,33 +24,6 @@ class SearchUserRoomController extends Controller
         $rooms = Room::whereRaw('name LIKE "%'.$nameSeach.'%"')
             ->take(10)->get();
 
-        return view('frontend.search.users', compact('users', 'nameSeach', 'rooms'));
-    }
-
-
-    public function inviteUser(Request $request){
-        $status = "failed";
-    	$username = $request['username'];
-    	$user = User::where('name','=',$username)->first();
-        
-    	if($user){
-
-    	    $status = "success";
-
-            Messenges::create([
-                'user_id' => Auth::id(),
-                'room_id' => $request['room_id'], 
-                'content' => Auth::user()->name . ' invited ' . $user->name . ' into this room.',
-                'status' => false
-            ]);
-
-            RoomUser::create([
-                'user_id' => $user->id,
-                'room_id' =>$request['room_id']
-            ]);
-		}
-        $room = Room::find($request['room_id']);
-
-    	return ['user'=> $user,'status' => $status,'room' => $room ];
-    }
+        return view('frontend.search.users-room', compact('users', 'nameSeach', 'rooms'));
+    }   
 }

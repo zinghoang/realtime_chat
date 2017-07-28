@@ -60,8 +60,9 @@
                             <div class="col-sm-6">
                                 <label for="level">Level:</label>
                                 <select name="level" id="level" class="form-control">
-                                    <option value="1" @if($user->level) selected="selected" @endif>Admin</option>
-                                    <option value="0" @if(!$user->level) selected="selected" @endif>User</option>
+                                    <option value="2" @if($user->level == 2) selected="selected" @endif>Super Admin</option>
+                                    <option value="1" @if($user->level == 1) selected="selected" @endif>Admin</option>
+                                    <option value="0" @if($user->level == 0) selected="selected" @endif>User</option>
                                 </select>
                             </div>
                             <div class="clearfix"></div>
@@ -72,8 +73,9 @@
                                 <label for="avatar">Avatar:</label>
                                 <input class="form-control" name="avatar" type="file" id="avatar" onchange="viewImg(this)">
                                 <br>
-                                <p><img id="avartar-img-show" src="{{ url("storage/avatars/$user->avatar") }}" alt="avatar" class="img-responsive" width="100px" height="100px"></p>
+                                <p><img id="avartar-img-show" src="{{ url('storage/avatars/' . $user->avatar) }}" alt="avatar" class="img-responsive" width="100px" height="100px"></p>
                             </div>
+                            
                             <div class="clearfix"></div>
                         </div>
                         <div class="form-group">
