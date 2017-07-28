@@ -44,7 +44,9 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->fullname }}</td>
                                     <td>
-                                        @if($user->level)
+                                        @if($user->level == 2)
+                                            Super Admin
+                                        @elseif($user->level == 1)
                                             Admin
                                         @else
                                             User

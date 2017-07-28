@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
             'email' => 'required|email|min:10|max:200|unique:users',
             'password' => 'required|min:6|max:32|confirmed',
             'fullname' => 'required|min:2|max:100',
-            'level' => 'required|numeric|integer|between:0,1'
+            'level' => 'required|numeric|integer|between:0,2'
         ];
     }
 }
