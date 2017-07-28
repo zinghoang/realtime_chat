@@ -9,13 +9,6 @@ class File extends Model
 {
     protected $fillable = ['name', 'room_id', 'type', 'title', ];
 
-    use Searchable;
-    
-    public function searchableAs()
-    {
-        return 'files_index';
-    }
-
     public function room()
     {
     	return $this->belongsTo('App\Room');

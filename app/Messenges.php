@@ -7,14 +7,7 @@ use Laravel\Scout\Searchable;
 
 class Messenges extends Model
 {
-	use Searchable;
-
-    protected $fillable = ['user_id', 'room_id', 'content','status'];
-
-    public function searchableAs()
-    {
-        return 'messengeses_index';
-    }
+    protected $fillable = ['user_id', 'room_id', 'content','status'];   
 
     public function user()
     {

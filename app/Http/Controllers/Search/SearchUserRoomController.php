@@ -24,9 +24,6 @@ class SearchUserRoomController extends Controller
         $rooms = Room::whereRaw('name LIKE "%'.$nameSeach.'%"')
             ->take(10)->get();
 
-        return view('frontend.search.users', compact('users', 'nameSeach', 'rooms'));
-    }
-
-
-    
+        return view('frontend.search.users-room', compact('users', 'nameSeach', 'rooms'));
+    }   
 }
