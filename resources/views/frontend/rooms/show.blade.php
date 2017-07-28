@@ -25,7 +25,9 @@
 											@ {{ $member->user->name }}
 
 											@if($room->user_id == Auth::id())
-												<a href="{{ route('frontend.room.ban', ['user' => $member->user->id, 'room' => $room->id]) }}">Ban</a>
+												<a href="{{ route('frontend.room.ban', ['user' => $member->user->id, 'room' => $room->id]) }}" class="delete-member">
+													<i class="fa fa-times-circle" aria-hidden="true"></i>
+												</a>
 											@endif
 										</div>
 									</div>

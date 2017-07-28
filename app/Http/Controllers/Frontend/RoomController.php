@@ -14,7 +14,6 @@ use App\User;
 use App\Messenges;
 use Auth;
 
-
 class RoomController extends Controller
 {
     function __construct()
@@ -70,16 +69,47 @@ class RoomController extends Controller
         return view('frontend.rooms.show', compact('isJoin', 'room', 'listMemberOrRoom'));
     }
 
-    public function invite($id)
-    {
-    	//
+    public function inviteUser(Request $request){
+        $status = "failed";
+        $username = $request['username'];
+        $user = User::where('name','=',$username)->first();
+
+        
+        if($user){
+
+            //Kiem tra user da ton tai trong room
+
+            $roomUser = RoomUser::where('user_id', $user->id)->where('room_id', $request['room_id'])->first();
+            if($roomUser == null){
+
+
+                $status = "success";
+
+                Messenges::create([
+                    'user_id' => Auth::id(),
+                    'room_id' => $request['room_id'], 
+                    'content' => Auth::user()->name . ' invited ' . $user->name . ' into this room.',
+                    'status' => false
+                ]);
+
+                RoomUser::create([
+                    'user_id' => $user->id,
+                    'room_id' =>$request['room_id']
+                ]);
+            }else{
+                $status = "success";
+            }
+           
+        }
+        $room = Room::find($request['room_id']);
+
+        return ['user'=> $user,'status' => $status,'room' => $room ];
     }
 
     public function ban($user_id, $room_id, Request $request)
     {
         $room = Room::findOrFail($room_id);
         $user = User::findOrFail($user_id);
-
 
 
         //Khong phai chu phong thi ko cos quyen
