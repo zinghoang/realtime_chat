@@ -59,7 +59,7 @@ class MessengesController extends Controller
     	return view('frontend.messenges.room', compact('isJoin', 'room','messages','listFile', 'countMember'));
     }
 
-    public function uploadFile(FileRequest $request, $id)
+    public function uploadFile(Request $request, $id)
     {
         //Check Join the room
         $checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
@@ -68,28 +68,37 @@ class MessengesController extends Controller
             return redirect()->route('frontend.message.room', $id);
         }
 
+        //Get name file 
+        $nameFileSave = $request->file('title')->getClientOriginalName();
+        $ar_name_file = explode('.', $nameFileSave);
+        $formatFile = end($ar_name_file);
+
+        //check file
+        if ($formatFile != 'mp4' && $formatFile != 'avi' && $formatFile != 'mp3' && $formatFile != 'mpga' && $formatFile != 'mpeg') {
+            
+            $request->session()->flash('danger', 'The title must be a file of type: mp4, avi, mp3.');
+            
+            return redirect()->route('frontend.message.room', $id);
+        }
+
+        //Save file
         $name = $request->file('title')->store('public/media');
-        $ar_name = explode('/', $name);
-        $nameFile = end($ar_name);
 
-        $fileType = explode('.', $nameFile);
-        $formatFile = end($fileType);
-
+        //Get type of file
         if ($formatFile === 'mp4' || $formatFile === 'avi') {
             $type = 'video';
-        }elseif ($formatFile === 'mp3') {
+        }elseif ($formatFile === 'mpga' || $formatFile === 'mpga') {
             $type = 'sound';
         }else{
             $type = 'nas';
         }
 
         //Get name file
-        $nameFileSave = $request->file('title')->getClientOriginalName();
         $nameFileSave = str_replace('.' . $formatFile, '', $nameFileSave);
 
         $file = new File();
         $file->room_id = $id;
-        $file->name = $nameFile;
+        $file->name = $name;
         $file->type = $type;
         $file->title = $nameFileSave;
         $file->user_id = Auth::id();

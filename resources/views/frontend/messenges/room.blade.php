@@ -11,11 +11,9 @@
 
 			        
 				<div class="col-md-7">
-				@if($errors->count()>0)
-				    	@foreach($errors->all() as $error)
-		                    <div class="alert alert-danger" style="margin: 5px 10px 5px 5px;"><p><strong>{{ $error }}</strong></p></div>
-		                @endforeach
-			        @endif
+					@if(Session::has('danger'))
+	                    <div class="alert alert-danger"><p><strong>{{ Session::get('danger') }}</strong></p></div>
+	                @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
@@ -122,11 +120,13 @@
 	</div>
 </div>
 @endsection
+
 @section('script2')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
 </script>
 @endsection
+
 @section('endscript')
 <script>
 	@if($isJoin == 1)
@@ -181,8 +181,16 @@
     	} else if ( action == "pause") {
     		vid.pause();
     	}
-    })
+    });
 
     @endif
+
+
 </script>
+
+@if($isJoin == 1)
+<script src="{{ asset('js/jquery.validate.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/validate.js') }}" type="text/javascript"></script>
+
+@endif
 @endsection
