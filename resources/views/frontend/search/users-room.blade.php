@@ -24,20 +24,9 @@
 				<div class="col-md-12">
 				
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
-						@if(1 == 0)
 						<div class="row">
 							<div class="col-md-12">
-			                    <div class="border text-center">
-			                        <span style="font-size: 360px; color: #cccccc;">
-			                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
-			                        </span>
-			                    </div>
-			                </div>
-						</div>
-						@else
-						<div class="row">
-							<div class="col-md-12">
-								<h5 class="text-center">USER RESULT OF "{{ $nameSeach }}"</h5>
+								<h5 class="text-center">User Result Of "{{ $nameSeach }}"</h5>
 								<hr>
 							</div>
 							@if($users->count()>0)
@@ -62,45 +51,29 @@
 								</div>
 		                    @endif
 						</div>
-						@endif
-					</div>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-
-		<div class="lv-body">
-			<div class="row content-chat-video">
-				<div class="col-md-12">
-				
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
-						@if(1 == 0)
+						
 						<div class="row">
 							<div class="col-md-12">
-			                    <div class="border text-center">
-			                        <span style="font-size: 360px; color: #cccccc;">
-			                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
-			                        </span>
-			                    </div>
-			                </div>
-						</div>
-						@else
-						<div class="row">
-							<div class="col-md-12">
-								<h5 class="text-center">ROOM RESULT OF "{{ $nameSeach }}"</h5>
+								<hr>
+								<h5 class="text-center">Room Result Of "{{ $nameSeach }}"</h5>
 								<hr>
 							</div>
 							@if($rooms->count()>0)
                         		@foreach($rooms as $key => $room)
+
 									<div class="col-md-4 col-md-offset-2">
 										<div class="lv-item media ">
-											<div class="lv-avatar pull-left"></div>
+											<a href="{{ route('frontend.message.room', $room->id) }}" title="{{ $room->name }}" style="text-decoration:none;">
+											<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
 											<div class="media-body">
-												<div class="lv-small">@ {{ $room->name }}</div>
+												<div class="lv-title">{{ $room->name }}</div>
+												<div class="lv-small">Click here to continue</div>
 											</div>
 											</a>
 										</div>
 									</div>	
+
+
 								@endforeach
 		                    @else
 								<div class="col-md-8 col-md-offset-2">
@@ -110,7 +83,6 @@
 								</div>
 		                    @endif
 						</div>
-						@endif
 					</div>
 				</div>
 				<div class="clearfix"></div>
