@@ -27,7 +27,7 @@
 		</div>
 	</div>
 	<div class="ms-block"> 
-		<form action="{{ route('SearchUser') }}" method="get">
+		<form action="{{ route('SearchUserRoom') }}" method="get">
 			<div class="form-group">
 				<input type="text" name="search" class="form-control" id="name" placeholder="Search" value="{{ old('search') }}">
 			</div>
