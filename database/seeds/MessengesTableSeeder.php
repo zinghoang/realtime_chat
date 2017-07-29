@@ -288,7 +288,7 @@ class MessengesTableSeeder extends Seeder
 
         //Some message
         DB::table('messenges')->insert([
-            'user_id' => '5',
+            'user_id' => '4',
             'room_id' => '4',
             'content' => 'In aute nulla excepturi id laborum blanditiis',
             'status' => '1',
@@ -316,7 +316,7 @@ class MessengesTableSeeder extends Seeder
 
         //Some message
         DB::table('messenges')->insert([
-            'user_id' => '5',
+            'user_id' => '1',
             'room_id' => '6',
             'content' => 'Quisquam est omnis esse qui eligendi sit est dolores ullamco',
             'status' => '1',
