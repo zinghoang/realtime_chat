@@ -34,6 +34,18 @@
 		</form>
 	</div>
 	<hr/>
+	<div class="listview lv-user m-t-20">
+		<div class="lv-item media {{ Request::is('friend-request') ? 'active' : '' }}">
+		<div class="media-body">
+			<p class="text-center" style="margin: 0px;">
+				<a href="{{ route('frontend.private.request') }}" title="" style="text-decoration:none;">
+					View List Friend Request
+				</a>
+			</p>
+		</div>
+	</div>
+	<hr/>
+	</div>
 	<div class="listview lv-user m-t-20 listRoom">
 		@widget('listRoomChat')
 	</div>

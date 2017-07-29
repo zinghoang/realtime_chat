@@ -20,7 +20,7 @@
 	<div class="media-body">
 		<p class="text-center" style="margin: 0px;">
 			<a href="{{ route('frontend.room.index') }}" title="" style="text-decoration:none;">
-				SHOW ALL ROOMS
+				Show More Rooms...
 			</a>
 		</p>
 	</div>
