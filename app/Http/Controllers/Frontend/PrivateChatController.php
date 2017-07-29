@@ -311,5 +311,36 @@ class PrivateChatController extends Controller
 
         return view('frontend.privatechat.friendrequest', compact('friendRequests', 'friendWaitAccept'));
     }
+
+    public function friend()
+    {
+        $friendRequests = DB::table('friendship')
+            ->join('users', 'user_request', '=', 'users.id')
+            ->where('user_accept', Auth::id())
+            ->where('status', 1)
+            ->select('friendship.id as fid', 'users.name', 'users.fullname', 'users.id', 'users.avatar')
+            ->get()->toArray();
+
+        $friendAccepts = DB::table('friendship')
+            ->join('users', 'user_accept', '=', 'users.id')
+            ->where('user_request', Auth::id())
+            ->where('status', 1)
+            ->select('friendship.id as fid', 'users.name', 'users.fullname', 'users.id', 'users.avatar')
+            ->get();    
+
+        $friends = [];
+
+        foreach ($friendRequests as $key => $friendRequest) {
+            $friends[] = $friendRequest;
+        }
+
+        foreach ($friendAccepts as $key => $friendAccept) {
+            $friends[] = $friendAccept;
+        }
+
+        
+
+        return view('frontend.privatechat.friend', compact('friends'));
+    }
 }
  
