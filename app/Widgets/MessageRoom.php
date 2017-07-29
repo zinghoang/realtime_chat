@@ -35,7 +35,7 @@ class MessageRoom extends AbstractWidget
         $listMemberOrRoom = RoomUser::where('room_id', $id)->get()->toArray();
         $countMember = count($listMemberOrRoom);
 
-        return view('widgets.message_room', [
+        return view('frontend.layouts.widgets.message_room', [
             'config' => $this->config,
             'room' => $room,
             'isJoin' => $isJoin,

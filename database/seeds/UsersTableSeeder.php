@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('123456'),
             'remember_token' => NULL,
             'fullname' => 'Administrator',
-            'level' => 1,
+            'level' => 2,
             'avatar' => '7iinUelyHGVYeIWGRZOKEl2yMzbUTcHxNnmPESgK.png',
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s")

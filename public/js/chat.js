@@ -195,6 +195,41 @@ if($('#btn-room-reply').length){
             +' </small> '+' </div> '+' </div> ';
             $('.room-contentt').append(stringDivData);
 
+            //cap nhat listRoom
+            	    var stringDivRooms = '';
+            	    for( var i=0;i<response.roomsFrom.length;i++){
+                        if(i==0){
+                            stringDivRooms = stringDivRooms + ' <div class="lv-item media active"> '
+                        }else{
+                            stringDivRooms = stringDivRooms + ' <div class="lv-item media"> '
+                        }
+            	        stringDivRooms = stringDivRooms +' <div class="lv-avatar pull-left"> '
+            	                                                    +' <img src="../../images/home.png" alt=""> '
+            	                                                +' </div> '
+                                                           		+' <div class="media-body"> '
+                                                           			+' <div class="lv-title"> '
+                                                           			+' <a href="/message/room/'+response.roomsFrom[i].id+'" title="" style="text-decoration:none;"> '
+                                                           			+ response.roomsFrom[i].name
+                                                           			+' </a> ';
+                        if(response.roomsFrom[i].notif == 1){
+                            stringDivRooms = stringDivRooms + ' <i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i> ';
+                        }
+                        stringDivRooms = stringDivRooms + '</div>'
+                                                           			+' <div class="lv-small"> Click here to chat... </div> '
+                                                           		+' </div> '
+                                                           +' </div> ';
+            	    }
+            	    stringDivRooms = stringDivRooms + ' <div class="lv-item media"> '
+            	                                        +' <div class="media-body"> '
+            	                                            +' <p class="text-center" style="margin: 0px;"> '
+            	                                                +' <a href="/room" title="" style="text-decoration:none;"> '
+            	                                                    +'SHOW ALL ROOMS'
+                                                       			+' </a> '
+                                                       		+' </p> '
+                                                       	+' </div></div> ';
+                    $('.listRoom').html(stringDivRooms);
+
+
             socket.emit('send room message','message',user,response);
 		});
 
@@ -241,6 +276,22 @@ socket.on('receiver room mess',function(type,sender,data){
 	                +' </small> '+' </div> '+' </div> ';
 
 	    $('.room-contentt').append(stringDivData);
+
+        $.ajax({
+                    url : "/room/reloadListRoom",
+                    type : "post",
+                    dataType:"text",
+                    data : {
+
+                    },
+                    success : function (result){
+                        $('.listRoom').html(result);
+                    },
+                    error: function () {
+                        alert("Error");
+                    }
+                });
+
 	} else if ( type == 'notif') {
 		console.log(sender);
 		console.log(data); //join - leave

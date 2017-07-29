@@ -20,7 +20,9 @@ io.on('connection',function(socket){
 		} else if(type == 'leave-room') {
 			socket.broadcast.to('room-'+data.id).emit('receiver room mess','notif',sender,sender.name + ' has left this room');
 			socket.leave('room-'+data.id);
-		}
+		} else if (type == 'file uploaded') {
+			socket.broadcast.to('room-'+sender.id).emit('receiver action','video',sender,'uploaded',data);
+ 		}
 	
 	});
 
@@ -35,12 +37,12 @@ io.on('connection',function(socket){
 
 	socket.on('send action',function(type,currentRoom,data,action){
 		if(action == 'load'){
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,action,data);
+			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
 		} else if (action == 'play') {
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,action,data);
+			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
 		} else if (action == 'pause') {
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,action,data);
-		}
+			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
+		} 
 	});
 
 	//Invite User Join Room

@@ -7,8 +7,6 @@ use Laravel\Scout\Searchable;
 
 class PrivateMessage extends Model
 {
-	use Searchable;
-
 	protected $table = 'privates';
 	
     protected $fillable = ['from', 'to', 'content', ];
@@ -16,10 +14,5 @@ class PrivateMessage extends Model
     public function user()
     {
     	return $this->belongsTo('App\User');
-    }
-
-    public function searchableAs()
-    {
-        return 'privates_index';
     }
 }

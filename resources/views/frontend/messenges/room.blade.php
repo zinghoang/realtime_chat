@@ -11,11 +11,12 @@
 
 			        
 				<div class="col-md-7">
-				@if($errors->count()>0)
-				    	@foreach($errors->all() as $error)
-		                    <div class="alert alert-danger" style="margin: 5px 10px 5px 5px;"><p><strong>{{ $error }}</strong></p></div>
-		                @endforeach
-			        @endif
+					@if(Session::has('danger'))
+	                    <div class="alert alert-danger"><p><strong>{{ Session::get('danger') }}</strong></p></div>
+	                @endif
+	                @if(Session::has('success'))
+	                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
+	                @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
@@ -42,7 +43,7 @@
 								@foreach ($listFile as $key => $file)
 									
 								<li class="">
-									<a href="javascript:void(0)" class="change-video">
+									<a href="javascript:void(0)" class="change-video" >
 										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
 											{{ $file->id }}
 										</span>
@@ -51,6 +52,16 @@
 										</span>
 									</a>
 									<em>- {{ str_limit($file->user->fullname, 20) }}</em>
+									@if($file->user_id == Auth::id())
+										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form').submit();" style="text-decoration: none;">
+											<span class="glyphicon glyphicon-trash"></span>
+										</a>
+
+										<form id="deletefile-form" action="{{ route('frontend.message.deletefile', $file->id) }}" method="POST" style="display: none;">
+							                {{ csrf_field() }}
+							                <input type="hidden" name="_method" value="DELETE">
+							            </form>
+									@endif
 								</li>
 								@endforeach
 								
@@ -59,7 +70,7 @@
 					</div>
 				</div>
 				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt">
+					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt" onmouseenter="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
 								@if($message->status == 0)
@@ -99,7 +110,7 @@
 					</div>
 					<div class="clearfix"></div>
 					<div class="lv-footer ms-reply">
-						<textarea rows="10" placeholder="Write messages..." id="mess-content"></textarea>
+						<textarea rows="10" placeholder="Write messages..." id="mess-content" onclick="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})"></textarea>
 						<button class="" id="btn-room-reply">
 							<span class="glyphicon glyphicon-send"></span>
 						</button>
@@ -122,11 +133,13 @@
 	</div>
 </div>
 @endsection
+
 @section('script2')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
 </script>
 @endsection
+
 @section('endscript')
 <script>
 	@if($isJoin == 1)
@@ -169,20 +182,65 @@
    		//whatever you want to do
    		socket.emit('send action','video',currentRoom,null,'pause');
 	});
+	
+    socket.on('receiver action',function(type,room,action,data){
+    	var vid = $('#myVideo')[0];
+    	if(currentRoom.id == room.id){
+    		if( action == 'load'){
+				console.log(data);
+				$("#myVideo source").attr("src",data)
+				vid.load();
+	    	} else if ( action == 'play') {
+	    		vid.play();
+	    	} else if ( action == "pause") {
+	    		vid.pause();
+	    	} else if ( action == "uploaded") {
+	    		//receiver uploaded file
+	    		console.log(data);
+	    		//add message
+       			$('.room-contentt').append('<div style="padding-left: 30px;">'
+                            +'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>');
+	    		//add to video list
+	    		var videoDiv = '<li class=""> <a href="javascript:void(0)" class="change-video"> <i class="fa fa-play-circle-o" aria-hidden="true"></i><span class="video-id hidden">'+ data[0] + '</span> <span>'+ data[1] + '</span> </a> <em>- '+ data[4] +'</em> </li>';
 
-    socket.on('receiver action',function(type,action,data){
-    	var vid = document.getElementById("myVideo");
-    	if( action == 'load'){
-			console.log(data);
-			$("#myVideo source").attr("src",data)
-			vid.load();
-    	} else if ( action == 'play') {
-    		vid.play();
-    	} else if ( action == "pause") {
-    		vid.pause();
+	    		$('.show-list-video').append(videoDiv);
+	    	}
     	}
-    })
+    });
 
+    function deleteNotifRoom(roomid,userid) {
+        $.ajax({
+            url : "{{ route('deleteNotifRoom') }}",
+            type : "post",
+            dataType:"text",
+            data : {
+                'roomid' : roomid,
+                'userid' : userid
+            },
+            success : function (result){
+            },error: function (){
+                alert("Error");
+            }
+        });
+    }
     @endif
+    @if(Session::has('fileUpload'))
+		var str = "{!!Session::get('fileUpload') !!}";
+		var fileInfor = str.split("|");
+		console.log(fileInfor);
+		//send to other that file is uploaded
+		socket.emit('send room message','file uploaded',currentRoom,fileInfor);
+    @endif
+
 </script>
+
+@if($isJoin == 1)
+<script src="{{ asset('js/jquery.validate.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/validate.js') }}" type="text/javascript"></script>
+
+@endif
 @endsection
+
+
+
+

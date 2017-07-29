@@ -59,8 +59,9 @@
                             <div class="col-sm-6">
                                 <label for="level">Level:</label>
                                 <select name="level" id="level" class="form-control">
+                                    <option value="2">Super Admin</option>
                                     <option value="1">Admin</option>
-                                    <option value="0">User</option>
+                                    <option value="0" selected>User</option>
                                 </select>
                             </div>
                             <div class="clearfix"></div>

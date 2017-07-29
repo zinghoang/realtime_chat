@@ -29,7 +29,6 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Image</th>
-                                    <th>File Name</th>
                                     <th>Code</th>
                                     <th class="text-center" colspan="3">Action</th>
                                 </tr>
@@ -42,7 +41,6 @@
                                 <tr>
                                     <td>{{ $emotion->name }}</td>
                                     <td><img src="{{ url("storage/emotions/$emotion->image") }}" width="30px"></td>
-                                    <td>{{ $emotion->image }}</td>
                                     <td>{{ $emotion->code }}</td>
                                     <td class="text-center">
                                         <form method="POST" action="{{ route('emotions.destroy', $emotion->id) }}" accept-charset="UTF-8">

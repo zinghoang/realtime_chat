@@ -28,8 +28,6 @@
                             {{ csrf_field() }}
                         </form>
                     </div>
-
-
                 </li>
             </ul>
         </li>

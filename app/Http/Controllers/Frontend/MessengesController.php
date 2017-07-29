@@ -12,6 +12,7 @@ use App\Room;
 use App\File;
 use Auth;
 use App\Messenges;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests\FileRequest;
@@ -59,7 +60,7 @@ class MessengesController extends Controller
     	return view('frontend.messenges.room', compact('isJoin', 'room','messages','listFile', 'countMember'));
     }
 
-    public function uploadFile(FileRequest $request, $id)
+    public function uploadFile(Request $request, $id)
     {
         //Check Join the room
         $checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
@@ -68,23 +69,34 @@ class MessengesController extends Controller
             return redirect()->route('frontend.message.room', $id);
         }
 
+        //Get name file 
+        $nameFileSave = $request->file('title')->getClientOriginalName();
+        $ar_name_file = explode('.', $nameFileSave);
+        $formatFile = end($ar_name_file);
+
+        //check file
+        if ($formatFile != 'mp4' && $formatFile != 'avi' && $formatFile != 'mp3' && $formatFile != 'mpga' && $formatFile != 'mpeg') {
+            
+            $request->session()->flash('danger', 'The title must be a file of type: mp4, avi, mp3.');
+            
+            return redirect()->route('frontend.message.room', $id);
+        }
+
+        //Save file
         $name = $request->file('title')->store('public/media');
         $ar_name = explode('/', $name);
         $nameFile = end($ar_name);
 
-        $fileType = explode('.', $nameFile);
-        $formatFile = end($fileType);
-
+        //Get type of file
         if ($formatFile === 'mp4' || $formatFile === 'avi') {
             $type = 'video';
-        }elseif ($formatFile === 'mp3') {
+        }elseif ($formatFile === 'mpga' || $formatFile === 'mpga') {
             $type = 'sound';
         }else{
             $type = 'nas';
         }
 
         //Get name file
-        $nameFileSave = $request->file('title')->getClientOriginalName();
         $nameFileSave = str_replace('.' . $formatFile, '', $nameFileSave);
 
         $file = new File();
@@ -102,7 +114,38 @@ class MessengesController extends Controller
         $message->status = 0;
         $message->save();
 
-        return redirect()->route('frontend.message.room', $id);
+        $request->session()->flash('fileUpload',$file->id."|".$file->title."|".$file->type."|".$message->content."|".Auth::user()->fullname);
+
+       return redirect()->route('frontend.message.room', $id);
+    }
+
+    public function deleteFile($id, Request $request)
+    {        
+        $file = File::findOrFail($id);
+        $room = Room::findOrFail($file->room_id);
+        
+
+        if ($file->user_id != Auth::id() && $room->user_id != Auth::id()) {
+            $request->session()->flash('danger','You must not to do this action!');
+            return redirect()->route('frontend.message.room', $file->room_id);
+        }
+        //Xoa file
+        \Illuminate\Support\Facades\File::delete('storage/media/'.$file->name);
+        
+        //Xoa record trong CSDL
+        $file->delete();
+
+        //add message
+        $message = new Messenges;
+        $message->user_id = Auth::user()->id;
+        $message->room_id = $file->room_id;
+        $message->content = Auth::user()->name . ' has deleted file: ' . $file->title;
+        $message->status = 0;
+        $message->save();
+
+        $request->session()->flash('success','Removed Successful');
+        return redirect()->route('frontend.message.room', $file->room_id);
+
     }
         
     public function addRoomMessage(Request $request){
@@ -113,15 +156,23 @@ class MessengesController extends Controller
         $message->content = $request['message'];
         $message->status = true;
         $message->save();
+        //xoa thong bao tu room, neu co
+        $notif = NotifRoom::where('roomid','=',$message->room_id)
+                            ->where('userid','=',Auth::user()->id)
+                            ->first();
+        if ($notif != null){
+            $notif = NotifRoom::findOrFail($notif->id);
+            $notif->delete();
+        }
         //1- gui thong bao den cac thanh vien trong room
             $user_ids = RoomUser::where('room_id','=',$request['room']['id'])
                                     ->where('user_id','!=',Auth::user()->id)
                                     ->select('user_id')->get();
-            foreach ($user_ids as $user_id){
-                $notifRoom = NotifRoom::where('roomid','=',$request['room']['id'])
-                                        ->where('userid','=',$user_id->user_id)
-                                        ->first();
-                if($notifRoom == null){
+            foreach ($user_ids as $user_id) {
+                $notifRoom = NotifRoom::where('roomid', '=', $request['room']['id'])
+                    ->where('userid', '=', $user_id->user_id)
+                    ->first();
+                if ($notifRoom == null) {
                     $notifRoom = new NotifRoom;
                     $notifRoom->roomid = $request['room']['id'];
                     $notifRoom->userid = $user_id->user_id;
@@ -129,7 +180,32 @@ class MessengesController extends Controller
                     $notifRoom->save();
                 }
             }
-        //end -1
+        //cap nhat list room cua user gui~
+        $listRoomFrom = DB::table('rooms')
+            ->join('room_users','rooms.id','=','room_users.room_id')
+            ->join('messenges','rooms.id','=','messenges.room_id')
+            ->where('room_users.user_id','=',Auth::user()->id)
+            ->orderBy('messenges.created_at','DESC')
+            ->select('rooms.id')->get();
+        $arr_roomid = array();
+        foreach ($listRoomFrom as $room){
+            array_push($arr_roomid,$room->id);
+        }
+        $arr_roomid = array_unique($arr_roomid);
+        $arr_roomid = array_slice($arr_roomid,0,3);
+        $roomsFrom = new Collection();
+        foreach ($arr_roomid as $roomid){
+            $room = Room::findOrFail($roomid);
+            if($room != null){
+                $notifRoom = NotifRoom::where('roomid','=',$roomid)
+                    ->where('userid','=',$request['user']['id'])
+                    ->first();
+                $notifRoom != null ? $room->notif = 1 : $room->notif = 0;
+                $roomsFrom->push($room);
+            }
+        }
+        $message->roomsFrom = $roomsFrom;
+
         $message->content = self::getNewContent($message->content);
         $avatar = User::where('id','=',$message->user_id)->select('avatar')->first();
         $message->avatar = $avatar->avatar;
