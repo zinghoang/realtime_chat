@@ -115,7 +115,7 @@ class RoomController extends Controller
 
 
         //Khong phai chu phong thi ko cos quyen
-        if ($room->id != Auth::id()) {
+        if ($room->user_id != Auth::id()) {
             $request->session()->flash('danger','You must not to do this action!');
             return redirect()->route('frontend.room.show', $room_id);
         }
@@ -124,6 +124,7 @@ class RoomController extends Controller
         if ($user_id == Auth::id()) {
             return $this->leave($room_id);
         }
+
 
         $roomUser = RoomUser::where('user_id', $user_id)->where('room_id', $room_id)->first();
         $roomUser->delete();
