@@ -39,7 +39,7 @@
                                 <tr>
                                     <td>{{ $room->name }}</td>
                                     <td class="text-center">
-                                            <form method="POST" action="{{ route('rooms.destroy',$room->id) }}" accept-charset="UTF-8">
+                                        <form method="POST" action="{{ route('rooms.destroy',$room->id) }}" accept-charset="UTF-8">
                                             {{ csrf_field() }}
                                             <input name="_method" type="hidden" value="DELETE">
                                             <div class='btn-group'>
