@@ -90,15 +90,13 @@
 								<h5 class="text-center">ROOM RESULT OF "{{ $nameSeach }}"</h5>
 								<hr>
 							</div>
-							@if($users->count()>0)
-                        		@foreach($users as $key => $user)
+							@if($rooms->count()>0)
+                        		@foreach($rooms as $key => $room)
 									<div class="col-md-4 col-md-offset-2">
 										<div class="lv-item media ">
-											<a href="{{ route('private.user',$user->name) }}" title="" style="text-decoration:none;">
-											<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt=""> </div>
+											<div class="lv-avatar pull-left"></div>
 											<div class="media-body">
-												<div class="lv-title">{{ $user->fullname }}</div>
-												<div class="lv-small">@ {{ $user->name }}</div>
+												<div class="lv-small">@ {{ $room->name }}</div>
 											</div>
 											</a>
 										</div>
