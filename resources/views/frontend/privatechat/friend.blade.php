@@ -14,7 +14,7 @@
             </div>
             <div class="lvh-label hidden-xs">
                 <div class="lv-avatar pull-left"> 
-                    <span style="color: #818181;"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+                    <span style="color: #818181;"><i class="fa fa-user" aria-hidden="true"></i></span>
                 </div>
                 <span class="c-black">Friend Request</span>
             </div>
@@ -32,8 +32,9 @@
                                 @foreach($friends as $user)
                                     <div class="col-md-4 col-md-offset-2">
                                         <div class="lv-item media ">                                             
-                                            <a href="{{ route('deleteRelationship',$user->fid) }}" title="Deny" style="text-decoration:none;">
+                                            <a href="{{ route('deleteRelationship',$user->fid) }}" title="Unfriend" style="text-decoration:none;">
                                                 <i class="fa fa-ban" aria-hidden="true"></i>
+                                                Unfriend
                                             </a>
                                             
                                             <a href="{{ route('private.user',$user->name) }}" title="" style="text-decoration:none;">

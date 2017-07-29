@@ -27,25 +27,26 @@
                 @endif
                 @if($friendship->status == 0 && $friendship->user_request == Auth::user()->id)
                     <li>
-                        <a href="{{ route('deleteRelationship', $friendship->id) }}">
+                        <a href="{{ route('deleteRelationship', $friendship->id) }}" title="Cancel request">
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
                         </a>
+
                     </li>
                 @elseif($friendship->status == 0 && $friendship->user_accept == Auth::user()->id)
                     <li>
-                        <a href="{{ route('acceptRelationship',$friendship->id) }}">
+                        <a href="{{ route('acceptRelationship',$friendship->id) }}" title="Accept">
                             <i class="fa fa-check" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('deleteRelationship',$friendship->id) }}">
+                        <a href="{{ route('deleteRelationship',$friendship->id) }}" title="Deny">
                             <i class="fa fa-ban" aria-hidden="true"></i>
                         </a>
                     </li>
                 @endif
                 @else
                     <li>
-                        <a href="{{ route('requestRelationship',$toUser->id) }}">
+                        <a href="{{ route('requestRelationship',$toUser->id) }}" title="Add friend">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
