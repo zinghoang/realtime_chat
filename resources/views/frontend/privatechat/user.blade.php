@@ -27,7 +27,7 @@
                 @endif
                 @if($friendship->status == 0 && $friendship->user_request == Auth::user()->id)
                     <li>
-                        <a href="{{ route('requestRelationship',$toUser->id) }}">
+                        <a href="{{ route('deleteRelationship', $friendship->id) }}">
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
                         </a>
                     </li>

@@ -21,7 +21,7 @@
 		<div class="media-body">
 			<p class="text-center" style="margin: 0px;">
 				<a href="{{ route('frontend.private.index') }}" title="" style="text-decoration:none;">
-					Show All Contacts
+					Show More Contacts...
 				</a>
 			</p>
 		</div>

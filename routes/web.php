@@ -62,11 +62,15 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/', 'PrivateChatController@index')->name('frontend.private.index');
 		Route::get('/{username}', 'PrivateChatController@user')->name('private.user');
 		Route::post('/addprivatemess','PrivateChatController@addPrivateMess');
+
 		Route::get('/requestRelationship/{user_id}','PrivateChatController@requestRelationship')->name('requestRelationship');
 		Route::get('/deleteRelationship/{id}','PrivateChatController@deleteRelationship')->name('deleteRelationship');
 		Route::get('/acceptRelationship/{id}','PrivateChatController@acceptRelationship')->name('acceptRelationship');
+		
         Route::post('/deleteNotif','PrivateChatController@deleteNotif')->name('deleteNotif');
 	});
+
+	Route::get('friend-request', 'PrivateChatController@viewListFriendRequest')->name('frontend.private.request');
 
     Route::resource('account', 'AccountController', ['only' => [
 	    'edit', 'update'
