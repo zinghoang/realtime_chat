@@ -43,6 +43,7 @@
         </div>
         @endif
 	</div>
+	<div id="notes"></div>
 	@if($isJoin == 1)
 	<ul class="lv-actions actions list-unstyled list-inline">
 		<li>
@@ -189,7 +190,6 @@
 
 			},
 			error: function (){
-				alert('Error!');
 			}
 		}); 
 	});

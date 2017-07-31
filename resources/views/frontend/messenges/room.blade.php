@@ -10,12 +10,6 @@
 				@if($isJoin == 1)
 			        
 				<div class="col-md-7" style="border-bottom: 1px solid #cccccc;">
-					@if(Session::has('danger'))
-	                    <div class="alert alert-danger"><p><strong>{{ Session::get('danger') }}</strong></p></div>
-	                @endif
-	                @if(Session::has('success'))
-	                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
-	                @endif
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
@@ -283,3 +277,27 @@
 
 @endif
 @endsection
+
+@if(Session::has('success'))
+    @section('scriptAlert')
+    <script type="text/javascript">
+        notes.show("{{ Session::get('success') }}", {
+            type: 'success',
+            title: 'Success',
+            icon: '<i class="icon icon-check-sign"></i>'
+        });
+    </script>
+    @endsection
+@endif
+
+@if(Session::has('danger'))
+    @section('scriptAlert')
+    <script type="text/javascript">
+        notes.show("{{ Session::get('danger') }}", {
+            type: 'danger',
+            title: 'Error',
+            icon: '<i class="icon icon-exclamation-sign"></i>'
+        });
+    </script>
+    @endsection
+@endif
