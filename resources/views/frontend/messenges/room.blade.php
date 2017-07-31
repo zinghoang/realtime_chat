@@ -52,7 +52,7 @@
 										</span>
 									</a>
 									<em>- {{ str_limit($file->user->fullname, 20) }}</em>
-									@if($file->user_id == Auth::id())
+									@if($file->user_id == Auth::id() || $room->user_id == Auth::id())
 										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form').submit();" style="text-decoration: none;">
 											<span class="glyphicon glyphicon-trash"></span>
 										</a>
@@ -254,6 +254,7 @@
                     },
                     success : function (result){
                         if(result != 0){
+                    		
                             $('.room-contentt').prepend(result);
                             distance = $('.room-contentt').scrollTop(500);
 						}
