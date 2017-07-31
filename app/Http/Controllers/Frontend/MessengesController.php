@@ -74,7 +74,7 @@ class MessengesController extends Controller
         }
 
         //Get name file 
-        $nameFileSave = $request->file('title')->getClientOriginalName();
+        $nameFileSave = $request->file('upload')->getClientOriginalName();
         $ar_name_file = explode('.', $nameFileSave);
         $formatFile = end($ar_name_file);
 
@@ -87,7 +87,7 @@ class MessengesController extends Controller
         }
 
         //Save file
-        $name = $request->file('title')->store('public/media');
+        $name = $request->file('upload')->store('public/media');
         $ar_name = explode('/', $name);
         $nameFile = end($ar_name);
 
@@ -107,7 +107,11 @@ class MessengesController extends Controller
         $file->room_id = $id;
         $file->name = $nameFile;
         $file->type = $type;
-        $file->title = $nameFileSave;
+        if($request->title == ""){
+            $file->title = $nameFileSave;
+        }else{
+            $file->title = $request->title;
+        }
         $file->user_id = Auth::id();
         $file->save();
 
