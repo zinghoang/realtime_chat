@@ -29,8 +29,8 @@ socket.on('receiver private mess',function(type,data){
                     ' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
                     ' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
             $('.content-message').append(stringDivData);
-            if($('.room-contett').length){
-               scroll('.room-contentt');
+            if($('.content-message').length){
+               scroll('.content-message');
             }
         }
     }
@@ -122,9 +122,9 @@ if($("#btn-reply").length){
 		  	' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
 
 			$('.content-message').append(stringDivData);
-            if($('.room-contett').length){
-                        scroll('.room-contentt');
-            	    }
+            if($('.content-message').length){
+                scroll('.content-message');
+            }
 
             //cap nhat listUser
                 var pathname = window.location.pathname;
@@ -199,9 +199,9 @@ if($('#btn-room-reply').length){
             +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
             +' </small> '+' </div> '+' </div> ';
             $('.room-contentt').append(stringDivData);
-            if($('.room-contett').length){
-                        scroll('.room-contentt');
-            	    }
+            if($('.room-contentt').length){
+                scroll('.room-contentt');
+            }
             //cap nhat listRoom
             	    var stringDivRooms = '';
             	    for( var i=0;i<response.roomsFrom.length;i++){
@@ -280,27 +280,33 @@ socket.on('receiver room mess',function(type,sender,data){
 	    var stringDivData = ' <div class="lv-item media left"> '+' <div class="lv-avatar pull-left"> '
 	                +' <img src="../../storage/avatars/'+data.avatar +'" alt=""> '
 	                +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+data.content+' </div> '+' <small class="ms-date"> '
-	                +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
-	                +' </small> '+' </div> '+' </div> ';
+	                +'<a href="/chat/'+data.username+'"><strong style="font-size: 10px">'+data.fullname+'</strong></a>';
+
+        if(data.room_userid == data.user_id){
+            stringDivData = stringDivData + '- <strong style="color: red;font-size: 10px">[AD]</strong>';
+        }
+
+	    stringDivData = stringDivData + ' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
+	                                  +' </small></div></div> ';
 
 	    $('.room-contentt').append(stringDivData);
-	    if($('.room-contett').length){
+	    if($('.room-contentt').length){
             scroll('.room-contentt');
 	    }
         $.ajax({
-                    url : "/room/reloadListRoom",
-                    type : "post",
-                    dataType:"text",
-                    data : {
+             url : "/room/reloadListRoom",
+             type : "post",
+              dataType:"text",
+              data : {
 
-                    },
-                    success : function (result){
-                        $('.listRoom').html(result);
-                    },
-                    error: function () {
-                        alert("Error");
-                    }
-                });
+              },
+              success : function (result){
+                  $('.listRoom').html(result);
+              },
+              error: function () {
+                  alert("Error");
+              }
+        });
 
 	} else if ( type == 'notif') {
 		console.log(sender);

@@ -94,9 +94,10 @@
 @endsection
 @section('script')
 <script>
+    index = 10;
     var toUser = {!!json_encode($toUser)!!};
     console.log(toUser);
-
+    scroll('.content-message');
     $('#txt-mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == 13) {
@@ -115,10 +116,40 @@
             },
             success : function (result){
             },error: function (){
-                alert("Error");
             }
         });
     }
+    function scroll(element) {
+        $(element).animate({
+            scrollTop: $(element)[0].scrollHeight
+        });
+    }
+    $(function(){
+        $('.content-message').scroll(function(){
+            var distance = $('.content-message').scrollTop();
+            if(distance == 0){
+                $.ajax({
+                    url : "{{ route('getmoreMsg') }}",
+                    type : "post",
+                    dataType:"text",
+                    data : {
+                        'from' : {{ Auth::user()->id }},
+                        'to' : {{ $toUser->id }},
+                        'offset': index
+                    },
+                    success : function (result){
+                        if(result != 0){
+                            $('.content-message').prepend(result);
+                            var distance = $('.content-message').scrollTop(500);
+                        }
+                    },error: function (){
+                    }
+                });
+                index = index + 10;
+            }
+        });
+    });
 </script>
-
+<script src="{{ asset('js/jquery.validate.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('js/validate.js') }}" type="text/javascript"></script>
 @endsection

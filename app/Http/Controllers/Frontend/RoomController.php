@@ -275,16 +275,16 @@ class RoomController extends Controller
             }
             $stringDivData = $stringDivData . "</div><div class=\"lv-small\"> Click here to chat... </div></div></div>";
         }
-        //kiem tra xem con thong bao nao nua~ hay khong
+//        //kiem tra xem con thong bao nao nua~ hay khong
         $moreNotif = 0; //mac dinh la khong co
         if(count($arr_roomid) > 3){
             $arr_roomidUnload = array_slice($arr_roomid,3,count($arr_roomid)-3);
             //kiem tra nhung room con lai co thong bao hay khong
-            foreach ($arr_roomidUnload as $roomidd){
-                $notif = NotifRoom::where('roomid','=',$roomidd)
-                    ->where('userid','=',Auth::user()->id)
+            foreach ($arr_roomidUnload as $roomidd) {
+                $notif = NotifRoom::where('roomid', '=', $roomidd)
+                    ->where('userid', '=', Auth::user()->id)
                     ->first();
-                if($notif != null){
+                if ($notif != null) {
                     $moreNotif++;
                 }
             }
@@ -296,6 +296,6 @@ class RoomController extends Controller
             $stringDivData = $stringDivData . "<span style=\"color: #aa1111\">[ " . $moreNotif. " ]</span>";
         }
         $stringDivData = $stringDivData ."</a>"."</p>"."</div></div>";
-        return $stringDivData;
+        echo $stringDivData;
     }
 }
