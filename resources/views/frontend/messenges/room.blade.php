@@ -42,7 +42,7 @@
 							<ul class="show-list-video" style="list-style: none;">
 								@foreach ($listFile as $key => $file)
 									
-								<li class="">
+								<li class="" id="{{ $file->id }}">
 									<a href="javascript:void(0)" class="change-video" >
 										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
 											{{ $file->id }}
@@ -202,9 +202,6 @@
 	    		if(count == 0){
 	    			$(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
 	    		}
-
-	    		//receiver uploaded file
-	    		console.log(data);
 	    		//add message
        			$('.room-contentt').append('<div style="padding-left: 30px;">'
                             +'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>');
@@ -217,7 +214,13 @@
 	    			});
 	    		});
 
-	    	}
+	    	} else if ( action == 'file-deleted'){
+	    		//add delete message
+       			$('.room-contentt').append('<div style="padding-left: 30px;">'+'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>'); 
+       			//remove li
+       			var li = '#'+data[0]; 
+       			$(li).remove();
+       		}
     	}
     });
 
@@ -240,11 +243,15 @@
     @if(Session::has('fileUpload'))
 		var str = "{!!Session::get('fileUpload') !!}";
 		var fileInfor = str.split("|");
-		console.log(fileInfor);
 		//send to other that file is uploaded
 		socket.emit('send room message','file uploaded',currentRoom,fileInfor);
     @endif
-
+    @if(Session::has('fileDelete'))
+    	var str = "{!!Session::get('fileDelete')!!}";
+    	var fileInfor = str.split("|");
+    	socket.emit('send room message','file deleted',currentRoom,fileInfor);
+    @endif
+    
 </script>
 
 @if($isJoin == 1)
