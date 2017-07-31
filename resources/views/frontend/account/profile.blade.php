@@ -14,7 +14,8 @@
                 </div>
                 <div class="lvh-label hidden-xs" style="width: 100%">
                 
-                <H3><span class="c-black">YOUR PROFILE</span></H3>
+                <h3><span class="c-black">YOUR PROFILE</span></h3>
+                <div id="notes"></div>
                 </div>
             </div>
 
@@ -23,23 +24,7 @@
                 <div class="clearfix"></div>
                 <div class="row" style="margin: 5px 0px;">
                     <div class="col-md-12">
-                    <div id="notes">
-                        
-                    </div>
-                    @if(Session::has('success'))
-                        @section('scriptAlert')
-                        <script type="text/javascript">
-                            notes.show("{{ Session::get('success') }}", {
-                                type: 'success',
-                                title: 'Success',
-                                icon: '<i class="icon icon-check-sign"></i>'
-                            });
-                        </script>
-                        @endsection
-                    @endif
-                    @if(Session::has('fail'))
-                        <div class="alert alert-danger"><p><strong>{{ Session::get('fail') }}</strong></p></div>
-                    @endif
+
                     @if($errors->count()>0)
                         <ul class="alert alert-danger" style="list-style-type: none">
                             @foreach($errors->all() as $error)
@@ -120,3 +105,27 @@
         }
     </script>
 @stop
+
+@if(Session::has('success'))
+    @section('scriptAlert')
+    <script type="text/javascript">
+        notes.show("{{ Session::get('success') }}", {
+            type: 'success',
+            title: 'Success',
+            icon: '<i class="icon icon-check-sign"></i>'
+        });
+    </script>
+    @endsection
+@endif
+
+@if(Session::has('fail'))
+    @section('scriptAlert')
+    <script type="text/javascript">
+        notes.show("{{ Session::get('fail') }}", {
+            type: 'danger',
+            title: 'Error',
+            icon: '<i class="icon icon-exclamation-sign"></i>'
+        });
+    </script>
+    @endsection
+@endif

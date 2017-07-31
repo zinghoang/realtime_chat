@@ -10,7 +10,7 @@
 
 
 	<link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}">
-	<link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css">
 	<link rel="stylesheet" href="{{ asset('css/notify-flat.css') }}">
 
 	
