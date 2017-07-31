@@ -151,9 +151,7 @@
         }
     });
 
-    $('.change-video').click(function(){
-    	var id = $(this).find('.video-id').html();
-
+    function changeVideo(id){
     	$.ajax({
 			url: "{{ route('frontend.room.changeVideo', $room->id) }}",
 			type: 'POST',
@@ -172,6 +170,10 @@
 				alert('Có lỗi');
 			}
 		});
+    }
+    $('.change-video').click(function(){
+		var id = $(this).find('.video-id').html();
+    	changeVideo(id);
     });
 
     $('#myVideo').bind('play', function () {
@@ -203,7 +205,12 @@
 	    		//add to video list
 	    		var videoDiv = '<li class=""> <a href="javascript:void(0)" class="change-video"> <i class="fa fa-play-circle-o" aria-hidden="true"></i><span class="video-id hidden">'+ data[0] + '</span> <span>'+ data[1] + '</span> </a> <em>- '+ data[4] +'</em> </li>';
 
-	    		$('.show-list-video').append(videoDiv);
+	    		$('.show-list-video').append(function(){
+	    			return $(videoDiv).click(function(){
+	    				changeVideo(data[0]);
+	    			});
+	    		});
+
 	    	}
     	}
     });
