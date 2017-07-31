@@ -8,9 +8,8 @@
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				@if($isJoin == 1)
-
 			        
-				<div class="col-md-7">
+				<div class="col-md-7" style="border-bottom: 1px solid #cccccc;">
 					@if(Session::has('danger'))
 	                    <div class="alert alert-danger"><p><strong>{{ Session::get('danger') }}</strong></p></div>
 	                @endif
@@ -64,7 +63,6 @@
 									@endif
 								</li>
 								@endforeach
-								
 							</ul>
 						</div>
 					</div>
@@ -285,7 +283,3 @@
 
 @endif
 @endsection
-
-
-
-

@@ -872,5 +872,14 @@ class MessengesTableSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s")
         ]);
+
+        DB::table('messenges')->insert([
+            'user_id' => '6',
+            'room_id' => '1',
+            'content' => 'In aute nulla excepturi id laborum blanditiis',
+            'status' => '1',
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s")
+        ]);
     }
 }
