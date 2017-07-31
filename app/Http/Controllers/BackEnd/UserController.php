@@ -12,6 +12,8 @@ use Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
+use Gate;
+
 class UserController extends Controller
 {
     function __construct()
@@ -27,6 +29,10 @@ class UserController extends Controller
 
     public function index()
     {
+        if (Gate::denies('index-users')) {
+            abort(403);
+        }
+
         $users = User::orderBy('id','DESC')->paginate(15);
         return view('backend.users.index')->with('users',$users);
     }
@@ -38,6 +44,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        if (Gate::denies('create-users')) {
+            abort(403);
+        }
         return view('backend.users.create');
     }
 
@@ -49,6 +58,9 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        if (Gate::denies('create-users')) {
+            abort(403);
+        }
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -56,6 +68,7 @@ class UserController extends Controller
         $user->fullname = $request->fullname;
         $user->level = $request->level;
         $user->avatar = 'avatar.png';
+
         if($user->save()) {
             $request->session()->flash('success', 'User was created successful');
         }else{
@@ -72,6 +85,10 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        if (Gate::denies('show-users')) {
+            abort(403);
+        }
+
         $user = User::findOrFail($id);
         return view('backend.users.show')->with('user',$user);
     }
@@ -85,6 +102,11 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+
+        if (Gate::denies('update-users', $user)) {
+            abort(403);
+        }
+
         return view('backend.users.edit')->with('user',$user);
     }
 
@@ -98,16 +120,19 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         $user = User::findOrFail($id);
+
         //Lay thong tin tu form
         $user->name = $request->name;
         $user->email = $request->email;
         $user->fullname = $request->fullname;
         $user->level = $request->level;
-        if($request->email != null){
+
+        if($request->password != null){
             $user->password = bcrypt($request->password);
         }
+
         if($request->file('avatar') != null){
-            $image = Input::file('avatar')->getClientOriginalName();
+
             if($user->avatar != 'avatar.png'){
                 //Xoa anh cu~
                 File::delete('storage/avatars/'.$user->avatar);
@@ -119,7 +144,9 @@ class UserController extends Controller
         }else{
             $filename = $user->avatar;
         }
+
         $user->avatar = $filename;
+
         if($user->save()) {
             $request->session()->flash('success', 'User was updated successful');
         }else{
@@ -136,6 +163,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if (Gate::denies('delete-users')) {
+            abort(403);
+        }
         $user = User::findOrFail($id);
 
         Room::where('user_id', $id)->delete();
@@ -144,6 +174,7 @@ class UserController extends Controller
             //Xoa anh trong folder
             File::delete('storage/avatars/'.$user->avatar);
         }
+
         //Xoa record trong database
         $user->delete();
         return redirect()->route('users.index');

@@ -13,8 +13,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
-        'App\User' => 'App\Policies\UserPolicy'
+        '\App\Model' => 'App\Policies\ModelPolicy',
+        '\App\User' => 'App\Policies\UserPolicy'
     ];
 
     /**
@@ -26,6 +26,24 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('index-users', function ($user) {
+            return $user->level==2;
+        });
+
+        Gate::define('show-users', function ($user) {
+            return $user->level==2;
+        });
+
+        Gate::define('create-users', function ($user) {
+            return $user->level==2;
+        });
+
+        Gate::define('update-users', function ($user, $user2) {
+            return $user->level==2 || $user->id == $user2->id;
+        });
+
+        Gate::define('delete-users', function ($user) {
+            return $user->level==2;
+        });
     }
 }

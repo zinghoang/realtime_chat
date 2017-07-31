@@ -29,7 +29,21 @@
                                 </tr>
                                 <tr>
                                     <td>Name</td>
-                                    <td>{{ $file[0]->name }}</td>
+                                    <td>
+                                        @if($file[0]->type == 'video')
+                                            <video width="100%" controls class="video-play" id="myVideo">
+                                                <source src="{{ asset('storage/media/' . $file[0]->name) }}" type="video/mp4">
+                                                Your browser does not support HTML5 video.
+                                            </video>
+                                        @elseif($file[0]->type == 'sound')
+                                            <audio width="100%" controls class="video-play" id="myVideo">
+                                                <source src="{{ asset('storage/media/' . $file[0]->name) }}" type="audio/mp3">
+                                                Your browser does not support HTML5 video.
+                                            </audio>
+                                        @elseif(1)
+                                            <a href="{{ asset('storage/media/' . $file[0]->name) }}" title="{{ $file[0]->title }}" target="_blank">{{ $file[0]->name }}</a>
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Title</td>
@@ -40,7 +54,7 @@
                                     <td>{{ $file[0]->roomname }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Full name</td>
+                                    <td>Uploaded by</td>
                                     <td>{{ $file[0]->fullname }}</td>
                                 </tr>
                                 <tr>

@@ -42,6 +42,18 @@
                                     <td>{{ $user->fullname }}</td>
                                 </tr>
                                 <tr>
+                                    <td>Level</td>
+                                    <td>
+                                        @if($user->level == 2)
+                                            Super Admin
+                                        @elseif($user->level == 1)
+                                            Admin
+                                        @else
+                                            User
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>Created At</td>
                                     <td class="text-success">{{ $user->created_at }}</td>
                                 </tr>

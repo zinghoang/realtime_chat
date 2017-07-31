@@ -118,7 +118,9 @@ class MessengesController extends Controller
         $message->status = 0;
         $message->save();
 
-        return redirect()->route('frontend.message.room', $id);
+        $request->session()->flash('fileUpload',$file->id."|".$file->title."|".$file->type."|".$message->content."|".Auth::user()->fullname);
+
+       return redirect()->route('frontend.message.room', $id);
     }
 
     public function deleteFile($id, Request $request)
@@ -133,9 +135,6 @@ class MessengesController extends Controller
         }
         //Xoa file
         \Illuminate\Support\Facades\File::delete('storage/media/'.$file->name);
-        
-        //Xoa record trong CSDL
-        $file->delete();
 
         //add message
         $message = new Messenges;
@@ -145,6 +144,9 @@ class MessengesController extends Controller
         $message->status = 0;
         $message->save();
 
+        //Xoa record trong CSDL
+        $file->delete();
+        $request->session()->flash('fileDelete',$file->id."|".$file->title."|".$file->type."|".$message->content."|".Auth::user()->fullname);
         $request->session()->flash('success','Removed Successful');
         return redirect()->route('frontend.message.room', $file->room_id);
 

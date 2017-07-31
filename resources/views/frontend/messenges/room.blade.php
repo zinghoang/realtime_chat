@@ -17,7 +17,7 @@
 	                @if(Session::has('success'))
 	                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
 	                @endif
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
@@ -42,8 +42,8 @@
 							<ul class="show-list-video" style="list-style: none;">
 								@foreach ($listFile as $key => $file)
 									
-								<li class="">
-									<a href="javascript:void(0)" class="change-video">
+								<li class="" id="{{ $file->id }}">
+									<a href="javascript:void(0)" class="change-video" >
 										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
 											{{ $file->id }}
 										</span>
@@ -70,7 +70,7 @@
 					</div>
 				</div>
 				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt" onmouseenter="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})">
+					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:72vh;" class="room-contentt" onmouseenter="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
 								@if($message->status == 0)
@@ -153,9 +153,7 @@
         }
     });
 
-    $('.change-video').click(function(){
-    	var id = $(this).find('.video-id').html();
-
+    function changeVideo(id){
     	$.ajax({
 			url: "{{ route('frontend.room.changeVideo', $room->id) }}",
 			type: 'POST',
@@ -173,6 +171,10 @@
 			error: function (){
 			}
 		});
+    }
+    $('.change-video').click(function(){
+		var id = $(this).find('.video-id').html();
+    	changeVideo(id);
     });
 
     $('#myVideo').bind('play', function () {
@@ -195,10 +197,33 @@
 	    		vid.play();
 	    	} else if ( action == "pause") {
 	    		vid.pause();
-	    	} 
+	    	} else if ( action == "uploaded") {
+	    		//add video div if list file is empty
+	    		var count = {!!count($listFile)!!};
+	    		if(count == 0){
+	    			$(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    		}
+	    		//add message
+       			$('.room-contentt').append('<div style="padding-left: 30px;">'
+                            +'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>');
+	    		//add to video list
+	    		var videoDiv = '<li class=""> <a href="javascript:void(0)" class="change-video"> <i class="fa fa-play-circle-o" aria-hidden="true"></i><span class="video-id hidden">'+ data[0] + '</span> <span>'+ data[1] + '</span> </a> <em>- '+ data[4] +'</em> </li>';
+
+	    		$('.show-list-video').append(function(){
+	    			return $(videoDiv).click(function(){
+	    				changeVideo(data[0]);
+	    			});
+	    		});
+
+	    	} else if ( action == 'file-deleted'){
+	    		//add delete message
+       			$('.room-contentt').append('<div style="padding-left: 30px;">'+'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>'); 
+       			//remove li
+       			var li = '#'+data[0]; 
+       			$(li).remove();
+       		}
     	}
     });
-
 
     function deleteNotifRoom(roomid,userid) {
         $.ajax({
@@ -215,7 +240,6 @@
         });
     }
     @endif
-
 	$(function(){
         $('.room-contentt').scroll(function(){
             var distance = $('.room-contentt').scrollTop();
@@ -240,6 +264,18 @@
             }
         });
     });
+    @if(Session::has('fileUpload'))
+		var str = "{!!Session::get('fileUpload') !!}";
+		var fileInfor = str.split("|");
+		//send to other that file is uploaded
+		socket.emit('send room message','file uploaded',currentRoom,fileInfor);
+    @endif
+    @if(Session::has('fileDelete'))
+    	var str = "{!!Session::get('fileDelete')!!}";
+    	var fileInfor = str.split("|");
+    	socket.emit('send room message','file deleted',currentRoom,fileInfor);
+    @endif
+
 </script>
 
 @if($isJoin == 1)
@@ -248,3 +284,7 @@
 
 @endif
 @endsection
+
+
+
+

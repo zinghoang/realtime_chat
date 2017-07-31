@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MessengesTableSeeder::class);
 
         $this->call(PrivatesTableSeeder::class);
+        
+        $this->call(FriendShipTableSeeder::class);
     }
 }

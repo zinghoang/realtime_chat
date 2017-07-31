@@ -16,7 +16,7 @@
                 <div class="lv-avatar pull-left"> 
                     <img src="{{ asset('storage/avatars/' . $toUser->avatar) }}" alt=""> 
                 </div>
-                <span class="c-black">{{ $toUser->fullname }}<span class="nick-online"></span></span>
+                <span class="c-black">{{ $toUser->fullname }}</span>
             </div>
             <ul class="lv-actions actions list-unstyled list-inline">
                 @if($friendship != null)
@@ -27,25 +27,26 @@
                 @endif
                 @if($friendship->status == 0 && $friendship->user_request == Auth::user()->id)
                     <li>
-                        <a href="{{ route('requestRelationship',$toUser->id) }}">
+                        <a href="{{ route('deleteRelationship', $friendship->id) }}" title="Cancel request">
                             <i class="fa fa-clock-o" aria-hidden="true"></i>
                         </a>
+
                     </li>
                 @elseif($friendship->status == 0 && $friendship->user_accept == Auth::user()->id)
                     <li>
-                        <a href="{{ route('acceptRelationship',$friendship->id) }}">
+                        <a href="{{ route('acceptRelationship',$friendship->id) }}" title="Accept">
                             <i class="fa fa-check" aria-hidden="true"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('deleteRelationship',$friendship->id) }}">
+                        <a href="{{ route('deleteRelationship',$friendship->id) }}" title="Deny">
                             <i class="fa fa-ban" aria-hidden="true"></i>
                         </a>
                     </li>
                 @endif
                 @else
                     <li>
-                        <a href="{{ route('requestRelationship',$toUser->id) }}">
+                        <a href="{{ route('requestRelationship',$toUser->id) }}" title="Add friend">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
@@ -55,7 +56,7 @@
         <div class="lv-body">
             <div class="row content-chat-video">
                 <div class="col-md-12">
-                    <div id="ms-scrollbar" class="content-message" style="overflow:scroll; overflow-x: hidden; height:480px;" onmouseenter="return deleteNotif({{ $toUser->id }},{{ $user->id }})">
+                    <div id="ms-scrollbar" class="content-message" style="overflow:scroll; overflow-x: hidden; height:72vh;" onmouseenter="return deleteNotif({{ $toUser->id }},{{ $user->id }})">
                         @foreach ($listPrivateChat as $key => $chat)
                         <div class="lv-item media @if($chat->from == Auth::id()) right @endif">
                             <div class="lv-avatar @if($chat->from == Auth::id()) pull-right @else pull-left @endif">

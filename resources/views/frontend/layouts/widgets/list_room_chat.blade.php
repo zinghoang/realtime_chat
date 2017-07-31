@@ -22,7 +22,7 @@
 	<div class="media-body">
 		<p class="text-center" style="margin: 0px;">
 			<a href="{{ route('frontend.room.index') }}" title="" style="text-decoration:none;">
-				SHOW ALL ROOMS
+				Show More Rooms...
 			</a>
 			@if($moreNotif > 0)
 				<span style="color: #aa1111">[ {{ $moreNotif }} ]</span>

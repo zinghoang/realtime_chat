@@ -12,14 +12,19 @@
 */
 
 Route::group(['prefix'=> 'admin','namespace'=>'BackEnd'],function (){
+
     Route::resource('users', 'UserController');
     Route::resource('rooms', 'RoomController');
     Route::resource('emotions', 'EmotionController');
-    Route::resource('files', 'FileController');
+    Route::resource('files', 'FileController', ['only' => [
+	    'index', 'show', 'destroy'
+	]]);
+
     Route::get('/index','HomeController@index')->name('admin.index')->middleware('CheckAdmin');
 });
 
 Route::group(['namespace' => 'Frontend'], function(){
+	
 	Route::get('/home', 'HomeController@index')->name('home');
 
 	Route::group(['prefix' => 'message'], function(){
@@ -52,16 +57,23 @@ Route::group(['namespace' => 'Frontend'], function(){
         Route::post('/reloadListRoom','RoomController@reloadListRoom')->name('reloadListRoom');
 	});
 
+	Route::get('inviteUser','RoomController@inviteUser');
+
 	Route::group(['prefix' => 'chat'], function(){
 		Route::get('/', 'PrivateChatController@index')->name('frontend.private.index');
 		Route::get('/{username}', 'PrivateChatController@user')->name('private.user');
 		Route::post('/addprivatemess','PrivateChatController@addPrivateMess');
+
 		Route::get('/requestRelationship/{user_id}','PrivateChatController@requestRelationship')->name('requestRelationship');
 		Route::get('/deleteRelationship/{id}','PrivateChatController@deleteRelationship')->name('deleteRelationship');
 		Route::get('/acceptRelationship/{id}','PrivateChatController@acceptRelationship')->name('acceptRelationship');
+		
         Route::post('/deleteNotif','PrivateChatController@deleteNotif')->name('deleteNotif');
         Route::post('/getmoreMsg','PrivateChatController@getmoreMsg')->name('getmoreMsg');
 	});
+
+	Route::get('friend-request', 'PrivateChatController@viewListFriendRequest')->name('frontend.private.request');
+	Route::get('friend', 'PrivateChatController@friend')->name('frontend.private.friend');
 
     Route::resource('account', 'AccountController', ['only' => [
 	    'edit', 'update'
@@ -69,8 +81,7 @@ Route::group(['namespace' => 'Frontend'], function(){
     
 });
 
-Route::get('search', 'Search\SearchUserRoomController@index')->name('SearchUser');
-Route::get('inviteUser','Search\SearchUserRoomController@inviteUser');
+Route::get('search', 'Search\SearchUserRoomController@index')->name('SearchUserRoom');
 
 Auth::routes();
 

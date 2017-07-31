@@ -20,7 +20,11 @@ io.on('connection',function(socket){
 		} else if(type == 'leave-room') {
 			socket.broadcast.to('room-'+data.id).emit('receiver room mess','notif',sender,sender.name + ' has left this room');
 			socket.leave('room-'+data.id);
-		}
+		} else if (type == 'file uploaded') {
+			socket.broadcast.to('room-'+sender.id).emit('receiver action','video',sender,'uploaded',data);
+ 		} else if (type == 'file deleted') {
+ 			socket.broadcast.to('room-'+sender.id).emit('receiver action','video',sender,'file-deleted',data);
+ 		}
 	
 	});
 
