@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\BackEnd;
 
+use App\File;
 use App\Http\Requests\RoomRequest;
+use App\Messenges;
+use App\NotifRoom;
 use App\Room;
+use App\RoomUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -97,10 +101,25 @@ class RoomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $room = Room::findOrFail($id);
+        //xoa het thanh vien trong room ra khoi bang room_user
+        $room_user = RoomUser::where('room_id','=', $room->id)->delete();
+        //xoa het msg trong room
+        $msg = Messenges::where('room_id','=',$room->id)->delete();
+        //xoa het file trong room
+            //lay list file
+            $files = File::where('room_id','=',$room->id)->get();
+            foreach ($files as $file){
+                \Illuminate\Support\Facades\File::delete('storage/media/'.$file->name);
+                $file->delete();
+            }
+        //xoa het notification cua room
+        $notif = NotifRoom::where('roomid','=',$room->id)->delete();
+        //xoa room
         $room->delete();
+        $request->session()->flash('success',$room->name.' is deleted successfully!');
         return redirect()->route('rooms.index');
     }
 }
