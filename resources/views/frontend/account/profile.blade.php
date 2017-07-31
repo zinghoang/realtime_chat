@@ -23,8 +23,19 @@
                 <div class="clearfix"></div>
                 <div class="row" style="margin: 5px 0px;">
                     <div class="col-md-12">
+                    <div id="notes">
+                        
+                    </div>
                     @if(Session::has('success'))
-                        <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
+                        @section('scriptAlert')
+                        <script type="text/javascript">
+                            notes.show("{{ Session::get('success') }}", {
+                                type: 'success',
+                                title: 'Success',
+                                icon: '<i class="icon icon-check-sign"></i>'
+                            });
+                        </script>
+                        @endsection
                     @endif
                     @if(Session::has('fail'))
                         <div class="alert alert-danger"><p><strong>{{ Session::get('fail') }}</strong></p></div>

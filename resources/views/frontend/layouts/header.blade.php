@@ -7,6 +7,13 @@
 	<title>Chat Blue Team</title>
 	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/messsages.css') }}" rel="stylesheet">
+
+
+	<link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}">
+	<link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('css/notify-flat.css') }}">
+
+	
 	<link href="{{ asset('fonts/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet">
