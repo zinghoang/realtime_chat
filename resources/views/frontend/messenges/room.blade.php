@@ -197,6 +197,12 @@
 	    	} else if ( action == "pause") {
 	    		vid.pause();
 	    	} else if ( action == "uploaded") {
+	    		//add video div if list file is empty
+	    		var count = {!!count($listFile)!!};
+	    		if(count == 0){
+	    			$(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    		}
+
 	    		//receiver uploaded file
 	    		console.log(data);
 	    		//add message
