@@ -93,9 +93,19 @@ class PrivateChatController extends Controller
             ->orWhere('user_request','=',$toUser->id)
             ->where('user_accept','=',$user->id)
             ->first();
-
-        $listPrivateChat = PrivateMessage::where('from', $user->id)->where('to', $toUser->id)->orWhere('from', $toUser->id)->where('to', $user->id)->get();
-
+        
+        $listFirst = PrivateMessage::where('from', $user->id)
+            ->where('to', $toUser->id)
+            ->orWhere('from', $toUser->id)
+            ->where('to', $user->id)
+            ->orderBy('id','DESC')
+            ->offset(0)
+            ->take(10)
+            ->get();
+        $listPrivateChat = new Collection();
+        for ($i = $listFirst->count()-1 ; $i >= 0 ; $i--){
+            $listPrivateChat->push($listFirst[$i]);
+        }
         foreach ($listPrivateChat as $key => $chat){
             $chat->content = self::getNewContent($chat->content);
         }
@@ -292,6 +302,58 @@ class PrivateChatController extends Controller
             $delete->delete();
         }
     }
+<<<<<<< HEAD
+    public function getmoreMsg(Request $request){
+        $from = $request->from;
+        $to = $request->to;
+        $offset = $request->offset;
+
+        //get list
+        $listFirst = PrivateMessage::where('from','=',$from)
+            ->where('to','=',$to)
+            ->orWhere('from','=',$to)
+            ->where('to','=',$from)
+            ->offset($offset)
+            ->take(10)
+            ->orderBy('id','DESC')
+            ->get();
+        $listMsg = new Collection();
+        for ($i = $listFirst->count()-1 ; $i >= 0 ; $i--){
+            $listMsg->push($listFirst[$i]);
+        }
+        foreach ($listMsg as $key => $chat){
+            $chat->content = self::getNewContent($chat->content);
+        }
+        //Get User Information
+        $userFrom = User::findOrFail($from);
+        $userTo = User::findOrFail($to);
+        if($userFrom == null || $userTo == null){
+            abort(404);
+        }
+        $stringDivData = '';
+        if($listMsg->count() > 0){
+            foreach( $listMsg as $msg ){
+                $stringDivData = $stringDivData . '<div class="lv-item media';
+                if($msg->from == Auth::user()->id) $stringDivData = $stringDivData .' right';
+                $stringDivData = $stringDivData . ' "><div class="lv-avatar ';
+                $msg->from == Auth::user()->id ? $stringDivData = $stringDivData .'pull-right ">' : $stringDivData = $stringDivData .'pull-left ">';
+                if($chat->from == $from) {
+                    $stringDivData = $stringDivData .'<img src = "../storage/avatars/'.$userFrom->avatar.'" alt = "" >';
+                }else if($msg->from == $to) {
+                    $stringDivData = $stringDivData .'<img src = "../storage/avatars/'.$userTo->avatar.'" alt = "" >';
+                }
+
+                $stringDivData = $stringDivData .' </div><div class="media-body"><div class="ms-item">'
+                                    .$msg->content.'</div><small class="ms-date"><span class="glyphicon glyphicon-time"></span>'
+                                    .'&nbsp;' . $msg->created_at
+                                    .'</small></div></div>';
+            }
+            echo $stringDivData;
+        }else{
+            return 0;
+        }
+
+=======
 
     public function viewListFriendRequest()
     {
@@ -341,6 +403,7 @@ class PrivateChatController extends Controller
         
 
         return view('frontend.privatechat.friend', compact('friends'));
+>>>>>>> 3358e6c1109792e4d2dbcbeee4387fb183fe7ae8
     }
 }
  

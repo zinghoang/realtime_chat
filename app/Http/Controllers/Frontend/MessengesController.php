@@ -42,13 +42,17 @@ class MessengesController extends Controller
     	}else{
     		$isJoin = 1;
     	}
-    	$messages = DB::table('messenges')
+    	$listTemp = DB::table('messenges')
             ->join('users','users.id','=','messenges.user_id')
             ->where('messenges.room_id', $id)
             ->select('users.avatar','users.name','users.fullname', 'messenges.*')
-            ->take(100)
-            ->orderBy('messenges.id','ASC')
+            ->take(10)
+            ->orderBy('messenges.id','DESC')
             ->get();
+    	$messages = new Collection();
+    	for ($i = $listTemp->count()-1 ; $i >= 0 ; $i--){
+            $messages->push($listTemp[$i]);
+        }
         foreach ($messages as $key => $chat){
             $chat->content = self::getNewContent($chat->content);
         }
@@ -192,9 +196,9 @@ class MessengesController extends Controller
             array_push($arr_roomid,$room->id);
         }
         $arr_roomid = array_unique($arr_roomid);
-        $arr_roomid = array_slice($arr_roomid,0,3);
+        $arr_roomidLoad = array_slice($arr_roomid,0,3);
         $roomsFrom = new Collection();
-        foreach ($arr_roomid as $roomid){
+        foreach ($arr_roomidLoad as $roomid){
             $room = Room::findOrFail($roomid);
             if($room != null){
                 $notifRoom = NotifRoom::where('roomid','=',$roomid)
@@ -206,9 +210,31 @@ class MessengesController extends Controller
         }
         $message->roomsFrom = $roomsFrom;
 
+        //kiem tra xem con thong bao nao nua~ hay khong
+        $moreNotif = 0; //mac dinh la khong co
+        if(count($arr_roomid) > 3){
+            $arr_roomidUnload = array_slice($arr_roomid,3,count($arr_roomid)-3);
+            //kiem tra nhung room con lai co thong bao hay khong
+            foreach ($arr_roomidUnload as $roomid){
+                $notif = NotifRoom::where('roomid','=',$roomid)
+                    ->where('userid','=',Auth::user()->id)
+                    ->first();
+                if($notif != null){
+                    $moreNotif++;
+                }
+            }
+        }
+        $message->moreNotif = $moreNotif;
         $message->content = self::getNewContent($message->content);
-        $avatar = User::where('id','=',$message->user_id)->select('avatar')->first();
-        $message->avatar = $avatar->avatar;
+        $user_send = User::where('id','=',$message->user_id)->select('name','fullname','avatar')->first();
+        $message->avatar = $user_send->avatar;
+        $message->username = $user_send->name;
+        $message->fullname = $user_send->fullname;
+        $room_userid = Room::findOrFail($request['room']['id']);
+        if ($room_userid == null) {
+            abort(404);
+        }
+        $message->room_userid = $room_userid->user_id;
         return $message;
     }
     public static function getNewContent($content)
@@ -226,5 +252,60 @@ class MessengesController extends Controller
             }
         }
         return $output;
+    }
+    public function getmoreMsg(Request $request){
+        $roomid = $request->roomid;
+        $offset = $request->offset;
+
+        //get list
+        $messages = DB::table('messenges')
+            ->join('users','users.id','=','messenges.user_id')
+            ->where('messenges.room_id', $roomid)
+            ->select('users.avatar','users.name','users.fullname', 'messenges.*')
+            ->offset($offset)
+            ->take(10)
+            ->orderBy('messenges.id','DESC')
+            ->get();
+        $listMsg = new Collection();
+        for ($i = $messages->count()-1 ; $i >= 0 ; $i--){
+            $listMsg->push($messages[$i]);
+        }
+        foreach ($listMsg as $key => $chat){
+            $chat->content = self::getNewContent($chat->content);
+        }
+        $stringData = "";
+        if($listMsg->count() > 0) {
+            foreach ($listMsg as $msg) {
+                if($msg->status ==0){
+                    $stringData = $stringData . "<div style=\"padding-left: 30px;\"><h6><em style=\"color: #cccccc;\">"
+												.$msg->content."</em></h6></div>";
+
+                }else{
+                    $stringData = $stringData . "<div class=\"lv-item media";
+                    $msg->user_id == Auth::id() ? $stringData = $stringData . " right" : $stringData = $stringData . " left";
+                    $stringData = $stringData . "\"><div class=\"lv-avatar";
+                    $msg->user_id == Auth::id() ? $stringData = $stringData . " pull-right" : $stringData = $stringData . " pull-left";
+                    $stringData = $stringData . "\"><img src=\"../../storage/avatars/".$msg->avatar."\" alt=\"\"></div><div class=\"media-body\">"
+                                              ."<div class=\"ms-item\">"
+												.$msg->content
+											."</div>"
+											."<small class=\"ms-date\">";
+                    if($msg->name != Auth::user()->name) {
+                        $stringData = $stringData . "<a href=\"/chat/".$msg->name . "\">"
+                            . "<strong style=\"font-size: 10px\">" . $msg->fullname . "</strong>"
+                            . "</a>";
+                        if ($msg->user_id == Auth::user()->id) {
+                            $stringData = $stringData . "-<strong style=\"color: red;font-size: 10px\">[AD]</strong>";
+                        }
+                    }
+					$stringData = $stringData . "<span class=\"glyphicon glyphicon-time\"></span>"
+												."&nbsp;".$msg->created_at
+											."</small></div></div>";
+                }
+            }
+            echo $stringData;
+        }else{
+            return 0;
+        }
     }
 }

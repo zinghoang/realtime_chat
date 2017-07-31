@@ -142,6 +142,8 @@
 
 @section('endscript')
 <script>
+	index = 10;
+    scroll('.room-contentt');
 	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -167,7 +169,6 @@
 				socket.emit('send action','video',currentRoom,data,'load');
 			},
 			error: function (){
-				alert('Có lỗi');
 			}
 		});
     }
@@ -235,11 +236,34 @@
             },
             success : function (result){
             },error: function (){
-                alert("Error");
             }
         });
     }
     @endif
+	$(function(){
+        $('.room-contentt').scroll(function(){
+            var distance = $('.room-contentt').scrollTop();
+            if(distance == 0){
+                $.ajax({
+                    url : "{{ route('getmoreMsgRoom') }}",
+                    type : "post",
+                    dataType:"text",
+                    data : {
+                        'roomid' : {{ $room->id  }},
+                        'offset': index
+                    },
+                    success : function (result){
+                        if(result != 0){
+                            $('.room-contentt').prepend(result);
+                            distance = $('.room-contentt').scrollTop(500);
+						}
+                    },error: function (){
+                    }
+                });
+                index = index + 10;
+            }
+        });
+    });
     @if(Session::has('fileUpload'))
 		var str = "{!!Session::get('fileUpload') !!}";
 		var fileInfor = str.split("|");
@@ -251,7 +275,7 @@
     	var fileInfor = str.split("|");
     	socket.emit('send room message','file deleted',currentRoom,fileInfor);
     @endif
-    
+
 </script>
 
 @if($isJoin == 1)

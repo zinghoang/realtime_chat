@@ -25,7 +25,14 @@ class RoomController extends Controller
 
     public function index()
     {
-        $listRoomJoined = RoomUser::where('user_id', Auth::id())->get();
+        $listRoomJoined = RoomUser::where('user_id', Auth::user()->id)->get();
+        foreach ($listRoomJoined as $room){
+            $notif = NotifRoom::where('roomid','=',$room->room->id)
+                                ->where('userid','=',Auth::user()->id)
+                                ->first();
+            $notif != null ? $room->notif = 1 : $room->notif = 0;
+        }
+
         $arrayRoomJoin = array_pluck($listRoomJoined->toArray(), 'room_id');
         $listRoomRandom = DB::table('rooms')->whereNotIn('id', $arrayRoomJoin)->orderByRaw("RAND()")->take(16)->get();
         return view('frontend.rooms.index', compact('listRoomJoined', 'listRoomRandom'));
@@ -260,7 +267,7 @@ class RoomController extends Controller
             $delete->delete();
         }
     }
-    public function reloadListRoom(Request $request){
+    public function reloadListRoom(){
        $listRoom = DB::table('rooms')
             ->join('room_users','rooms.id','=','room_users.room_id')
             ->join('messenges','rooms.id','=','messenges.room_id')
@@ -272,9 +279,9 @@ class RoomController extends Controller
             array_push($arr_roomid,$room->id);
         }
         $arr_roomid = array_unique($arr_roomid);
-        $arr_roomid = array_slice($arr_roomid,0,3);
+        $arr_roomidLoad = array_slice($arr_roomid,0,3);
         $rooms = new Collection();
-        foreach ($arr_roomid as $roomid){
+        foreach ($arr_roomidLoad as $roomid){
             $room = Room::findOrFail($roomid);
             if($room != null){
                 $notifRoom = NotifRoom::where('roomid','=',$roomid)
@@ -287,23 +294,39 @@ class RoomController extends Controller
         $stringDivData = "";
         foreach ($rooms as $room){
             $stringDivData = $stringDivData . "<div class=\"lv-item media\">"
-		                    ."<div class=\"lv-avatar pull-left\">"
-			                ."<img src=\"../../images/home.png\" alt=\"\">"
-                            ."</div>"
-		                    ."<div class=\"media-body\">"
-			                ."<div class=\"lv-title\">"
-			    	        ."<a href=\"/message/room/".$room->id."\" title=\"\" style=\"text-decoration:none;\">"
-                            .$room->name."</a>";
+                ."<div class=\"lv-avatar pull-left\">"
+                ."<img src=\"../../images/home.png\" alt=\"\">"
+                ."</div>"
+                ."<div class=\"media-body\">"
+                ."<div class=\"lv-title\">"
+                ."<a href=\"/message/room/".$room->id."\" title=\"\" style=\"text-decoration:none;\">"
+                .$room->name."</a>";
             if($room->notif == 1){
                 $stringDivData = $stringDivData . "<i class=\"fa fa-star\" aria-hidden=\"true\" style=\"color: #aa1111\"></i>";
             }
             $stringDivData = $stringDivData . "</div><div class=\"lv-small\"> Click here to chat... </div></div></div>";
         }
+//        //kiem tra xem con thong bao nao nua~ hay khong
+        $moreNotif = 0; //mac dinh la khong co
+        if(count($arr_roomid) > 3){
+            $arr_roomidUnload = array_slice($arr_roomid,3,count($arr_roomid)-3);
+            //kiem tra nhung room con lai co thong bao hay khong
+            foreach ($arr_roomidUnload as $roomidd) {
+                $notif = NotifRoom::where('roomid', '=', $roomidd)
+                    ->where('userid', '=', Auth::user()->id)
+                    ->first();
+                if ($notif != null) {
+                    $moreNotif++;
+                }
+            }
+        }
         $stringDivData = $stringDivData . "<div class=\"lv-item media active\"><div class=\"media-body\">"
                                     ."<p class=\"text-center\" style=\"margin: 0px;\">"
-			                            ."<a href=\"/room\" title=\"\" style=\"text-decoration:none;\">SHOW ALL ROOMS</a>"
-		                            ."</p>"
-                                ."</div></div>";
-        return $stringDivData;
+			                            ."<a href=\"/room\" title=\"\" style=\"text-decoration:none;\">"."SHOW ALL ROOMS";
+        if($moreNotif > 0){
+            $stringDivData = $stringDivData . "<span style=\"color: #aa1111\">[ " . $moreNotif. " ]</span>";
+        }
+        $stringDivData = $stringDivData ."</a>"."</p>"."</div></div>";
+        echo $stringDivData;
     }
 }
