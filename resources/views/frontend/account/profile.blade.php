@@ -19,7 +19,7 @@
             </div>
 
 
-            <div class="lv-body list-message-room" id="list-message-room" style="overflow:scroll; overflow-x: hidden; height:500px;">
+            <div class="lv-body list-message-room" id="list-message-room" style="overflow:scroll; overflow-x: hidden; height:76vh;">
                 <div class="clearfix"></div>
                 <div class="row" style="margin: 5px 0px;">
                     <div class="col-md-12">

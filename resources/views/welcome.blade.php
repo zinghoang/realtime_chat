@@ -33,6 +33,10 @@
 
                 <div style="font-size: 60px;">
                     Welcome to blue team!
+                    @if (Auth::check())
+                    <br>
+                    <a href="{{ route('home') }}" style="text-decoration: none;">Continue</a>
+                    @endif
                 </div>
             </div>
         </div>

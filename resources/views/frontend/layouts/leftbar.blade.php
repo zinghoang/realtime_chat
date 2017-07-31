@@ -29,7 +29,7 @@
 	<div class="ms-block"> 
 		<form action="{{ route('SearchUserRoom') }}" method="get">
 			<div class="form-group">
-				<input type="text" name="search" class="form-control" id="name" placeholder="Search" value="{{ old('search') }}">
+				<input type="text" name="search" class="form-control" id="name" placeholder="Search" value="">
 			</div>
 		</form>
 	</div>
