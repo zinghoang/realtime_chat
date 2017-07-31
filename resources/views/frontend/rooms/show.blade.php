@@ -8,7 +8,7 @@
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				<div class="col-md-12">
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="col-md-12">
 							<h5 class="text-center">
 								All the member of this room...

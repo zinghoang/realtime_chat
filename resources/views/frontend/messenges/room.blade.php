@@ -17,7 +17,7 @@
 	                @if(Session::has('success'))
 	                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
 	                @endif
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
@@ -70,7 +70,7 @@
 					</div>
 				</div>
 				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt" onmouseenter="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})">
+					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:72vh;" class="room-contentt" onmouseenter="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
 								@if($message->status == 0)
