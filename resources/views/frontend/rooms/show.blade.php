@@ -10,7 +10,10 @@
 				<div class="col-md-12">
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
 						<div class="col-md-12">
-							<h5 class="text-center">All the member of this room...</h5>
+							<h5 class="text-center">
+								All the member of this room...
+								<a href="{{ route('frontend.message.room', $room->id) }}">Back</a>
+							</h5>
 							<hr>
 						</div>
 						

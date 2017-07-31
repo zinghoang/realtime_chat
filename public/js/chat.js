@@ -251,7 +251,7 @@ if($('#join').length){
 //Leave Event
 if($('#leave-room').length){
  	$('#leave-room').click(function(){
- 		var result = confirm("Want to leave");
+ 		var result = confirm("Do you want to leave this room?");
 		if (result) {
 		   	//send leave event to others
 			socket.emit('send room message','leave-room',user,currentRoom);
