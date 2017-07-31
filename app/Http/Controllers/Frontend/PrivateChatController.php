@@ -27,7 +27,6 @@ class PrivateChatController extends Controller
             ->orWhere('to','=',Auth::user()->id)
             ->orderBy('created_at','DESC')
             ->select('from','to')->get();
-
         $arr_id = array();
 
         foreach ($ids as $id){
@@ -49,6 +48,15 @@ class PrivateChatController extends Controller
 
         foreach ($arr_id as $id){
             $user = User::findOrFail($id);
+            //kiem tra tinh trang friendship cua user
+            $friendship = FriendShip::where('user_request','=',Auth::user()->id)
+                                ->where('user_accept','=',$user->id)
+                                ->orWhere('user_request','=',$user->id)
+                                ->where('user_accept','=',Auth::user()->id)
+                                ->first();
+            if($friendship != null){
+                $user->friendship = $friendship;
+            }
             //kiem tra user co thong bao hay khong
             $status = DB::table('notifprivate')
                 ->join('users','users.id','=','notifprivate.from')
@@ -61,7 +69,6 @@ class PrivateChatController extends Controller
             }
             $users->push($user);
         }
-
 		return view('frontend.privatechat.index')->with('users',$users);
 	}
 

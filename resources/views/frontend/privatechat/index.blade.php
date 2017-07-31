@@ -43,20 +43,30 @@
 									@foreach($users as $user)
 										<div class="col-md-4 col-md-offset-2">
 											<div class="lv-item media ">
-												@if($user->friend == 0)
-												<a href="{{ route('requestRelationship',$user->id) }}" title="Add friend" style="text-decoration:none;">
-													<i class="fa fa-plus" aria-hidden="true"></i>
-												</a>
+												@if($user->friendship == null)
+													<a href="{{ route('requestRelationship',$user->id) }}" title="Add friend" style="text-decoration:none;">
+														<i class="fa fa-plus" aria-hidden="true"></i>
+													</a>
 												@else
-													@if($user->status == 0 && $user->user_request == Auth::user()->id)
-														<i class="fa fa-clock-o" aria-hidden="true"></i>
-													@elseif($user->status == 0 && $user->user_request != Auth::user()->id)
-														<a href="{{ route('requestRelationship',$user->id) }}" title="Accept" style="text-decoration:none;">
-															<i class="fa fa-check" aria-hidden="true"></i>
-														</a>
-														<a href="{{ route('requestRelationship',$user->id) }}" title="Deny" style="text-decoration:none;">
-															<i class="fa fa-ban" aria-hidden="true"></i>
-														</a>
+													@if($user->friendship->user_request == Auth::user()->id)
+														@if($user->friendship->status == 0)
+															<a href="{{ route('deleteRelationship',$user->friendship->id) }}" title="Calcel Request" style="text-decoration:none;">
+																<i class="fa fa-ban" aria-hidden="true"></i>
+															</a>
+														@else
+															Friend
+														@endif
+													@elseif($user->friendship->user_request == $user->id)
+														@if($user->friendship->status == 0)
+															<a href="{{ route('acceptRelationship',$user->friendship->id) }}" title="Accept" style="text-decoration:none;">
+																<i class="fa fa-check" aria-hidden="true"></i>
+															</a>
+															<a href="{{ route('deleteRelationship',$user->friendship->id) }}" title="Deny" style="text-decoration:none;">
+																<i class="fa fa-ban" aria-hidden="true"></i>
+															</a>
+														@else
+															Friend
+														@endif
 													@endif
 												@endif
 												<a href="{{ route('private.user',$user->name) }}" title="" style="text-decoration:none;">
