@@ -85,9 +85,20 @@ socket.on('receiver private mess',function(type,data){
 		if(!data.paused){
 			video.play(); 
 		}
-	}
-	
+	} else if(type == 'IconAction') {
+      if(toUser.id == data.from.id) {
+         console.log(data);
+      }
+  }
+})
 
+//send haha icon action
+$('#hahaPrivateIco').click(function(){
+  var data = new Object;
+  data.from = user;
+  data.toUser = toUser;
+  data.action = 'lol';
+  socket.emit('send private message','IconAction',data);
 })
 
 //Send private message 
