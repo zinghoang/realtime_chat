@@ -217,6 +217,9 @@
        		} else if( action == 'IconAction'){
        			//haha
        			console.log(data);
+                var haha = new Audio();
+                haha.src = '/audio/hahaha.mp3';
+                haha.play();
        		}
     	}
     });
@@ -274,6 +277,9 @@
     @endif
 
     $('#hahaIco').click(function(){
+        var haha = new Audio();
+        haha.src = '/audio/hahaha.mp3';
+        haha.play();
     	socket.emit('send action','Icon',currentRoom,'haha','IconAction');
     })
 </script>
