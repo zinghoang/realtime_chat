@@ -5,11 +5,11 @@
 		</div>
 		<div class="media-body">
 			<div class="lv-title">
-				<a href="{{ route('frontend.message.room', $room->id) }}" title="" style="text-decoration:none;">
-				{{ $room->name }}
+				<a href="{{ route('frontend.message.room', $room->id) }}" title="{{ $room->name }}" style="text-decoration:none;">
+					{{ str_limit($room->name, 12) }}
 				</a>
 				@if($room->notif == 1)
-					<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>
+					<i class="fa fa-star" aria-hidden="true" style="color: #aa1111;padding-left:10px"></i>
 				@endif
 			</div>
 			<div class="lv-small">
@@ -25,7 +25,7 @@
 				Show More Rooms...
 			</a>
 			@if($moreNotif > 0)
-				<span style="color: #aa1111">[ {{ $moreNotif }} ]</span>
+				<strong style="color: red;padding-left:10px">[ {{ $moreNotif }} ]</strong>
 			@endif
 		</p>
 	</div>

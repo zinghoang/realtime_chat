@@ -173,21 +173,21 @@ class MessengesController extends Controller
             $notif->delete();
         }
         //1- gui thong bao den cac thanh vien trong room
-            $user_ids = RoomUser::where('room_id','=',$request['room']['id'])
+        $user_ids = RoomUser::where('room_id','=',$request['room']['id'])
                                     ->where('user_id','!=',Auth::user()->id)
                                     ->select('user_id')->get();
-            foreach ($user_ids as $user_id) {
-                $notifRoom = NotifRoom::where('roomid', '=', $request['room']['id'])
+        foreach ($user_ids as $user_id) {
+            $notifRoom = NotifRoom::where('roomid', '=', $request['room']['id'])
                     ->where('userid', '=', $user_id->user_id)
                     ->first();
-                if ($notifRoom == null) {
-                    $notifRoom = new NotifRoom;
-                    $notifRoom->roomid = $request['room']['id'];
-                    $notifRoom->userid = $user_id->user_id;
-                    $notifRoom->status = 0;
-                    $notifRoom->save();
-                }
+            if ($notifRoom == null) {
+                $notifRoom = new NotifRoom;
+                $notifRoom->roomid = $request['room']['id'];
+                $notifRoom->userid = $user_id->user_id;
+                $notifRoom->status = 0;
+                $notifRoom->save();
             }
+        }
         //cap nhat list room cua user gui~
         $listRoomFrom = DB::table('rooms')
             ->join('room_users','rooms.id','=','room_users.room_id')

@@ -188,7 +188,7 @@ class RoomController extends Controller
 
     public function join($id)
     {
-        $room = Room::findOrFail($id);
+        Room::findOrFail($id);
 
         //Check Joined RoomUser 
         $roomUser = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
@@ -267,7 +267,7 @@ class RoomController extends Controller
             $delete->delete();
         }
     }
-    public function reloadListRoom(){
+    public function reloadListRoom(Request $request){
        $listRoom = DB::table('rooms')
             ->join('room_users','rooms.id','=','room_users.room_id')
             ->join('messenges','rooms.id','=','messenges.room_id')
@@ -293,7 +293,11 @@ class RoomController extends Controller
         }
         $stringDivData = "";
         foreach ($rooms as $room){
-            $stringDivData = $stringDivData . "<div class=\"lv-item media\">"
+            $stringDivData = $stringDivData . "<div class=\"lv-item media";
+            if($room->id == intval($request->roomid)){
+                $stringDivData = $stringDivData ." active" ;
+            };
+            $stringDivData = $stringDivData . "\">"
                 ."<div class=\"lv-avatar pull-left\">"
                 ."<img src=\"../../images/home.png\" alt=\"\">"
                 ."</div>"
@@ -301,8 +305,8 @@ class RoomController extends Controller
                 ."<div class=\"lv-title\">"
                 ."<a href=\"/message/room/".$room->id."\" title=\"\" style=\"text-decoration:none;\">"
                 .$room->name."</a>";
-            if($room->notif == 1){
-                $stringDivData = $stringDivData . "<i class=\"fa fa-star\" aria-hidden=\"true\" style=\"color: #aa1111\"></i>";
+            if($room->notif == 1 && $room->id != intval($request->roomid)){
+                $stringDivData = $stringDivData . "<i class=\"fa fa-star\" aria-hidden=\"true\" style=\"color: #aa1111;padding-left: 10px\"></i>";
             }
             $stringDivData = $stringDivData . "</div><div class=\"lv-small\"> Click here to chat... </div></div></div>";
         }
@@ -320,11 +324,11 @@ class RoomController extends Controller
                 }
             }
         }
-        $stringDivData = $stringDivData . "<div class=\"lv-item media active\"><div class=\"media-body\">"
+        $stringDivData = $stringDivData . "<div class=\"lv-item media\"><div class=\"media-body\">"
                                     ."<p class=\"text-center\" style=\"margin: 0px;\">"
 			                            ."<a href=\"/room\" title=\"\" style=\"text-decoration:none;\">"."SHOW ALL ROOMS";
         if($moreNotif > 0){
-            $stringDivData = $stringDivData . "<span style=\"color: #aa1111\">[ " . $moreNotif. " ]</span>";
+            $stringDivData = $stringDivData . "<strong style=\"color: red;padding-left:10px\">[ " . $moreNotif. " ]</strong>";
         }
         $stringDivData = $stringDivData ."</a>"."</p>"."</div></div>";
         echo $stringDivData;

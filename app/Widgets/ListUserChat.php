@@ -2,6 +2,7 @@
 
 namespace App\Widgets;
 
+use App\NotifPrivate;
 use App\PrivateMessage;
 use Arrilot\Widgets\AbstractWidget;
 
@@ -44,9 +45,9 @@ class ListUserChat extends AbstractWidget
         if($del_key !== false){
             unset($arr_id[$del_key]);
         }
-        $arr_id = array_slice($arr_id,0,3);
+        $arr_idLoad = array_slice($arr_id,0,3);
         $users = new Collection();
-        foreach ($arr_id as $id){
+        foreach ($arr_idLoad as $id){
             $user = User::findOrFail($id);
             //kiem tra user co thong bao hay khong
             $status = DB::table('notifprivate')
@@ -60,10 +61,23 @@ class ListUserChat extends AbstractWidget
             }
             $users->push($user);
         }
+        //dem thong bao chua xem
+        $notif = 0;
+        if(count($arr_id) > 0){
+            $arr_notif = array_slice($arr_id,3,count($arr_id)-3);
+            foreach ($arr_notif as $fromUser) {
+                $checkNotif = NotifPrivate::where('from', '=', $fromUser)
+                    ->where('to', '=', Auth::user()->id)
+                    ->first();
+                if ($checkNotif != null){
+                    $notif++;
+                }
+            }
+        }
         return view('frontend.layouts.widgets.list_user_chat', [
             'config' => $this->config,
             'listUser' => $users,
-            
+            'notif' => $notif
         ]);
     }
 }
