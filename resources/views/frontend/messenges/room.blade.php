@@ -28,6 +28,7 @@
 									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
 									Your browser does not support HTML5 video.
 								</video>
+								<h4 class="text-center title-video">{{ $listFile[0]->title }}</h4>
 							@endif
 						</div>
 						<div class="list-video">
@@ -40,7 +41,7 @@
 										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
 											{{ $file->id }}
 										</span>
-										<span>
+										<span class="titleVideo">
 											{{ str_limit($file->title, 40) }}
 										</span>
 									</a>
@@ -157,7 +158,7 @@
 			success: function(data){
 				
 				var video = $('#myVideo')[0];
-				$("#myVideo source").attr("src",data)
+				$("#myVideo source").attr("src",data);
 				video.load();
 				socket.emit('send action','video',currentRoom,data,'load');
 			},
@@ -167,6 +168,8 @@
     }
     $('.change-video').click(function(){
 		var id = $(this).find('.video-id').html();
+		var titleVideo = $(this).find('.titleVideo').html();
+		$('.title-video').html(titleVideo);	
     	changeVideo(id);
     });
 
