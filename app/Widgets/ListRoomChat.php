@@ -68,6 +68,10 @@ class ListRoomChat extends AbstractWidget
                 }
             }
         }
+
+         $roomJoined = DB::table('rooms')->join('room_users','rooms.id','=','room_users.room_id')->where('room_users.user_id','=',Auth::user()->id)
+         ->select('rooms.id','rooms.name','room_users.user_id')
+         ->get();
         return view('frontend.layouts.widgets.list_room_chat', [
             'config' => $this->config,
             'listRoom' => $rooms,
