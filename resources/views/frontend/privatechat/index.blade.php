@@ -70,6 +70,9 @@
 														@endif
 													@endif
 												@endif
+												@if($user->notif == 1)
+													<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>
+												@endif
 												<a href="{{ route('private.user',$user->name) }}" title="" style="text-decoration:none;">
 													<div class="lv-avatar pull-left"> <img src="{{ asset('storage/avatars/' . $user->avatar) }}" alt=""> </div>
 													<div class="media-body">

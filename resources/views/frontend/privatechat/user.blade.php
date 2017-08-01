@@ -52,6 +52,11 @@
                         </a>
                     </li>
                 @endif
+                    <li>
+                        <a href="{{ route('requestRelationship',$toUser->id) }}" title="Hahaha">
+                            <img src="/images/haha.png" alt="" width="25px" height="25px">
+                        </a>
+                    </li>
             </ul>
         </div>
         <div class="lv-body">
