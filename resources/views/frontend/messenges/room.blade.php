@@ -8,26 +8,15 @@
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				@if($isJoin == 1)
-
 			        
-				<div class="col-md-7">
-					@if(Session::has('danger'))
-	                    <div class="alert alert-danger"><p><strong>{{ Session::get('danger') }}</strong></p></div>
-	                @endif
-	                @if(Session::has('success'))
-	                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
-	                @endif
+				<div class="col-md-7" style="border-bottom: 1px solid #cccccc;">
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
-									<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="choose-file">
-										{{ csrf_field() }}
-										<label for="choose">
-											<i class="fa fa-upload" aria-hidden="true"></i> 
-											<input type="file" id="choose" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('choose-file').submit();">
-										</label>
-								    </form>
+									<a href="#" data-toggle="modal" data-target="#myModalUpload" title="Upload Media">
+				<i class="fa fa-upload" aria-hidden="true"></i>
+			</a>
 							    </div>
 							@else
 
@@ -35,6 +24,7 @@
 									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
 									Your browser does not support HTML5 video.
 								</video>
+								<h4 class="text-center title-video">{{ $listFile[0]->title }}</h4>
 							@endif
 						</div>
 						<div class="list-video">
@@ -47,12 +37,12 @@
 										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
 											{{ $file->id }}
 										</span>
-										<span>
+										<span class="titleVideo">
 											{{ str_limit($file->title, 40) }}
 										</span>
 									</a>
 									<em>- {{ str_limit($file->user->fullname, 20) }}</em>
-									@if($file->user_id == Auth::id())
+									@if($file->user_id == Auth::id() || $room->user_id == Auth::id())
 										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form').submit();" style="text-decoration: none;">
 											<span class="glyphicon glyphicon-trash"></span>
 										</a>
@@ -64,7 +54,6 @@
 									@endif
 								</li>
 								@endforeach
-								
 							</ul>
 						</div>
 					</div>
@@ -137,6 +126,7 @@
 @section('script2')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
+	var isJoin = {!!json_encode($isJoin)!!};
 </script>
 @endsection
 
@@ -164,16 +154,18 @@
 			success: function(data){
 				
 				var video = $('#myVideo')[0];
-				$("#myVideo source").attr("src",data)
+				$("#myVideo source").attr("src",data);
 				video.load();
-				socket.emit('send action','video',currentRoom,data,'load');
-			},
+				socket.emit('send action','video',currentRoom,[data, $('.title-video').html()],'load');
+ 			},
 			error: function (){
 			}
 		});
     }
     $('.change-video').click(function(){
 		var id = $(this).find('.video-id').html();
+		var titleVideo = $(this).find('.titleVideo').html();
+		$('.title-video').html(titleVideo);	
     	changeVideo(id);
     });
 
@@ -190,8 +182,8 @@
     	var vid = $('#myVideo')[0];
     	if(currentRoom.id == room.id){
     		if( action == 'load'){
-				console.log(data);
-				$("#myVideo source").attr("src",data)
+				$("#myVideo source").attr("src",data[0]);
+				$('.title-video').html(data[1]);	
 				vid.load();
 	    	} else if ( action == 'play') {
 	    		vid.play();
@@ -201,14 +193,15 @@
 	    		//add video div if list file is empty
 	    		var count = {!!count($listFile)!!};
 	    		if(count == 0){
-	    			$(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    			// $(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    			window.location = "http://localhost:8000/message/room/"+currentRoom.id;
 	    		}
 	    		//add message
        			$('.room-contentt').append('<div style="padding-left: 30px;">'
                             +'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>');
 	    		//add to video list
 	    		var videoDiv = '<li class=""> <a href="javascript:void(0)" class="change-video"> <i class="fa fa-play-circle-o" aria-hidden="true"></i><span class="video-id hidden">'+ data[0] + '</span> <span>'+ data[1] + '</span> </a> <em>- '+ data[4] +'</em> </li>';
-
+	    		$('.title-video').html(data[1]);
 	    		$('.show-list-video').append(function(){
 	    			return $(videoDiv).click(function(){
 	    				changeVideo(data[0]);
@@ -254,6 +247,7 @@
                     },
                     success : function (result){
                         if(result != 0){
+                    		
                             $('.room-contentt').prepend(result);
                             distance = $('.room-contentt').scrollTop(500);
 						}
@@ -285,6 +279,26 @@
 @endif
 @endsection
 
+@if(Session::has('success'))
+    @section('scriptAlert')
+    <script type="text/javascript">
+        notes.show("{{ Session::get('success') }}", {
+            type: 'success',
+            title: 'Success',
+            icon: '<i class="icon icon-check-sign"></i>'
+        });
+    </script>
+    @endsection
+@endif
 
-
-
+@if(Session::has('danger'))
+    @section('scriptAlert')
+    <script type="text/javascript">
+        notes.show("{{ Session::get('danger') }}", {
+            type: 'danger',
+            title: 'Error',
+            icon: '<i class="icon icon-exclamation-sign"></i>'
+        });
+    </script>
+    @endsection
+@endif

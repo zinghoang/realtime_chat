@@ -14,9 +14,9 @@
 			</div>
 			<div class="lvh-label hidden-xs">
 				<div class="lv-avatar pull-left"> 
-					<span style="color: #818181;"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+					<span style="color: #818181;"><i class="fa fa-search" aria-hidden="true"></i></span>
 				</div>
-				<span class="c-black">Chat</span>
+				<span class="c-black">Search</span>
 			</div>
 		</div>
 		<div class="lv-body">

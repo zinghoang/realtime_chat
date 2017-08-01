@@ -122,6 +122,8 @@ class MessengesController extends Controller
         $message->status = 0;
         $message->save();
 
+        $request->session()->flash('success', 'You uploaded successful');
+
         $request->session()->flash('fileUpload',$file->id."|".$file->title."|".$file->type."|".$message->content."|".Auth::user()->fullname);
 
        return redirect()->route('frontend.message.room', $id);

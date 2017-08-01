@@ -36,7 +36,7 @@
                             <!-- Submit Field -->
                             <div class="col-sm-12">
                                 <input class="btn btn-primary" type="submit" value="Save">
-                                <a href="index.php" class="btn btn-default">Back</a>
+                                <a href="{{ route('rooms.index')}}" class="btn btn-default">Cancel</a>
                             </div>
                             <div class="clearfix"></div>
                         </div>
