@@ -88,6 +88,9 @@ socket.on('receiver private mess',function(type,data){
 	} else if(type == 'IconAction') {
       if(toUser.id == data.from.id) {
          console.log(data);
+         var haha = new Audio();
+         haha.src = '/audio/hahaha.mp3';
+         haha.play();
       }
   }
 })
@@ -97,7 +100,10 @@ $('#hahaPrivateIco').click(function(){
   var data = new Object;
   data.from = user;
   data.toUser = toUser;
-  data.action = 'lol';
+  data.action = 'hahaha';
+  var haha = new Audio();
+  haha.src = '/audio/hahaha.mp3';
+  haha.play();
   socket.emit('send private message','IconAction',data);
 })
 
