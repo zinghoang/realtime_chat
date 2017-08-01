@@ -193,14 +193,15 @@
 	    		//add video div if list file is empty
 	    		var count = {!!count($listFile)!!};
 	    		if(count == 0){
-	    			$(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    			// $(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    			window.location = "http://localhost:8000/message/room/"+currentRoom.id;
 	    		}
 	    		//add message
        			$('.room-contentt').append('<div style="padding-left: 30px;">'
                             +'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>');
 	    		//add to video list
 	    		var videoDiv = '<li class=""> <a href="javascript:void(0)" class="change-video"> <i class="fa fa-play-circle-o" aria-hidden="true"></i><span class="video-id hidden">'+ data[0] + '</span> <span>'+ data[1] + '</span> </a> <em>- '+ data[4] +'</em> </li>';
-
+	    		$('.title-video').html(data[1]);
 	    		$('.show-list-video').append(function(){
 	    			return $(videoDiv).click(function(){
 	    				changeVideo(data[0]);
