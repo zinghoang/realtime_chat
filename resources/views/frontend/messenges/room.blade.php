@@ -89,7 +89,8 @@
 													@endif
 												@endif
 												<span class="glyphicon glyphicon-time"></span>
-												&nbsp; {{ $message->created_at }}
+												&nbsp; 
+												{{ date('d-m-Y', strtotime($message->created_at)) }} at {{ date('H:i:s', strtotime($message->created_at)) }}
 											</small>
 										</div>
 									</div>

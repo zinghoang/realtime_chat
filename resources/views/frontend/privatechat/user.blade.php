@@ -79,14 +79,43 @@
                                 </div>
                                 <small class="ms-date">
                                     <span class="glyphicon glyphicon-time"></span>
-                                    &nbsp; {{ date('d-m-Y', strtotime($chat->created_at)) }} at {{ date('h:i:s', strtotime($chat->created_at)) }}
+                                    &nbsp; {{ date('d-m-Y', strtotime($chat->created_at)) }} at {{ date('H:i:s', strtotime($chat->created_at)) }}
                                 </small> 
                             </div>
                         </div>
                         @endforeach
                         </div>
                         <div class="clearfix"></div>
+
+                        <style type="text/css">
+                           
+
+                            .emotion{
+                                position: relative;
+                                z-index: 30000000;
+                                bottom: 50px;
+
+                            }
+                            .emotion > button{
+                                border: none;
+                            }
+
+                            #list-icon{
+                                display: none;
+                                
+                            }
+
+                        </style>
+                        
                         <div class="lv-footer ms-reply">
+                            <div class="emotion">
+                                <button onclick="showEmotion()"><i class="fa fa-smile-o" aria-hidden="true"></i></button>
+                            </div>
+
+                            <div id="list-icon">
+                                a
+                            </div>
+                             
                             <textarea rows="10" placeholder="Write messages..." id="txt-mess-content" onclick="return deleteNotif({{ $toUser->id }},{{ $user->id }})"></textarea>
                             <button class="" id='btn-reply'>
                                 <span class="glyphicon glyphicon-send"></span>
@@ -101,6 +130,10 @@
 @endsection
 @section('script')
 <script>
+
+    function showEmotion(){
+        $('#list-icon').show();
+    }
     index = 10;
     var toUser = {!!json_encode($toUser)!!};
     console.log(toUser);
