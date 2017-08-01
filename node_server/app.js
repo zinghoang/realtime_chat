@@ -30,9 +30,8 @@ io.on('connection',function(socket){
 
 	//join to list rooms
 	socket.on('join room',function(data){
-		console.log('join room: ');
+		console.log('join room: ' + data.length);
 		for(i=0; i<data.length; ++i){
-			console.log(data[i]);
 			socket.join('room-'+data[i].id);
 		}
 	});
@@ -71,9 +70,6 @@ io.on('connection',function(socket){
 		}
 		globalConnect.push(currentUser) ;
 		console.log('length  ' +globalConnect.length);
-		for(i=0;i<globalConnect.length;++i){
-			console.log(globalConnect[i].user.id + " = " + globalConnect[i].user.name);
-		}
 	});
 
 	//--------- PRIVATE CHAT ---------
@@ -101,7 +97,6 @@ io.on('connection',function(socket){
 	socket.on('disconnect',function(){
 		console.log(socket.id + " has disconnect");
 		var index = globalConnect.indexOf(currentUser);
-		console.log('disconect index ' + index);
 		if(index>=0){
 			globalConnect.splice(index,1);
 		}
