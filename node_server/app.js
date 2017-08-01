@@ -115,7 +115,6 @@ function User(socket,user,current){
 	this.current = current;
 }
 
-
 /*get information of this room
 * server send message that user in room to receiver infor
 */

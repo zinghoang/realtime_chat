@@ -75,6 +75,7 @@ socket.on('receiver private mess',function(type,data){
 		
 		var video = $('#myVideo')[0];
 		$("#myVideo source").attr("src",data.src);
+    $('.title-video').html(data.title); 
 		video.load();
 		video.currentTime = data.currentTime;
 		if(!data.paused){
@@ -330,7 +331,8 @@ socket.on('receiver room mess',function(type,sender,data){
 		 	data.sender = sender;
 			data.src = $("#myVideo source").attr("src");
 		 	data.paused = video.paused;
-		 	data.currentTime = video.currentTime; 
+		 	data.currentTime = video.currentTime;
+      data.title = $('.title-video').html(); 
 		 }
 		 //send back status of room to user
 		socket.emit('send private message','room infor',data);
