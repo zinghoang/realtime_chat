@@ -2,15 +2,13 @@
 
 var socket = io('http://127.0.0.1:3000');
 
-if(typeof currentRoom !== 'undefined'){
+if(typeof currentRoom !== 'undefined' && isJoin){
 	//register user and current room
 	socket.emit('register',user,currentRoom);
 } else {
 	//register user
 	socket.emit('register',user,null);
 }
-
-
 
 //Join room
 socket.emit('join room',roomJoined);
@@ -77,6 +75,7 @@ socket.on('receiver private mess',function(type,data){
 		
 		var video = $('#myVideo')[0];
 		$("#myVideo source").attr("src",data.src);
+    $('.title-video').html(data.title); 
 		video.load();
 		video.currentTime = data.currentTime;
 		if(!data.paused){
@@ -253,8 +252,8 @@ if($('#btn-room-reply').length){
 if($('#join').length){
 	$('#join').click(function(){
 		//Send join event to others
-		socket.emit('send room message','register-room',user,currentRoom);
-	})
+     socket.emit('send room message','register-room',user,currentRoom);
+  	})
 }
 //Leave Event
 if($('#leave-room').length){
@@ -332,7 +331,8 @@ socket.on('receiver room mess',function(type,sender,data){
 		 	data.sender = sender;
 			data.src = $("#myVideo source").attr("src");
 		 	data.paused = video.paused;
-		 	data.currentTime = video.currentTime; 
+		 	data.currentTime = video.currentTime;
+      data.title = $('.title-video').html(); 
 		 }
 		 //send back status of room to user
 		socket.emit('send private message','room infor',data);

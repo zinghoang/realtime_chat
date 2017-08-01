@@ -130,6 +130,7 @@
 @section('script2')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
+	var isJoin = {!!json_encode($isJoin)!!};
 </script>
 @endsection
 
@@ -159,8 +160,8 @@
 				var video = $('#myVideo')[0];
 				$("#myVideo source").attr("src",data);
 				video.load();
-				socket.emit('send action','video',currentRoom,data,'load');
-			},
+				socket.emit('send action','video',currentRoom,[data, $('.title-video').html()],'load');
+ 			},
 			error: function (){
 			}
 		});
@@ -185,8 +186,8 @@
     	var vid = $('#myVideo')[0];
     	if(currentRoom.id == room.id){
     		if( action == 'load'){
-				console.log(data);
-				$("#myVideo source").attr("src",data)
+				$("#myVideo source").attr("src",data[0]);
+				$('.title-video').html(data[1]);	
 				vid.load();
 	    	} else if ( action == 'play') {
 	    		vid.play();
