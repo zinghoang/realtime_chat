@@ -51,7 +51,7 @@
 			<div class="row content-chat-video">
 				<div class="col-md-12">
 				
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						@if(count($listRoomJoined) > 0)
 						<div class="row">
 							<div class="col-md-12">
@@ -64,7 +64,12 @@
 										<a href="{{ route('frontend.message.room', $roomJoined->room->id) }}" title="" style="text-decoration:none;">
 										<div class="lv-avatar pull-left"> <img src="{{ asset('images/home.png') }}" alt=""> </div>
 										<div class="media-body">
-											<div class="lv-title">{{ $roomJoined->room->name }} {!! ($roomJoined->room->user_id == Auth::id())?'<span style="color:red">[AD]</span>':'' !!}</div>
+											<div class="lv-title">
+												{{ $roomJoined->room->name }} {!! ($roomJoined->room->user_id == Auth::id())?'<span style="color:red">[AD]</span>':'' !!}
+												@if($roomJoined->notif == 1)
+													<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>
+												@endif
+											</div>
 											<div class="lv-small">Continue the conversation...</div>
 										</div>
 										</a>

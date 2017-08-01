@@ -129,3 +129,19 @@ a{
 .delete-member{
 	color: red;
 }
+
+.notify.notify-notes {
+    width: 30%;
+}
+
+.notify .note .image + .remove + .content {
+    margin-left: 0px;
+}
+
+.notify .note .content {
+    margin-right: 0px;
+}
+
+.notify.notify-notes .title {
+    margin-bottom: 0px;   
+}

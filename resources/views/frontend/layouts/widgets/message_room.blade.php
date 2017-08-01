@@ -43,10 +43,11 @@
         </div>
         @endif
 	</div>
+	<div id="notes"></div>
 	@if($isJoin == 1)
 	<ul class="lv-actions actions list-unstyled list-inline">
 		<li>
-			<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" title="Create room">
+			<a href="#" data-toggle="modal" data-target="#myModal" title="Create room">
 				<i class="fa fa-plus"></i>
 			</a>
 		</li>
@@ -60,13 +61,9 @@
 			</a>
 		</li>
 		<li>
-			<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="upload-file">
-				{{ csrf_field() }}
-				<label for="upload">
-					<i class="fa fa-upload" aria-hidden="true"></i> 
-					<input type="file" id="upload" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('upload-file').submit();">
-				</label>
-		    </form>					
+			<a href="#" data-toggle="modal" data-target="#myModalUpload" title="Upload Media">
+				<i class="fa fa-upload" aria-hidden="true"></i>
+			</a>
 		</li>
 		<li>
 			<a href="#" data-toggle="modal" data-target="#inviteFriend" title="Invite friend">
@@ -113,6 +110,35 @@
     		</div>
     	</div>
     </div>
+		<!-- Modal Upload File -->
+		<div class="modal fade" id="myModalUpload" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Upload Media...</h4>
+					</div>
+					<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="upload-file">
+						{{ csrf_field() }}
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="title">Title:</label>
+								<input type="text" class="form-control" name="title" id="title">
+							</div>
+							<div class="form-group">
+								<label for="upload">Choose File:</label>
+								<input type="file" class="form-control" id="upload" name="upload" onchange="showTitle(this)">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-info">Save</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	<!-- Modal Invite Room -->
     <div class="modal fade" id="inviteFriend" role="dialog">
     	<div class="modal-dialog">
@@ -121,6 +147,7 @@
     			<div class="modal-header">
     				<button type="button" class="close" data-dismiss="modal">&times;</button>
     				<h4 class="modal-title">Invite friend...</h4>
+    				<div id="noti-invite"></div>
     			</div>
     			<form method="post" action="javascript:void(0)" id="invite-form">
     				 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -129,7 +156,7 @@
     				<div class="modal-body">
     					<div class="form-group">
         					<label for="name">Name:</label>
-        					<input type="text" class="form-control" name="name" id="name-search" value="">
+        					<input type="text" class="form-control" name="name" id="name-search" value="" required>
         					<input type="hidden" name="room_id" id="room_id" value="{{ $room->id }}">
     					</div>
         			</div>
@@ -157,16 +184,25 @@
 			},
 			success: function(data){
 				$( '#showNameRoom' ).text( data );
-
 				
 				$("#editNameRoom .close").click()
 				
 
 			},
 			error: function (){
-				alert('Error!');
 			}
 		}); 
 	});
+    function showTitle(title) {
+		var arr = $('#upload').val().split('\\');
+		var arr_title = arr[arr.length-1];
+        arr_title = arr_title.split('.');
+		var show = '';
+		for (var i = 0 ;i < arr_title.length-1;i++){
+		    show = show + arr_title[i];
+		    if (i< arr_title.length-1) show = show + ' ';
+		}
+		$('#title').val(show);
+    }
 </script>
 @endsection

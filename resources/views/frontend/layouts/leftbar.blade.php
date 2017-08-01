@@ -29,7 +29,7 @@
 	<div class="ms-block"> 
 		<form action="{{ route('SearchUserRoom') }}" method="get">
 			<div class="form-group">
-				<input type="text" name="search" class="form-control" id="name" placeholder="Search" value="{{ old('search') }}">
+				<input type="text" name="search" class="form-control" id="name" placeholder="Search" value="">
 			</div>
 		</form>
 	</div>
@@ -38,11 +38,12 @@
 		<div class="lv-item media {{ Request::is('friend-request') ? 'active' : '' }}">
 			<div class="media-body">
 				<p class="text-center" style="margin: 0px;">
-					<a href="{{ route('frontend.private.request') }}" title="" style="text-decoration:none;">
+					<a href="{{ route('frontend.private.request') }}" title="Friend Request" style="text-decoration:none;">
 						Friend Request
 					</a>
+						<i class="fa fa-user-plus" aria-hidden="true"></i>
 					/
-					<a href="{{ route('frontend.private.friend') }}" title="" style="text-decoration:none;">
+					<a href="{{ route('frontend.private.friend') }}" title="Your Friends" style="text-decoration:none;">
 						Your Friends
 					</a>
 				</p>

@@ -8,26 +8,15 @@
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				@if($isJoin == 1)
-
 			        
-				<div class="col-md-7">
-					@if(Session::has('danger'))
-	                    <div class="alert alert-danger"><p><strong>{{ Session::get('danger') }}</strong></p></div>
-	                @endif
-	                @if(Session::has('success'))
-	                    <div class="alert alert-success"><p><strong>{{ Session::get('success') }}</strong></p></div>
-	                @endif
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
+				<div class="col-md-7" style="border-bottom: 1px solid #cccccc;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
-									<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="choose-file">
-										{{ csrf_field() }}
-										<label for="choose">
-											<i class="fa fa-upload" aria-hidden="true"></i> 
-											<input type="file" id="choose" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('choose-file').submit();">
-										</label>
-								    </form>
+									<a href="#" data-toggle="modal" data-target="#myModalUpload" title="Upload Media">
+				<i class="fa fa-upload" aria-hidden="true"></i>
+			</a>
 							    </div>
 							@else
 
@@ -35,6 +24,7 @@
 									<source src="{{ asset('storage/media/' . $listFile[0]->name) }}" type="video/mp4">
 									Your browser does not support HTML5 video.
 								</video>
+								<h4 class="text-center title-video">{{ $listFile[0]->title }}</h4>
 							@endif
 						</div>
 						<div class="list-video">
@@ -42,17 +32,17 @@
 							<ul class="show-list-video" style="list-style: none;">
 								@foreach ($listFile as $key => $file)
 									
-								<li class="">
+								<li class="" id="{{ $file->id }}">
 									<a href="javascript:void(0)" class="change-video" >
 										<i class="fa {{ ($file->type=='video') ?'fa-play-circle-o':'fa-volume-up' }}" aria-hidden="true"></i><span class="video-id hidden">
 											{{ $file->id }}
 										</span>
-										<span>
+										<span class="titleVideo">
 											{{ str_limit($file->title, 40) }}
 										</span>
 									</a>
 									<em>- {{ str_limit($file->user->fullname, 20) }}</em>
-									@if($file->user_id == Auth::id())
+									@if($file->user_id == Auth::id() || $room->user_id == Auth::id())
 										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form').submit();" style="text-decoration: none;">
 											<span class="glyphicon glyphicon-trash"></span>
 										</a>
@@ -64,13 +54,12 @@
 									@endif
 								</li>
 								@endforeach
-								
 							</ul>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-5 div-chat">
-					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:480px;" class="room-contentt" onmouseenter="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})">
+					<div id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:72vh;" class="room-contentt" onmouseenter="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})">
 						@if($messages->count()>0)
 							@foreach($messages as $message)
 								@if($message->status == 0)
@@ -137,11 +126,14 @@
 @section('script2')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
+	var isJoin = {!!json_encode($isJoin)!!};
 </script>
 @endsection
 
 @section('endscript')
 <script>
+	index = 10;
+    scroll('.room-contentt');
 	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -151,9 +143,7 @@
         }
     });
 
-    $('.change-video').click(function(){
-    	var id = $(this).find('.video-id').html();
-
+    function changeVideo(id){
     	$.ajax({
 			url: "{{ route('frontend.room.changeVideo', $room->id) }}",
 			type: 'POST',
@@ -164,14 +154,19 @@
 			success: function(data){
 				
 				var video = $('#myVideo')[0];
-				$("#myVideo source").attr("src",data)
+				$("#myVideo source").attr("src",data);
 				video.load();
-				socket.emit('send action','video',currentRoom,data,'load');
-			},
+				socket.emit('send action','video',currentRoom,[data, $('.title-video').html()],'load');
+ 			},
 			error: function (){
-				alert('Có lỗi');
 			}
 		});
+    }
+    $('.change-video').click(function(){
+		var id = $(this).find('.video-id').html();
+		var titleVideo = $(this).find('.titleVideo').html();
+		$('.title-video').html(titleVideo);	
+    	changeVideo(id);
     });
 
     $('#myVideo').bind('play', function () {
@@ -187,24 +182,38 @@
     	var vid = $('#myVideo')[0];
     	if(currentRoom.id == room.id){
     		if( action == 'load'){
-				console.log(data);
-				$("#myVideo source").attr("src",data)
+				$("#myVideo source").attr("src",data[0]);
+				$('.title-video').html(data[1]);	
 				vid.load();
 	    	} else if ( action == 'play') {
 	    		vid.play();
 	    	} else if ( action == "pause") {
 	    		vid.pause();
 	    	} else if ( action == "uploaded") {
-	    		//receiver uploaded file
-	    		console.log(data);
+	    		//add video div if list file is empty
+	    		var count = {!!count($listFile)!!};
+	    		if(count == 0){
+	    			$(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    		}
 	    		//add message
        			$('.room-contentt').append('<div style="padding-left: 30px;">'
                             +'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>');
 	    		//add to video list
 	    		var videoDiv = '<li class=""> <a href="javascript:void(0)" class="change-video"> <i class="fa fa-play-circle-o" aria-hidden="true"></i><span class="video-id hidden">'+ data[0] + '</span> <span>'+ data[1] + '</span> </a> <em>- '+ data[4] +'</em> </li>';
 
-	    		$('.show-list-video').append(videoDiv);
-	    	}
+	    		$('.show-list-video').append(function(){
+	    			return $(videoDiv).click(function(){
+	    				changeVideo(data[0]);
+	    			});
+	    		});
+
+	    	} else if ( action == 'file-deleted'){
+	    		//add delete message
+       			$('.room-contentt').append('<div style="padding-left: 30px;">'+'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>'); 
+       			//remove li
+       			var li = '#'+data[0]; 
+       			$(li).remove();
+       		}
     	}
     });
 
@@ -219,17 +228,45 @@
             },
             success : function (result){
             },error: function (){
-                alert("Error");
             }
         });
     }
     @endif
+	$(function(){
+        $('.room-contentt').scroll(function(){
+            var distance = $('.room-contentt').scrollTop();
+            if(distance == 0){
+                $.ajax({
+                    url : "{{ route('getmoreMsgRoom') }}",
+                    type : "post",
+                    dataType:"text",
+                    data : {
+                        'roomid' : {{ $room->id  }},
+                        'offset': index
+                    },
+                    success : function (result){
+                        if(result != 0){
+                    		
+                            $('.room-contentt').prepend(result);
+                            distance = $('.room-contentt').scrollTop(500);
+						}
+                    },error: function (){
+                    }
+                });
+                index = index + 10;
+            }
+        });
+    });
     @if(Session::has('fileUpload'))
 		var str = "{!!Session::get('fileUpload') !!}";
 		var fileInfor = str.split("|");
-		console.log(fileInfor);
 		//send to other that file is uploaded
 		socket.emit('send room message','file uploaded',currentRoom,fileInfor);
+    @endif
+    @if(Session::has('fileDelete'))
+    	var str = "{!!Session::get('fileDelete')!!}";
+    	var fileInfor = str.split("|");
+    	socket.emit('send room message','file deleted',currentRoom,fileInfor);
     @endif
 
 </script>
@@ -241,6 +278,26 @@
 @endif
 @endsection
 
+@if(Session::has('success'))
+    @section('scriptAlert')
+    <script type="text/javascript">
+        notes.show("{{ Session::get('success') }}", {
+            type: 'success',
+            title: 'Success',
+            icon: '<i class="icon icon-check-sign"></i>'
+        });
+    </script>
+    @endsection
+@endif
 
-
-
+@if(Session::has('danger'))
+    @section('scriptAlert')
+    <script type="text/javascript">
+        notes.show("{{ Session::get('danger') }}", {
+            type: 'danger',
+            title: 'Error',
+            icon: '<i class="icon icon-exclamation-sign"></i>'
+        });
+    </script>
+    @endsection
+@endif

@@ -27,7 +27,6 @@ class PrivateChatController extends Controller
             ->orWhere('to','=',Auth::user()->id)
             ->orderBy('created_at','DESC')
             ->select('from','to')->get();
-
         $arr_id = array();
 
         foreach ($ids as $id){
@@ -49,6 +48,15 @@ class PrivateChatController extends Controller
 
         foreach ($arr_id as $id){
             $user = User::findOrFail($id);
+            //kiem tra tinh trang friendship cua user
+            $friendship = FriendShip::where('user_request','=',Auth::user()->id)
+                                ->where('user_accept','=',$user->id)
+                                ->orWhere('user_request','=',$user->id)
+                                ->where('user_accept','=',Auth::user()->id)
+                                ->first();
+            if($friendship != null){
+                $user->friendship = $friendship;
+            }
             //kiem tra user co thong bao hay khong
             $status = DB::table('notifprivate')
                 ->join('users','users.id','=','notifprivate.from')
@@ -61,7 +69,6 @@ class PrivateChatController extends Controller
             }
             $users->push($user);
         }
-
 		return view('frontend.privatechat.index')->with('users',$users);
 	}
 
@@ -94,8 +101,18 @@ class PrivateChatController extends Controller
             ->where('user_accept','=',$user->id)
             ->first();
 
-        $listPrivateChat = PrivateMessage::where('from', $user->id)->where('to', $toUser->id)->orWhere('from', $toUser->id)->where('to', $user->id)->get();
-
+        $listFirst = PrivateMessage::where('from', $user->id)
+            ->where('to', $toUser->id)
+            ->orWhere('from', $toUser->id)
+            ->where('to', $user->id)
+            ->orderBy('id','DESC')
+            ->offset(0)
+            ->take(10)
+            ->get();
+        $listPrivateChat = new Collection();
+        for ($i = $listFirst->count()-1 ; $i >= 0 ; $i--){
+            $listPrivateChat->push($listFirst[$i]);
+        }
         foreach ($listPrivateChat as $key => $chat){
             $chat->content = self::getNewContent($chat->content);
         }
@@ -290,6 +307,57 @@ class PrivateChatController extends Controller
         if($notif != null){
             $delete = NotifPrivate::findOrFail($notif->id);
             $delete->delete();
+        }
+    }
+    public function getmoreMsg(Request $request)
+    {
+        $from = $request->from;
+        $to = $request->to;
+        $offset = $request->offset;
+
+        //get list
+        $listFirst = PrivateMessage::where('from', '=', $from)
+            ->where('to', '=', $to)
+            ->orWhere('from', '=', $to)
+            ->where('to', '=', $from)
+            ->offset($offset)
+            ->take(10)
+            ->orderBy('id', 'DESC')
+            ->get();
+        $listMsg = new Collection();
+        for ($i = $listFirst->count() - 1; $i >= 0; $i--) {
+            $listMsg->push($listFirst[$i]);
+        }
+        foreach ($listMsg as $key => $chat) {
+            $chat->content = self::getNewContent($chat->content);
+        }
+        //Get User Information
+        $userFrom = User::findOrFail($from);
+        $userTo = User::findOrFail($to);
+        if ($userFrom == null || $userTo == null) {
+            abort(404);
+        }
+        $stringDivData = '';
+        if ($listMsg->count() > 0) {
+            foreach ($listMsg as $msg) {
+                $stringDivData = $stringDivData . '<div class="lv-item media';
+                if ($msg->from == Auth::user()->id) $stringDivData = $stringDivData . ' right';
+                $stringDivData = $stringDivData . ' "><div class="lv-avatar ';
+                $msg->from == Auth::user()->id ? $stringDivData = $stringDivData . 'pull-right ">' : $stringDivData = $stringDivData . 'pull-left ">';
+                if ($chat->from == $from) {
+                    $stringDivData = $stringDivData . '<img src = "../storage/avatars/' . $userFrom->avatar . '" alt = "" >';
+                } else if ($msg->from == $to) {
+                    $stringDivData = $stringDivData . '<img src = "../storage/avatars/' . $userTo->avatar . '" alt = "" >';
+                }
+
+                $stringDivData = $stringDivData . ' </div><div class="media-body"><div class="ms-item">'
+                    . $msg->content . '</div><small class="ms-date"><span class="glyphicon glyphicon-time"></span>'
+                    . '&nbsp;' . $msg->created_at
+                    . '</small></div></div>';
+            }
+            echo $stringDivData;
+        } else {
+            return 0;
         }
     }
 

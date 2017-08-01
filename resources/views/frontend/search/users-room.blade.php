@@ -14,16 +14,16 @@
 			</div>
 			<div class="lvh-label hidden-xs">
 				<div class="lv-avatar pull-left"> 
-					<span style="color: #818181;"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+					<span style="color: #818181;"><i class="fa fa-search" aria-hidden="true"></i></span>
 				</div>
-				<span class="c-black">Chat</span>
+				<span class="c-black">Search</span>
 			</div>
 		</div>
 		<div class="lv-body">
 			<div class="row content-chat-video">
 				<div class="col-md-12">
 				
-					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:530px;">
+					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="row">
 							<div class="col-md-12">
 								<h5 class="text-center">User Result Of "{{ $nameSeach }}"</h5>

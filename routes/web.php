@@ -35,6 +35,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::delete('/room/delete-file/{room}', 'MessengesController@deleteFile')->name('frontend.message.deletefile');
 		
 		Route::post('/add-room-message','MessengesController@addRoomMessage');
+        Route::post('/getmoreMsg','MessengesController@getmoreMsg')->name('getmoreMsgRoom');
 	});
 
 	Route::group(['prefix' => 'room'], function(){
@@ -68,6 +69,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 		Route::get('/acceptRelationship/{id}','PrivateChatController@acceptRelationship')->name('acceptRelationship');
 		
         Route::post('/deleteNotif','PrivateChatController@deleteNotif')->name('deleteNotif');
+        Route::post('/getmoreMsg','PrivateChatController@getmoreMsg')->name('getmoreMsg');
 	});
 
 	Route::get('friend-request', 'PrivateChatController@viewListFriendRequest')->name('frontend.private.request');
