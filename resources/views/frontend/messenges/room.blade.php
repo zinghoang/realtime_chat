@@ -157,8 +157,7 @@
 			success: function(data){
 				
 				var video = $('#myVideo')[0];
-				$("#myVideo source").attr("src",data);				
-				$('.title-video').html(data);	
+				$("#myVideo source").attr("src",data);
 				video.load();
 				socket.emit('send action','video',currentRoom,data,'load');
 			},
@@ -168,6 +167,8 @@
     }
     $('.change-video').click(function(){
 		var id = $(this).find('.video-id').html();
+		var titleVideo = $(this).find('.titleVideo').html();
+		$('.title-video').html(titleVideo);	
     	changeVideo(id);
     });
 
