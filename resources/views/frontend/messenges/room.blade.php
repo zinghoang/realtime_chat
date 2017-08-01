@@ -129,6 +129,7 @@
 @section('script2')
 <script type="text/javascript">
 	var currentRoom = {!!json_encode($room)!!};
+	var isJoin = {!!json_encode($isJoin)!!};
 </script>
 @endsection
 

@@ -2,15 +2,13 @@
 
 var socket = io('http://127.0.0.1:3000');
 
-if(typeof currentRoom !== 'undefined'){
+if(typeof currentRoom !== 'undefined' && isJoin){
 	//register user and current room
 	socket.emit('register',user,currentRoom);
 } else {
 	//register user
 	socket.emit('register',user,null);
 }
-
-
 
 //Join room
 socket.emit('join room',roomJoined);
@@ -253,8 +251,8 @@ if($('#btn-room-reply').length){
 if($('#join').length){
 	$('#join').click(function(){
 		//Send join event to others
-		socket.emit('send room message','register-room',user,currentRoom);
-	})
+     socket.emit('send room message','register-room',user,currentRoom);
+  	})
 }
 //Leave Event
 if($('#leave-room').length){

@@ -35,6 +35,13 @@ class ListRoomChat extends AbstractWidget
             array_push($arr_roomid,$room->id);
         }
         $arr_roomid = array_unique($arr_roomid);
+        $listRoomJoined = new Collection();
+        foreach ($arr_roomid as $roomid){
+            $room = Room::findOrFail($roomid);
+            if($room != null){
+                $listRoomJoined->push($room);
+            }
+        }
         $arr_roomidLoad = array_slice($arr_roomid,0,3);
         $rooms = new Collection();
         foreach ($arr_roomidLoad as $roomid){
@@ -61,10 +68,14 @@ class ListRoomChat extends AbstractWidget
                 }
             }
         }
+
+         $roomJoined = DB::table('rooms')->join('room_users','rooms.id','=','room_users.room_id')->where('room_users.user_id','=',Auth::user()->id)
+         ->select('rooms.id','rooms.name','room_users.user_id')
+         ->get();
         return view('frontend.layouts.widgets.list_room_chat', [
             'config' => $this->config,
             'listRoom' => $rooms,
-            'roomJoined' =>$listRoom,
+            'roomJoined' =>$listRoomJoined,
             'moreNotif' => $moreNotif
         ]);
     }
