@@ -70,7 +70,11 @@
 				<i class="fa fa-envelope" aria-hidden="true"></i>
 			</a>
 		</li>
-
+		<li>
+			<a href="" title="Hahaha">
+				<img src="/images/haha.png" alt="" width="25px" height="25px">
+			</a>
+		</li>
 		@if($room->user_id == Auth::id())
 			<li> 
 				<a href="{{ route('frontend.room.destroy', $room->id) }}" 

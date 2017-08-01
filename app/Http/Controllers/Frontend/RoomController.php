@@ -305,8 +305,8 @@ class RoomController extends Controller
                 ."</div>"
                 ."<div class=\"media-body\">"
                 ."<div class=\"lv-title\">"
-                ."<a href=\"/message/room/".$room->id."\" title=\"\" style=\"text-decoration:none;\">"
-                .$room->name."</a>";
+                ."<a href=\"/message/room/".$room->id."\" title=\"$room->name\" style=\"text-decoration:none;\">"
+                .str_limit($room->name,12)."</a>";
             if($room->notif == 1 && $room->id != intval($request->roomid)){
                 $stringDivData = $stringDivData . "<i class=\"fa fa-star\" aria-hidden=\"true\" style=\"color: #aa1111;padding-left: 10px\"></i>";
             }

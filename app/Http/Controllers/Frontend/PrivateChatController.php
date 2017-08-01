@@ -75,7 +75,9 @@ class PrivateChatController extends Controller
     public function user($username)
     {
         $userid = User::where('name','=',$username)->select('id')->first();
-
+        if($userid == null){
+            abort(404);
+        }
         //xoa thong bao tu user nay neu co
         $notif = NotifPrivate::where('from','=',$userid->id)
                                 ->where('to','=',Auth::user()->id)
