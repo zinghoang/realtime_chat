@@ -147,6 +147,7 @@
     			<div class="modal-header">
     				<button type="button" class="close" data-dismiss="modal">&times;</button>
     				<h4 class="modal-title">Invite friend...</h4>
+    				<div id="noti-invite"></div>
     			</div>
     			<form method="post" action="javascript:void(0)" id="invite-form">
     				 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -155,7 +156,7 @@
     				<div class="modal-body">
     					<div class="form-group">
         					<label for="name">Name:</label>
-        					<input type="text" class="form-control" name="name" id="name-search" value="">
+        					<input type="text" class="form-control" name="name" id="name-search" value="" required>
         					<input type="hidden" name="room_id" id="room_id" value="{{ $room->id }}">
     					</div>
         			</div>
@@ -183,7 +184,6 @@
 			},
 			success: function(data){
 				$( '#showNameRoom' ).text( data );
-
 				
 				$("#editNameRoom .close").click()
 				

@@ -14,13 +14,9 @@
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
-									<form method="post" action="{{ route('frontend.message.uploadfile', $room->id) }}" enctype="multipart/form-data" id="choose-file">
-										{{ csrf_field() }}
-										<label for="choose">
-											<i class="fa fa-upload" aria-hidden="true"></i> 
-											<input type="file" id="choose" name="title" style="display:none" onchange="event.preventDefault(); document.getElementById('choose-file').submit();">
-										</label>
-								    </form>
+									<a href="#" data-toggle="modal" data-target="#myModalUpload" title="Upload Media">
+				<i class="fa fa-upload" aria-hidden="true"></i>
+			</a>
 							    </div>
 							@else
 

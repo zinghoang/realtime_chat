@@ -80,6 +80,7 @@ class RoomController extends Controller
 
     public function inviteUser(Request $request){
         $status = "failed";
+        $message = ' Invalid Username.';
         $username = $request['username'];
         $user = User::where('name','=',$username)->first();
 
@@ -91,8 +92,8 @@ class RoomController extends Controller
             $roomUser = RoomUser::where('user_id', $user->id)->where('room_id', $request['room_id'])->first();
             if($roomUser == null){
 
-
                 $status = "success";
+                $message = 'Invite Success.';
 
                 Messenges::create([
                     'user_id' => Auth::id(),
@@ -106,13 +107,14 @@ class RoomController extends Controller
                     'room_id' =>$request['room_id']
                 ]);
             }else{
-                $status = "success";
+                $status = "failed";
+                $message = 'User already exists in this room!';
             }
            
         }
         $room = Room::find($request['room_id']);
 
-        return ['user'=> $user,'status' => $status,'room' => $room ];
+        return ['user'=> $user,'status' => $status,'room' => $room, 'message' => $message ];
     }
 
     public function ban($user_id, $room_id, Request $request)

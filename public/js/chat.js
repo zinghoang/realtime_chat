@@ -355,10 +355,27 @@ if($('#invite-form').length){
 				if(data['status'] == 'success'){
 					console.log(data['user']);
 					socket.emit('invite to room',user,data['user'],data['room']);
-					$('#message-form').html('<div class="alert alert-success"> <strong>Success!</strong> Invite Success. </div>');
+
+          var html_noti = '<script type="text/javascript">'
+              + 'notes.show("' + data['message'] +  ' ", {'
+              + 'type: "success",'
+              + 'title: "Success",'
+              + 'icon: \'<i class="' + 'icon icon-check-sign' + '"></i>\''
+              + '});'
+              + '</script>';
+                
+					$('#noti-invite').append(html_noti);
 					$('#name-search').val('');
-				} else {
-					$('#message-form').html('<div class="alert alert-danger"> <strong>Danger!</strong> Invalid Username. </div>')
+				} else{
+					var html_noti = '<script type="text/javascript">'
+              + 'notes.show("' + data['message'] +  ' ", {'
+              + 'type: "danger",'
+              + 'title: "Error",'
+              + 'icon: \'<i class="' + 'icon icon-exclamation-sign' + '"></i>\''
+              + '});'
+              + '</script>';
+                
+          $('#noti-invite').append(html_noti);
 				}
 				$('#message-form').fadeIn('slow', function () {
 			   		 $(this).delay(3000).fadeOut('slow');
