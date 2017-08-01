@@ -6,11 +6,12 @@
     <div class="listview lv-message">
         <div class="lv-header-alt clearfix">
             <div id="ms-menu-trigger">
-                <div class="line-wrap">
+                <div class="line-wrap button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" role="button" type="button">
                     <div class="line top"></div>
                     <div class="line center"></div>
                     <div class="line bottom"></div>
                 </div>
+                @widget('MenuNav')
             </div>
             <div class="lvh-label hidden-xs">
                 @if(Session::has('fail'))
