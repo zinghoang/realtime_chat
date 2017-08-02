@@ -7,12 +7,29 @@
         @endforeach
     </div>
 </div>
+ 
+<div class="add-photo">
+    <form method="POST" enctype="multipart/form-data" action="" id="form-add-photo">
+        {{ csrf_field() }}
+        <label for="upload-file-selector">
+            <button>
+                <i class="fa fa-picture-o" aria-hidden="true"></i>
+            </button>
+            <input id="upload-file-selector" type="file" onchange="return uploadPhoto()">
+        </label>
+    </form>
+</div>  
 
 <div class="emotion">
     <button onclick="showEmotion()"><i class="fa fa-smile-o" aria-hidden="true"></i></button>
-</div>  
+</div> 
 
 <script type="text/javascript">
+
+    function uploadPhoto(){
+        $('#form-add-photo').submit();
+    }
+
     function addIcon(code)
     {
 
