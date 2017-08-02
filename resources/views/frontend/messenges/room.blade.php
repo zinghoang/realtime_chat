@@ -100,6 +100,19 @@
 					</div>
 					<div class="clearfix"></div>
 					@widget('EmotionChat')
+
+					<div class="add-photo">
+                        <form method="POST" enctype="multipart/form-data" action="" id="form-add-photo">
+                            {{ csrf_field() }}
+                            <label for="upload-file-selector">
+                                <span class="bton">
+                                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                    <input id="upload-file-selector" name="upload" type="file" onchange="return uploadPhoto()">
+                                </span>
+                            </label>
+                        </form>
+                    </div>
+
 					<div class="lv-footer ms-reply">
 						<textarea rows="10" placeholder="Write messages..." id="mess-content" onclick="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})"></textarea>
 						<button class="" id="btn-room-reply">
@@ -134,6 +147,11 @@
 
 @section('endscript')
 <script>
+
+	function uploadPhoto(){
+        $('#form-add-photo').submit();
+    }
+
 	index = 10;
     scroll('.room-contentt');
 	@if($isJoin == 1)

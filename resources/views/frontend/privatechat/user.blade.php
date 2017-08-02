@@ -89,6 +89,20 @@
 
                         @widget('EmotionChat')
 
+                        <div class="add-photo">
+                            <form method="POST" enctype="multipart/form-data" action="" id="form-add-photo">
+                                {{ csrf_field() }}
+                                <label for="upload-file-selector">
+                                    <span class="bton">
+                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                        <input id="upload-file-selector" name="upload" type="file" onchange="return uploadPhoto()">
+                                    </span>
+                                </label>
+                            </form>
+                        </div>
+
+                        
+
                         <div class="lv-footer ms-reply">
                             <textarea rows="10" placeholder="Write messages..." id="txt-mess-content" onclick="return deleteNotif({{ $toUser->id }},{{ $user->id }})"></textarea>
                             <button class="" id='btn-reply'>
@@ -106,6 +120,9 @@
 @section('script')
 <script>
 
+    function uploadPhoto(){
+        $('#form-add-photo').submit();
+    }
     
     index = 10;
     var toUser = {!!json_encode($toUser)!!};
