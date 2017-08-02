@@ -278,7 +278,16 @@ class PrivateChatController extends Controller
             $image = Emotion::where('code','=',$code)
                 ->select('image')->first();
             if($image == null){
-                $output = $output. " ".$code;
+                //kiem tra xem co phai link khong?
+                if(self::checkLink($code)>0){//neu la link thi kiem tra co phai link youtube ko
+                    if(self::checkYoutube($code) > 0 ){//la link youtube
+                        $output = $output. " ". self::getEmbedCode($code);
+                    }else{ //khong phai link youtube
+                        $output = $output. ' <a href="'.$code .'" target="_blank">'.$code.'</a>';
+                    }
+                }else{
+                    $output = $output. " ".$code;
+                }
             }else{
                 $output = $output. " "."<img src=\"../storage/emotions/$image->image\" alt=\"\" width=\"50px\" height=\"50px\"> ";
             }
@@ -287,7 +296,31 @@ class PrivateChatController extends Controller
 
         return $output;
     }
-
+    public static function checkLink($text){
+        if(filter_var($text,FILTER_VALIDATE_URL) == true){
+            return 1;
+        }
+        return 0;
+    }
+    public static function checkYoutube($url){
+        $parsed = parse_url($url);
+        if($parsed['host'] == 'www.youtube.com' && $parsed['path'] == '/watch'){
+            return 1;
+        }
+        return 0;
+    }
+    public static function getEmbedCode($url){
+        $embed = 'https://www.youtube.com/embed/';
+        $parsed = parse_url($url);
+        $query = $parsed['query'];
+        $query = explode('&',$query);
+        $query = $query[0];
+        $query = explode('=',$query);
+        $query = $query[1];
+        $embed = $embed . $query.'?ecver=1';
+        $output = " <iframe width=\"560\" height=\"315\" src=\"".$embed."\" frameborder=\"0\" allowfullscreen></iframe>";
+        return $output;
+    }
     public function requestRelationship($to){
 
         if($this->checkFriendship($to) == null){
