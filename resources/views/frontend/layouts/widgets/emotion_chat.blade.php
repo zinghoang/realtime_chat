@@ -12,10 +12,10 @@
     <form method="POST" enctype="multipart/form-data" action="" id="form-add-photo">
         {{ csrf_field() }}
         <label for="upload-file-selector">
-            <button>
+            <span>
                 <i class="fa fa-picture-o" aria-hidden="true"></i>
-            </button>
-            <input id="upload-file-selector" type="file" onchange="return uploadPhoto()">
+                <input id="upload-file-selector" name="upload" type="file" onchange="return uploadPhoto()">
+            </span>
         </label>
     </form>
 </div>  
