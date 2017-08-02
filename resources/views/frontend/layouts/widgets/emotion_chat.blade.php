@@ -9,12 +9,12 @@
 </div>
  
 <div class="add-photo">
-    <form method="POST" enctype="multipart/form-data" action="" id="form-add-photo">
+    <form method="POST" enctype="multipart/form-data" action="javascript:void(0)" id="form-add-photo">
         {{ csrf_field() }}
         <label for="upload-file-selector">
             <span>
                 <i class="fa fa-picture-o" aria-hidden="true"></i>
-                <input id="upload-file-selector" name="upload" type="file" onchange="return uploadPhoto()">
+                <input id="upload-file-selector" name="upload" type="file" onchange="return showImg()">
             </span>
         </label>
     </form>

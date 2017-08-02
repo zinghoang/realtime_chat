@@ -267,7 +267,7 @@ class MessengesController extends Controller
                     $output = $output . " " . $code;
                 }
             } else {
-                $output = $output . " " . "<img src=\"../storage/emotions/$image->image\" alt=\"\" width=\"50px\" height=\"50px\"> ";
+                $output = $output . " " . "<img src=\"../../storage/emotions/$image->image\" alt=\"\" width=\"50px\" height=\"50px\"> ";
             }
             $image = null;
         }
