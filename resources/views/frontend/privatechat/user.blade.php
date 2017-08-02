@@ -51,11 +51,11 @@
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
-                @endif
+                @endif                   
                     <li>
-                        <p title="Hahaha" id="hahaPrivateIco">
+                        <a href="#" title="Hahaha" id="hahaPrivateIco">
                             <img src="/images/haha.png" alt="" width="25px" height="25px">
-                        </p>
+                        </a>
                     </li>
             </ul>
         </div>
