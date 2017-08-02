@@ -72,9 +72,9 @@
 			</a>
 		</li>
 		<li>
-			<p title="Hahaha" id="hahaIco">
+			<a href="#" title="Hahaha" id="hahaIco">
 				<img src="/images/haha.png" alt="" width="25px" height="25px">
-			</p>
+			</a>
 		</li>
 		@if($room->user_id == Auth::id())
 			<li> 

@@ -12,7 +12,7 @@
     <ul class="sidebar-menu" id="list_pages">
 
         <li>
-            <a href="{{ route('admin.index') }}">
+            <a href="{{ route('users.index') }}">
                 <i class="fa fa-home"></i> <span>Dashboard</span>
             </a>
         </li>

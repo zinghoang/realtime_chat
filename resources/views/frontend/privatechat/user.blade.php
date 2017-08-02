@@ -79,19 +79,23 @@
                                 </div>
                                 <small class="ms-date">
                                     <span class="glyphicon glyphicon-time"></span>
-                                    &nbsp; {{ date('d-m-Y', strtotime($chat->created_at)) }} at {{ date('h:i:s', strtotime($chat->created_at)) }}
+                                    &nbsp; {{ date('d-m-Y', strtotime($chat->created_at)) }} at {{ date('H:i:s', strtotime($chat->created_at)) }}
                                 </small> 
                             </div>
                         </div>
                         @endforeach
                         </div>
                         <div class="clearfix"></div>
+
+                        @widget('EmotionChat')
+
                         <div class="lv-footer ms-reply">
                             <textarea rows="10" placeholder="Write messages..." id="txt-mess-content" onclick="return deleteNotif({{ $toUser->id }},{{ $user->id }})"></textarea>
                             <button class="" id='btn-reply'>
                                 <span class="glyphicon glyphicon-send"></span>
                             </button>
                         </div>
+
                 </div>
             </div>
         </div>
@@ -101,6 +105,8 @@
 @endsection
 @section('script')
 <script>
+
+    
     index = 10;
     var toUser = {!!json_encode($toUser)!!};
     console.log(toUser);
