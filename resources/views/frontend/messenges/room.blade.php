@@ -215,6 +215,12 @@
        			//remove li
        			var li = '#'+data[0]; 
        			$(li).remove();
+       		} else if( action == 'IconAction'){
+       			//haha
+       			console.log(data);
+                var haha = new Audio();
+                haha.src = '/audio/hahaha.mp3';
+                haha.play();
        		}
     	}
     });
@@ -271,6 +277,12 @@
     	socket.emit('send room message','file deleted',currentRoom,fileInfor);
     @endif
 
+    $('#hahaIco').click(function(){
+        var haha = new Audio();
+        haha.src = '/audio/hahaha.mp3';
+        haha.play();
+    	socket.emit('send action','Icon',currentRoom,'haha','IconAction');
+    })
 </script>
 
 @if($isJoin == 1)
