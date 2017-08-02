@@ -51,11 +51,11 @@
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
-                @endif
+                @endif                   
                     <li>
-                        <p title="Hahaha" id="hahaPrivateIco">
+                        <a href="#" title="Hahaha" id="hahaPrivateIco">
                             <img src="/images/haha.png" alt="" width="25px" height="25px">
-                        </p>
+                        </a>
                     </li>
             </ul>
         </div>
@@ -89,6 +89,20 @@
 
                         @widget('EmotionChat')
 
+                        <div class="add-photo">
+                            <form method="POST" enctype="multipart/form-data" action="" id="form-add-photo">
+                                {{ csrf_field() }}
+                                <label for="upload-file-selector">
+                                    <span class="bton">
+                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                        <input id="upload-file-selector" name="upload" type="file" onchange="return uploadPhoto()">
+                                    </span>
+                                </label>
+                            </form>
+                        </div>
+
+                        
+
                         <div class="lv-footer ms-reply">
                             <textarea rows="10" placeholder="Write messages..." id="txt-mess-content" onclick="return deleteNotif({{ $toUser->id }},{{ $user->id }})"></textarea>
                             <button class="" id='btn-reply'>
@@ -106,6 +120,9 @@
 @section('script')
 <script>
 
+    function uploadPhoto(){
+        $('#form-add-photo').submit();
+    }
     
     index = 10;
     var toUser = {!!json_encode($toUser)!!};
