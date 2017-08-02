@@ -155,7 +155,7 @@ a{
 .emotion > button{
     border: none;
     width: 24px;
-    
+    background-color: #cccccc;
 }
 
 #list-icon{
@@ -213,10 +213,10 @@ a{
     z-index: 30000000;
     bottom: 100px;
 }
-.add-photo button{
+.add-photo span{
     border: none;
     width: 24px;
-    
+    background-color: #cccccc;
 }
 
 #upload-file-selector {
