@@ -9,14 +9,14 @@
 			<div class="row content-chat-video">
 				@if($isJoin == 1)
 			        
-				<div class="col-md-7" style="border-bottom: 1px solid #cccccc;">
+				<div class="col-md-7">
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
-									<a href="#" data-toggle="modal" data-target="#myModalUpload" title="Upload Media">
-				<i class="fa fa-upload" aria-hidden="true"></i>
-			</a>
+									<a href="#" data-toggle="modal" data-target="#myModalUpload" title="Upload Media" style="color: #f0f0f0">
+										<i class="fa fa-upload" aria-hidden="true"></i>
+									</a>
 							    </div>
 							@else
 
@@ -99,6 +99,7 @@
 						@endif
 					</div>
 					<div class="clearfix"></div>
+					@widget('EmotionChat')
 					<div class="lv-footer ms-reply">
 						<textarea rows="10" placeholder="Write messages..." id="mess-content" onclick="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})"></textarea>
 						<button class="" id="btn-room-reply">
