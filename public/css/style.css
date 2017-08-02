@@ -177,7 +177,6 @@ a{
     overflow-x: hidden;
 
     background-color: #ffffff;
-    
 }
 
 #list-icon button{
@@ -185,9 +184,15 @@ a{
     border: 1px solid #ffffff;
 }
 
-@media only screen and (max-width : 320px) {
+@media only screen and (max-width : 1024px) {
     #list-icon{
-        max-width: 100px;
+        max-width: 400px;
+    }
+}
+
+@media only screen and (max-width : 720px) {
+    #list-icon{
+        max-width: 400px;
     }
 }
 
@@ -197,14 +202,8 @@ a{
     }
 }
 
-@media only screen and (max-width : 720px) {
+@media only screen and (max-width : 320px) {
     #list-icon{
-        max-width: 500px;
-    }
-}
-
-@media only screen and (max-width : 1024px) {
-    #list-icon{
-        max-width: 400px;
+        max-width: 100px;
     }
 }
