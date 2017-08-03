@@ -119,7 +119,7 @@ class MessengesController extends Controller
         if($request->title == ""){
             $file->title = $nameFileSave;
         }else{
-            $file->title = $request->title;
+            $file->title = str_replace(['<', '>'], [' ', ' '], $request->title);
         }
         $file->user_id = Auth::id();
         $file->save();
@@ -127,7 +127,7 @@ class MessengesController extends Controller
         $message = new Messenges;
         $message->user_id = Auth::user()->id;
         $message->room_id = $id;
-        $message->content = Auth::user()->name . ' has uploaded file: ' . $nameFileSave;
+        $message->content = Auth::user()->name . ' has uploaded file: ' . $file->title;
         $message->status = 0;
         $message->save();
 
