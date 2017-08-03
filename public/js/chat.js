@@ -86,7 +86,7 @@ socket.on('receiver private mess',function(type,data){
 			video.play(); 
 		}
 	} else if(type == 'IconAction') {
-      if(toUser.id == data.from.id) {
+      if(typeof(toUser) !== 'undefined' && toUser.id == data.from.id) {
          console.log(data);
          var haha = new Audio();
          haha.src = '/audio/hahaha.mp3';
