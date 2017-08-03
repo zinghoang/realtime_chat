@@ -219,7 +219,7 @@
                         dataContent.from = user;
                         dataContent.toUser = toUser;
                         dataContent.data = data;
-                        socket.emit('send private message','image upload',dataContent);
+                        socket.emit('send private message','image upload',{toUser: toUser,data:dataContent});
                     },
                     error: function (){
                     },
