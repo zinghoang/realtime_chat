@@ -11,8 +11,8 @@
 
     <ul class="sidebar-menu" id="list_pages">
 
-        <li>
-            <a href="{{ route('users.index') }}">
+        <li class="{{ Request::is('admin/index')? 'active' : '' }}">
+            <a href="{{ route('admin.index') }}">
                 <i class="fa fa-home"></i> <span>Dashboard</span>
             </a>
         </li>
