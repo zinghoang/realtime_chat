@@ -1,9 +1,7 @@
 
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-
-
-<!-- Alert notification -->
+<script src="{{ asset('js/socket.io.js') }}"></script>
+ <!-- Alert notification -->
 <script src="{{ asset('js/jquery-ui.js') }}"></script>
 <script src="{{ asset('js/notify.js') }}"></script>
 <script type="text/javascript">
