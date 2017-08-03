@@ -473,5 +473,22 @@ class PrivateChatController extends Controller
 
         return view('frontend.privatechat.friend', compact('friends'));
     }
+    public function sendPicturePrivate(Request $request){
+        $from = $request->from;
+        $to = $request->to;
+        if($request->file('sendPicture') != null){
+            //Up anh moi
+            $image = $request->file('sendPicture')->store('public/sendImg');
+            $arr_filename = explode("/",$image);
+            $filename = end($arr_filename);
+            //luu tin nhan vao DB
+            $msg = new PrivateMessage();
+            $msg->from = $from;
+            $msg->to = $to;
+            $msg->content = '<a href="../../storage/sendImg/'.$filename.'" target="_blank" ><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
+            $msg->save();
+        }
+        return '<a href="../../storage/sendImg/'.$filename.'" target="_blank"><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
+    }
 }
  

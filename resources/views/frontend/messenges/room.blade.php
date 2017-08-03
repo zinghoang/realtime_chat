@@ -66,7 +66,7 @@
 									<div style="padding-left: 30px;">	
 										<h6>
 											<em style="color: #cccccc;">
-												{{ $message->content }}
+												{!! $message->content !!}
 											</em>
 										</h6>
 									</div>
@@ -77,7 +77,7 @@
 										</div>
 										<div class="media-body">
 											<div class="ms-item">
-												{{ $message->content }}
+												{!! $message->content !!}
 											</div>
 											<small class="ms-date">
 												@if($message->name != Auth::user()->name)
@@ -102,7 +102,7 @@
 					@widget('EmotionChat')
 
 					<div class="add-photo">
-                        <form method="POST" enctype="multipart/form-data" action="{{ route('frontend.room.sendPictureMsg',$room->id) }}" id="form-add-photo">
+                        <form method="POST" enctype="multipart/form-data" action="javascript:void(0)" id="form-add-photo">
                             {{ csrf_field() }}
                             <label for="upload-file-selector">
                                 <span class="bton">
@@ -136,18 +136,6 @@
 		</div>
 	</div>
 </div>
-<!-- Modal Zoom Img -->
-<div id="modalImg" class="modal">
-
-	<!-- The Close Button -->
-	<span class="close" onclick="document.getElementById('modalImg').style.display='none'">&times;</span>
-
-	<!-- Modal Content (The Image) -->
-	<img class="modal-content" id="img01" width="30%" >
-
-	<!-- Modal Caption (Image Text) -->
-	<div id="caption"></div>
-</div>
 @endsection
 
 @section('script2')
@@ -159,28 +147,6 @@
 
 @section('endscript')
 <script>
-	//Begin Modal
-    // Get the modal
-    var modal = document.getElementById('modalImg');
-
-    // Get the image and insert it inside the modal - use its "alt" text as a caption
-    var img = document.getElementById('myImg');
-    var modalImg = document.getElementById("img01");
-    var captionText = document.getElementById("caption");
-    img.onclick = function(){
-        modal.style.display = "block";
-        modalImg.src = this.src;
-        captionText.innerHTML = this.alt;
-    }
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-	//End Modal
     function uploadPhoto(){
         var fakePath = $('#upload-file-selector').val();
         var arr_path = fakePath.split('/');
@@ -194,20 +160,26 @@
 		}
     }
 
-    $(document).on('submit','#form-add-photo', function (){
-		$.ajax({
+    $(document).on('submit','#form-add-photo', function (e){
+        var token = $("input[name='_token']").val();
+        var form = $(this);
+        var formdata = false;
+        if(window.FormData){
+            formdata = new FormData(form[0]);
+		}
+        $.ajax({
 		url: "{{ route('frontend.room.sendPictureMsg',$room->id) }}",
 		type: 'POST',
-		cache: false,
-		data: {
-
-		},
+		data: formdata,
 		success: function(data){
-			alert(data);
+			$('.room-contentt').append(data);
 		},
 		error: function (){
-		}
+		},
+		contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        processData: false,
 		});
+        return false;
     });
 
     index = 10;

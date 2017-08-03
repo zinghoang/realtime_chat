@@ -377,17 +377,19 @@ class MessengesController extends Controller
     public function sendPictureMsg(Request $request)
     {
        $room_id = $request->room_id;
-        //Up anh moi
-        $image = $request->file('sendPicture')->store('public/sendImg');
-        $arr_filename = explode("/",$image);
-        $filename = end($arr_filename);
-        //luu tin nhan vao DB
-        $msg = new Messenges();
-        $msg->room_id = $room_id;
-        $msg->user_id = Auth::user()->id;
-        $msg->content = '<img id="myImg" src="../../storage/sendImg/'.$filename.'" width="50%" height="50%" data-toggle="modal" data-target="#modalImg" data-zoom-url="../../storage/sendImg/'.$filename.'"/>';
-        $msg->status = 1;
-        $msg->save();
-        return redirect()->back();
+        if($request->file('sendPicture') != null){
+            //Up anh moi
+            $image = $request->file('sendPicture')->store('public/sendImg');
+            $arr_filename = explode("/",$image);
+            $filename = end($arr_filename);
+            //luu tin nhan vao DB
+            $msg = new Messenges();
+            $msg->room_id = $room_id;
+            $msg->user_id = Auth::user()->id;
+            $msg->content = '<a href="../../storage/sendImg/'.$filename.'" target="_blank" ><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
+            $msg->status = 1;
+            $msg->save();
+        }
+        return '<a href="../../storage/sendImg/'.$filename.'" target="_blank"><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
     }
 }

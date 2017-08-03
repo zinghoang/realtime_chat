@@ -75,6 +75,7 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 	Route::get('friend-request', 'PrivateChatController@viewListFriendRequest')->name('frontend.private.request');
 	Route::get('friend', 'PrivateChatController@friend')->name('frontend.private.friend');
+	Route::post('sendImg/{from}/{to}', 'PrivateChatController@sendPicturePrivate')->name('frontend.private.sendPicturePrivate');
     Route::resource('account', 'AccountController', ['only' => [
 	    'edit', 'update'
 	]]);
