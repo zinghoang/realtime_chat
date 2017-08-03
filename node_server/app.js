@@ -37,17 +37,7 @@ io.on('connection',function(socket){
 	});
 
 	socket.on('send action',function(type,currentRoom,data,action){
-		if(action == 'load'){
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
-		} else if (action == 'play') {
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
-		} else if (action == 'pause') {
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
-		} else if (action == 'IconAction') {
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
-		} else if (action == 'upload image') {
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
- 		}
+ 		socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
 	});
 
 	//Invite User Join Room
@@ -78,29 +68,8 @@ io.on('connection',function(socket){
 
 	//--------- PRIVATE CHAT ---------
 	socket.on('send private message',function(type,message){
-		if(type == 'message'){
-			for(temp=0; temp< globalConnect.length;temp++){
-				if(globalConnect[temp].user.id == message.to){
-					console.log(message);
-					globalConnect[temp].socket.emit('receiver private mess',type,message);
-				}
-			}
-		} else if (type == 'room infor'){
-			if(message != null){
-				console.log('MESSAGE');
-			//	console.log(message);
-				var index = globalConnect.findIndex(obj =>obj.user.id == message.sender.id);
-				console.log('indexx: ' + index);
-				if(index>=0){
-					globalConnect[index].socket.emit('receiver private mess',type,message);
-				}
-			}
-		} else if (type == 'IconAction') {
-			var index = globalConnect.findIndex(obj =>obj.user.id == message.toUser.id);
-			if(index>=0){
-				globalConnect[index].socket.emit('receiver private mess',type,message);
-			}
-		} else if (type == 'image upload') {
+		console.log(message);
+ 		if(message.data != null){
 			var index = globalConnect.findIndex(obj =>obj.user.id == message.toUser.id);
 			if(index>=0){
 				globalConnect[index].socket.emit('receiver private mess',type,message);

@@ -13,7 +13,8 @@ if(typeof currentRoom !== 'undefined' && isJoin){
 //Join room
 socket.emit('join room',roomJoined);
 
-socket.on('receiver private mess',function(type,data){
+socket.on('receiver private mess',function(type,message){
+  var data = message.data;
 	// chat 2 nguoi
 	if(type == 'message'){
 	    var mydate = new Date(data.created_at);
@@ -106,7 +107,7 @@ $('#hahaPrivateIco').click(function(){
   var haha = new Audio();
   haha.src = '/audio/hahaha.mp3';
   haha.play();
-  socket.emit('send private message','IconAction',data);
+  socket.emit('send private message','IconAction',{toUser: toUser,data:data});
 })
 
 //Send private message 
@@ -188,7 +189,7 @@ if($("#btn-reply").length){
                 $('.listUser').html(stringDivUser);
 
 
-		  	socket.emit('send private message','message',response);
+		  	socket.emit('send private message','message',{toUser: toUser,data:response});
 		});
 
 		// Callback handler that will be called on failure
@@ -368,7 +369,7 @@ socket.on('receiver room mess',function(type,sender,data){
       data.title = $('.title-video').html(); 
 		 }
 		 //send back status of room to user
-		socket.emit('send private message','room infor',data);
+		socket.emit('send private message','room infor',{toUser: sender,data:data});
 	}
 })
 
