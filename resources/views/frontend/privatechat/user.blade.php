@@ -117,48 +117,8 @@
 </div>
 
 @endsection
-@section('endscript')
+@section('script')
 <script>
-
-    function uploadPhoto(){
-        var fakePath = $('#upload-file-selector').val();
-        var arr_path = fakePath.split('/');
-        var filename = arr_path[arr_path.length - 1];
-        var filename = filename.split('.');
-        var type = filename[filename.length - 1];
-        if(type == 'jpg' || type == 'png' || type == 'jpeg' || type =='gif'){
-            $('#form-add-photo').submit();
-        }else{
-            alert('File khong dung dinh dang');
-        }
-    }
-    $(document).on('submit','#form-add-photo', function (e){
-        var token = $("input[name='_token']").val();
-        var form = $(this);
-        var formdata = false;
-        if(window.FormData){
-            formdata = new FormData(form[0]);
-        }
-        $.ajax({
-            url: "{{ route('frontend.private.sendPicturePrivate',[Auth::user()->id, $toUser->id]) }}",
-            type: 'POST',
-            data: formdata,
-            success: function(data){
-                $('.content-message').append(data);
-                //send data to other
-                 var dataContent = new Object;
-                  dataContent.from = user;
-                  dataContent.toUser = toUser;
-                  dataContent.data = data;
-                socket.emit('send private message','image upload',dataContent);
-            },
-            error: function (){
-            },
-            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-            processData: false,
-        });
-        return false;
-    });
     index = 10;
     var toUser = {!!json_encode($toUser)!!};
     console.log(toUser);
@@ -217,4 +177,56 @@
 </script>
 <script src="{{ asset('js/jquery.validate.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/validate.js') }}" type="text/javascript"></script>
+@endsection
+@section('endscript')
+    <script>
+            function uploadPhoto(){
+                var fakePath = $('#upload-file-selector').val();
+                var arr_path = fakePath.split('/');
+                var filename = arr_path[arr_path.length - 1];
+                var filename = filename.split('.');
+                var type = filename[filename.length - 1];
+                if(type == 'jpg' || type == 'png' || type == 'jpeg' || type =='gif'){
+                    $('#form-add-photo').submit();
+                }else{
+                    alert('File khong dung dinh dang');
+                }
+            }
+            $(document).on('submit','#form-add-photo', function (e){
+                var token = $("input[name='_token']").val();
+                var form = $(this);
+                var formdata = false;
+                if(window.FormData){
+                    formdata = new FormData(form[0]);
+                }
+                $.ajax({
+                    url: "{{ route('frontend.private.sendPicturePrivate',[Auth::user()->id, $toUser->id]) }}",
+                    type: 'POST',
+                    data: formdata,
+                    success: function(data){
+                        var mydate = new Date(data.created_at);
+
+                        var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+                            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+                        var stringDivData = ' <div class="lv-item media right"> ' + ' <div class="lv-avatar pull-right"> ' +
+                            ' <img src="../storage/avatars/'+ user.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+                            ' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
+                            ' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
+                        $('.content-message').append(stringDivData);
+                        scroll('.content-message');
+                        //send data to other
+                        var dataContent = new Object;
+                        dataContent.from = user;
+                        dataContent.toUser = toUser;
+                        dataContent.data = data;
+                        socket.emit('send private message','image upload',dataContent);
+                    },
+                    error: function (){
+                    },
+                    contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                    processData: false,
+                });
+                return false;
+            });
+    </script>
 @endsection

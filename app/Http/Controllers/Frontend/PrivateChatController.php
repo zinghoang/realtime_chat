@@ -488,7 +488,7 @@ class PrivateChatController extends Controller
             $msg->content = '<a href="../../storage/sendImg/'.$filename.'" target="_blank" ><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
             $msg->save();
         }
-        return '<a href="../../storage/sendImg/'.$filename.'" target="_blank"><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
+        return $msg;
     }
 }
  
