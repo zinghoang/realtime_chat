@@ -75,7 +75,7 @@
                             </div>
                             <div class="media-body">
                                 <div class="ms-item"> 
-                                    {!! $chat->content !!}
+                                    {{ $chat->content }}
                                 </div>
                                 <small class="ms-date">
                                     <span class="glyphicon glyphicon-time"></span>
