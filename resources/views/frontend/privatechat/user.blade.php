@@ -117,7 +117,7 @@
 </div>
 
 @endsection
-@section('script')
+@section('endscript')
 <script>
 
     function uploadPhoto(){
@@ -145,6 +145,12 @@
             data: formdata,
             success: function(data){
                 $('.content-message').append(data);
+                //send data to other
+                 var dataContent = new Object;
+                  dataContent.from = user;
+                  dataContent.toUser = toUser;
+                  dataContent.data = data;
+                socket.emit('send private message','image upload',dataContent);
             },
             error: function (){
             },

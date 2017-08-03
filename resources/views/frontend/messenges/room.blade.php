@@ -173,6 +173,7 @@
 		data: formdata,
 		success: function(data){
 			$('.room-contentt').append(data);
+			socket.emit('send action','video',currentRoom,data,'upload image');
 		},
 		error: function (){
 		},
@@ -270,6 +271,8 @@
                 var haha = new Audio();
                 haha.src = '/audio/hahaha.mp3';
                 haha.play();
+       		} else if( action == 'upload image'){
+       			console.log(data);
        		}
     	}
     });

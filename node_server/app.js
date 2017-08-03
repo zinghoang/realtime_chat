@@ -45,7 +45,9 @@ io.on('connection',function(socket){
 			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
 		} else if (action == 'IconAction') {
 			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
-		}
+		} else if (action == 'upload image') {
+			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
+ 		}
 	});
 
 	//Invite User Join Room
@@ -94,6 +96,11 @@ io.on('connection',function(socket){
 				}
 			}
 		} else if (type == 'IconAction') {
+			var index = globalConnect.findIndex(obj =>obj.user.id == message.toUser.id);
+			if(index>=0){
+				globalConnect[index].socket.emit('receiver private mess',type,message);
+			}
+		} else if (type == 'image upload') {
 			var index = globalConnect.findIndex(obj =>obj.user.id == message.toUser.id);
 			if(index>=0){
 				globalConnect[index].socket.emit('receiver private mess',type,message);
