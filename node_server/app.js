@@ -63,12 +63,10 @@ io.on('connection',function(socket){
 			currentUser = new User(socket,user,-1);
 		}
 		globalConnect.push(currentUser) ;
-		console.log('length  ' +globalConnect.length);
 	});
 
 	//--------- PRIVATE CHAT ---------
 	socket.on('send private message',function(type,message){
-		console.log(message);
  		if(message.data != null){
 			var index = globalConnect.findIndex(obj =>obj.user.id == message.toUser.id);
 			if(index>=0){

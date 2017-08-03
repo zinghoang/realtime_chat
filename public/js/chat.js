@@ -75,10 +75,7 @@ socket.on('receiver private mess',function(type,message){
     $('.listUser').html(stringDivUser);
 
 	} else if( type =='room infor'){
-		console.log(type);
-		console.log(data);
-		
-		var video = $('#myVideo')[0];
+    var video = $('#myVideo')[0];
 		$("#myVideo source").attr("src",data.src);
     $('.title-video').html(data.title); 
 		video.load();
@@ -88,13 +85,11 @@ socket.on('receiver private mess',function(type,message){
 		}
 	} else if(type == 'IconAction') {
       if(typeof(toUser) !== 'undefined' && toUser.id == data.from.id) {
-         console.log(data);
          var haha = new Audio();
          haha.src = '/audio/hahaha.mp3';
          haha.play();
       }
   } else if(type == 'image upload'){
-         console.log(data); //nhan image
          var mydate = new Date(data.data.created_at);
 
          var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
@@ -140,9 +135,7 @@ if($("#btn-reply").length){
 		});
 
 		request.done(function (response, textStatus, jqXHR){
-		  	console.log(response);
-
-		  	var mydate = new Date(response.created_at);
+        var mydate = new Date(response.created_at);
 
 		  	var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' + 
 		  	mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
@@ -225,8 +218,6 @@ if($('#btn-room-reply').length){
 		});
 
 		request.done(function (response, textStatus, jqXHR){
-		  	console.log(response);
-			
 			var mydate = new Date(response.created_at);
 
             var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
@@ -310,7 +301,6 @@ if($('#leave-room').length){
 //Receiver message from server
 socket.on('receiver room mess',function(type,sender,data){
 	if(type == 'message'){
-		console.log(data);
 		//chat room
 		var mydate = new Date(data.created_at);
 
@@ -352,9 +342,6 @@ socket.on('receiver room mess',function(type,sender,data){
         });
 
 	} else if ( type == 'notif') {
-		console.log(sender);
-		console.log(data); //join - leave
-		console.log(type);
         var stringDivData = '<div style="padding-left: 30px;">'
                             +'<h6>'+'<em style="color: #cccccc;">'+data+'</em>'+'<h6>'+'</div>';
         $('.room-contentt').append(stringDivData);
@@ -397,7 +384,6 @@ if($('#invite-form').length){
 			},
 			success: function(data){
 				if(data['status'] == 'success'){
-					console.log(data['user']);
 					socket.emit('invite to room',user,data['user'],data['room']);
 
           var html_noti = '<script type="text/javascript">'
