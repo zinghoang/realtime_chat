@@ -172,7 +172,21 @@
 		type: 'POST',
 		data: formdata,
 		success: function(data){
-			$('.room-contentt').append(data);
+            var mydate = new Date(data.created_at);
+
+            var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+                mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+
+
+            var stringDivData = ' <div class="lv-item media right"> '+' <div class="lv-avatar pull-right"> '
+                +' <img src="../../storage/avatars/'+ data.avatar +'" alt=""> '
+                +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+data.content+' </div> '+' <small class="ms-date"> '
+                +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
+                +' </small> '+' </div> '+' </div> ';
+            $('.room-contentt').append(stringDivData);
+            if($('.room-contentt').length){
+                scroll('.room-contentt');
+            }
 			socket.emit('send action','video',currentRoom,data,'upload image');
 		},
 		error: function (){
@@ -273,6 +287,27 @@
                 haha.play();
        		} else if( action == 'upload image'){
        			console.log(data);
+                var mydate = new Date(data.created_at);
+
+                var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+                    mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+
+                var stringDivData = ' <div class="lv-item media left"> '+' <div class="lv-avatar pull-left"> '
+                    +' <img src="../../storage/avatars/'+data.avatar +'" alt=""> '
+                    +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+data.content+' </div> '+' <small class="ms-date"> '
+                    +'<a href="/chat/'+ data.username +'"><strong style="font-size: 10px">'+data.fullname+'</strong></a>';
+
+                if(data.room_userid == data.user_id){
+                    stringDivData = stringDivData + '- <strong style="color: red;font-size: 10px">[AD]</strong>';
+                }
+
+                stringDivData = stringDivData + ' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
+                    +' </small></div></div> ';
+
+                $('.room-contentt').append(stringDivData);
+                if($('.room-contentt').length){
+                    scroll('.room-contentt');
+                }
        		}
     	}
     });

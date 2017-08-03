@@ -86,14 +86,24 @@ socket.on('receiver private mess',function(type,data){
 			video.play(); 
 		}
 	} else if(type == 'IconAction') {
-      if(toUser.id == data.from.id) {
+      if(typeof(toUser) !== 'undefined' && toUser.id == data.from.id) {
          console.log(data);
          var haha = new Audio();
          haha.src = '/audio/hahaha.mp3';
          haha.play();
       }
   } else if(type == 'image upload'){
-        console.log(data);
+         console.log(data); //nhan image
+         var mydate = new Date(data.data.created_at);
+
+         var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+                          mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+         var stringDivData = ' <div class="lv-item media left"> ' + ' <div class="lv-avatar pull-left"> ' +
+                                    ' <img src="../storage/avatars/'+ user.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+                                    ' <div class="ms-item"> ' + data.data.content + ' </div> ' + ' <small class="ms-date"> ' +
+                                    ' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
+         $('.content-message').append(stringDivData);
+          scroll('.content-message');
   }
 })
 
