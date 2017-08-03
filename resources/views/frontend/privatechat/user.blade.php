@@ -75,7 +75,7 @@
                             </div>
                             <div class="media-body">
                                 <div class="ms-item"> 
-                                    {{ $chat->content }}
+                                    {!! $chat->content !!}
                                 </div>
                                 <small class="ms-date">
                                     <span class="glyphicon glyphicon-time"></span>
@@ -90,12 +90,12 @@
                         @widget('EmotionChat')
 
                         <div class="add-photo">
-                            <form method="POST" enctype="multipart/form-data" action="" id="form-add-photo">
+                            <form method="POST" enctype="multipart/form-data" action="javascript:void(0)" id="form-add-photo">
                                 {{ csrf_field() }}
                                 <label for="upload-file-selector">
                                     <span class="bton">
                                         <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                        <input id="upload-file-selector" name="upload" type="file" onchange="return uploadPhoto()">
+                                        <input id="upload-file-selector" name="sendPicture" type="file" onchange="return uploadPhoto()">
                                     </span>
                                 </label>
                             </form>
@@ -121,9 +121,38 @@
 <script>
 
     function uploadPhoto(){
-        $('#form-add-photo').submit();
+        var fakePath = $('#upload-file-selector').val();
+        var arr_path = fakePath.split('/');
+        var filename = arr_path[arr_path.length - 1];
+        var filename = filename.split('.');
+        var type = filename[filename.length - 1];
+        if(type == 'jpg' || type == 'png' || type == 'jpeg' || type =='gif'){
+            $('#form-add-photo').submit();
+        }else{
+            alert('File khong dung dinh dang');
+        }
     }
-    
+    $(document).on('submit','#form-add-photo', function (e){
+        var token = $("input[name='_token']").val();
+        var form = $(this);
+        var formdata = false;
+        if(window.FormData){
+            formdata = new FormData(form[0]);
+        }
+        $.ajax({
+            url: "{{ route('frontend.private.sendPicturePrivate',[Auth::user()->id, $toUser->id]) }}",
+            type: 'POST',
+            data: formdata,
+            success: function(data){
+                $('.content-message').append(data);
+            },
+            error: function (){
+            },
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false,
+        });
+        return false;
+    });
     index = 10;
     var toUser = {!!json_encode($toUser)!!};
     console.log(toUser);

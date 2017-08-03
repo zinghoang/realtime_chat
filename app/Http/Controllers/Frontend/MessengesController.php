@@ -27,37 +27,34 @@ class MessengesController extends Controller
     public function room($id)
     {
         //xoa thong bao tu room -> auth::user
-        $notif = NotifRoom::where('roomid','=',$id)
-                        ->where('userid','=',Auth::user()->id)
-                        ->first();
-        if($notif != null){
+        $notif = NotifRoom::where('roomid', '=', $id)
+            ->where('userid', '=', Auth::user()->id)
+            ->first();
+        if ($notif != null) {
             $notif = NotifRoom::findOrFail($notif->id);
             $notif->delete();
         }
 
         $room = Room::findOrFail($id);
 
-    	$checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
-    	if($checkJoin == null){
-    		$isJoin = 0;
-    	}else{
-    		$isJoin = 1;
-    	}
-
-    	$listTemp = DB::table('messenges')
-            ->join('users','users.id','=','messenges.user_id')
+        $checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
+        if ($checkJoin == null) {
+            $isJoin = 0;
+        } else {
+            $isJoin = 1;
+        }
+        $listTemp = DB::table('messenges')
+            ->join('users', 'users.id', '=', 'messenges.user_id')
             ->where('messenges.room_id', $id)
-            ->select('users.avatar','users.name','users.fullname', 'messenges.*')
+            ->select('users.avatar', 'users.name', 'users.fullname', 'messenges.*')
             ->take(10)
-            ->orderBy('messenges.id','DESC')
+            ->orderBy('messenges.id', 'DESC')
             ->get();
-
-    	$messages = new Collection();
-    	for ($i = $listTemp->count()-1 ; $i >= 0 ; $i--){
+        $messages = new Collection();
+        for ($i = $listTemp->count() - 1; $i >= 0; $i--) {
             $messages->push($listTemp[$i]);
         }
-
-        foreach ($messages as $key => $chat){
+        foreach ($messages as $key => $chat) {
             $chat->content = self::getNewContent($chat->content);
         }
 
@@ -65,7 +62,7 @@ class MessengesController extends Controller
         $countMember = count($listMemberOrRoom);
 
         $listFile = File::where('room_id', $id)->get();
-    	return view('frontend.messenges.room', compact('isJoin', 'room','messages','listFile', 'countMember'));
+        return view('frontend.messenges.room', compact('isJoin', 'room', 'messages', 'listFile', 'countMember'));
     }
 
     public function uploadFile(Request $request, $id)
@@ -73,7 +70,7 @@ class MessengesController extends Controller
         //Check Join the room
         $checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
 
-        if($checkJoin == null){
+        if ($checkJoin == null) {
             return redirect()->route('frontend.message.room', $id);
         }
 
@@ -89,9 +86,9 @@ class MessengesController extends Controller
 
         //check file
         if ($formatFile != 'mp4' && $formatFile != 'avi' && $formatFile != 'mp3' && $formatFile != 'mpga' && $formatFile != 'mpeg') {
-            
+
             $request->session()->flash('danger', 'The title must be a file of type: mp4, avi, mp3.');
-            
+
             return redirect()->route('frontend.message.room', $id);
         }
 
@@ -103,9 +100,9 @@ class MessengesController extends Controller
         //Get type of file
         if ($formatFile === 'mp4' || $formatFile === 'avi') {
             $type = 'video';
-        }elseif ($formatFile === 'mpga' || $formatFile === 'mpga') {
+        } elseif ($formatFile === 'mpga' || $formatFile === 'mpga') {
             $type = 'sound';
-        }else{
+        } else {
             $type = 'nas';
         }
 
@@ -116,8 +113,9 @@ class MessengesController extends Controller
         $file->room_id = $id;
         $file->name = $nameFile;
         $file->type = $type;
-        if($request->title == ""){
+        if ($request->title == "") {
             $file->title = $nameFileSave;
+
         }else{
             $file->title = str_replace(['<', '>'], [' ', ' '], $request->title);
         }
@@ -133,23 +131,23 @@ class MessengesController extends Controller
 
         $request->session()->flash('success', 'You uploaded successful');
 
-        $request->session()->flash('fileUpload',$file->id."|".$file->title."|".$file->type."|".$message->content."|".Auth::user()->fullname);
+        $request->session()->flash('fileUpload', $file->id . "|" . $file->title . "|" . $file->type . "|" . $message->content . "|" . Auth::user()->fullname);
 
-       return redirect()->route('frontend.message.room', $id);
+        return redirect()->route('frontend.message.room', $id);
     }
 
     public function deleteFile($id, Request $request)
-    {        
+    {
         $file = File::findOrFail($id);
         $room = Room::findOrFail($file->room_id);
-        
+
 
         if ($file->user_id != Auth::id() && $room->user_id != Auth::id()) {
-            $request->session()->flash('danger','You must not to do this action!');
+            $request->session()->flash('danger', 'You must not to do this action!');
             return redirect()->route('frontend.message.room', $file->room_id);
         }
         //Xoa file
-        \Illuminate\Support\Facades\File::delete('storage/media/'.$file->name);
+        \Illuminate\Support\Facades\File::delete('storage/media/' . $file->name);
 
         //add message
         $message = new Messenges;
@@ -161,14 +159,15 @@ class MessengesController extends Controller
 
         //Xoa record trong CSDL
         $file->delete();
-        $request->session()->flash('fileDelete',$file->id."|".$file->title."|".$file->type."|".$message->content."|".Auth::user()->fullname);
-        $request->session()->flash('success','Removed Successful');
+        $request->session()->flash('fileDelete', $file->id . "|" . $file->title . "|" . $file->type . "|" . $message->content . "|" . Auth::user()->fullname);
+        $request->session()->flash('success', 'Removed Successful');
         return redirect()->route('frontend.message.room', $file->room_id);
 
     }
-        
-    public function addRoomMessage(Request $request){
-     //   \Log::info($request);
+
+    public function addRoomMessage(Request $request)
+    {
+        //   \Log::info($request);
         $message = new Messenges();
         $message->user_id = $request['user']['id'];
         $message->room_id = $request['room']['id'];
@@ -177,22 +176,22 @@ class MessengesController extends Controller
         $message->save();
 
         //xoa thong bao tu room, neu co
-        $notif = NotifRoom::where('roomid','=',$message->room_id)
-                            ->where('userid','=',Auth::user()->id)
-                            ->first();
-        if ($notif != null){
+        $notif = NotifRoom::where('roomid', '=', $message->room_id)
+            ->where('userid', '=', Auth::user()->id)
+            ->first();
+        if ($notif != null) {
             $notif = NotifRoom::findOrFail($notif->id);
             $notif->delete();
         }
 
         //1- gui thong bao den cac thanh vien trong room
-        $user_ids = RoomUser::where('room_id','=',$request['room']['id'])
-                                    ->where('user_id','!=',Auth::user()->id)
-                                    ->select('user_id')->get();
+        $user_ids = RoomUser::where('room_id', '=', $request['room']['id'])
+            ->where('user_id', '!=', Auth::user()->id)
+            ->select('user_id')->get();
         foreach ($user_ids as $user_id) {
             $notifRoom = NotifRoom::where('roomid', '=', $request['room']['id'])
-                    ->where('userid', '=', $user_id->user_id)
-                    ->first();
+                ->where('userid', '=', $user_id->user_id)
+                ->first();
             if ($notifRoom == null) {
                 $notifRoom = new NotifRoom;
                 $notifRoom->roomid = $request['room']['id'];
@@ -204,24 +203,24 @@ class MessengesController extends Controller
 
         //cap nhat list room cua user gui~
         $listRoomFrom = DB::table('rooms')
-            ->join('room_users','rooms.id','=','room_users.room_id')
-            ->join('messenges','rooms.id','=','messenges.room_id')
-            ->where('room_users.user_id','=',Auth::user()->id)
-            ->orderBy('messenges.created_at','DESC')
+            ->join('room_users', 'rooms.id', '=', 'room_users.room_id')
+            ->join('messenges', 'rooms.id', '=', 'messenges.room_id')
+            ->where('room_users.user_id', '=', Auth::user()->id)
+            ->orderBy('messenges.created_at', 'DESC')
             ->select('rooms.id')->get();
         $arr_roomid = array();
-        foreach ($listRoomFrom as $room){
-            array_push($arr_roomid,$room->id);
+        foreach ($listRoomFrom as $room) {
+            array_push($arr_roomid, $room->id);
         }
 
         $arr_roomid = array_unique($arr_roomid);
-        $arr_roomidLoad = array_slice($arr_roomid,0,3);
+        $arr_roomidLoad = array_slice($arr_roomid, 0, 3);
         $roomsFrom = new Collection();
-        foreach ($arr_roomidLoad as $roomid){
+        foreach ($arr_roomidLoad as $roomid) {
             $room = Room::findOrFail($roomid);
-            if($room != null){
-                $notifRoom = NotifRoom::where('roomid','=',$roomid)
-                    ->where('userid','=',$request['user']['id'])
+            if ($room != null) {
+                $notifRoom = NotifRoom::where('roomid', '=', $roomid)
+                    ->where('userid', '=', $request['user']['id'])
                     ->first();
                 $notifRoom != null ? $room->notif = 1 : $room->notif = 0;
                 $roomsFrom->push($room);
@@ -231,21 +230,21 @@ class MessengesController extends Controller
 
         //kiem tra xem con thong bao nao nua~ hay khong
         $moreNotif = 0; //mac dinh la khong co
-        if(count($arr_roomid) > 3){
-            $arr_roomidUnload = array_slice($arr_roomid,3,count($arr_roomid)-3);
+        if (count($arr_roomid) > 3) {
+            $arr_roomidUnload = array_slice($arr_roomid, 3, count($arr_roomid) - 3);
             //kiem tra nhung room con lai co thong bao hay khong
-            foreach ($arr_roomidUnload as $roomid){
-                $notif = NotifRoom::where('roomid','=',$roomid)
-                    ->where('userid','=',Auth::user()->id)
+            foreach ($arr_roomidUnload as $roomid) {
+                $notif = NotifRoom::where('roomid', '=', $roomid)
+                    ->where('userid', '=', Auth::user()->id)
                     ->first();
-                if($notif != null){
+                if ($notif != null) {
                     $moreNotif++;
                 }
             }
         }
         $message->moreNotif = $moreNotif;
         $message->content = self::getNewContent($message->content);
-        $user_send = User::where('id','=',$message->user_id)->select('name','fullname','avatar')->first();
+        $user_send = User::where('id', '=', $message->user_id)->select('name', 'fullname', 'avatar')->first();
         $message->avatar = $user_send->avatar;
         $message->username = $user_send->name;
         $message->fullname = $user_send->fullname;
@@ -257,20 +256,64 @@ class MessengesController extends Controller
         $message->room_userid = $room_userid->user_id;
         return $message;
     }
+
     public static function getNewContent($content)
     {
         $output = "";
-        $arr_text = explode(" ",$content);
-        foreach ($arr_text as $str){
+
+        $arr_text = explode(" ", $content);
+
+        foreach ($arr_text as $str) {
             $code = $str;
-            $image = Emotion::where('code','=',$code)
+            $image = Emotion::where('code', '=', $code)
                 ->select('image')->first();
-            if($image == null){
-                $output = $output. " ".$code;
-            }else{
-                $output = $output. " "."<img src=\"../../storage/emotions/$image->image\" alt=\"\" width=\"50px\" height=\"50px\"> ";
+            if ($image == null) {
+                //kiem tra xem co phai link khong?
+                if (self::checkLink($code) > 0) {//neu la link thi kiem tra co phai link youtube ko
+                    if (self::checkYoutube($code) > 0) {//la link youtube
+                        $output = $output . " " . self::getEmbedCode($code);
+                    } else { //khong phai link youtube
+                        $output = $output . ' <a href="' . $code . '" target="_blank">' . $code . '</a>';
+                    }
+                } else {
+                    $output = $output . " " . $code;
+                }
+            } else {
+                $output = $output . " " . "<img src=\"../../storage/emotions/$image->image\" alt=\"\" width=\"50px\" height=\"50px\"> ";
+            }
+            $image = null;
+        }
+
+        return $output;
+    }
+
+    public static function checkLink($text)
+    {
+        if (filter_var($text, FILTER_VALIDATE_URL) == true) {
+            return 1;
+        }
+        return 0;
+    }
+    public static function checkYoutube($url){
+        $parsed = parse_url($url);
+//        dd($parsed);
+        if($parsed['scheme'] == 'https'){
+            if($parsed['host'] && $parsed['host'] == 'www.youtube.com' && $parsed['path'] == '/watch'){
+                return 1;
             }
         }
+        return 0;
+    }
+    public static function getEmbedCode($url){
+        $embed = 'https://www.youtube.com/embed/';
+        $parsed = parse_url($url);
+        $query = $parsed['query'];
+        $query = explode('&',$query);
+        $query = $query[0];
+        $query = explode('=',$query);
+        $query = $query[1];
+        $embed = $embed . $query.'?ecver=1';
+        $output = " <iframe width=\"160\" height=\"90\" src=\"".$embed."\" frameborder=\"0\" allowfullscreen></iframe>";
         return $output;
     }
     public function getmoreMsg(Request $request){
@@ -330,5 +373,23 @@ class MessengesController extends Controller
         }else{
             return 0;
         }
+    }
+    public function sendPictureMsg(Request $request)
+    {
+       $room_id = $request->room_id;
+        if($request->file('sendPicture') != null){
+            //Up anh moi
+            $image = $request->file('sendPicture')->store('public/sendImg');
+            $arr_filename = explode("/",$image);
+            $filename = end($arr_filename);
+            //luu tin nhan vao DB
+            $msg = new Messenges();
+            $msg->room_id = $room_id;
+            $msg->user_id = Auth::user()->id;
+            $msg->content = '<a href="../../storage/sendImg/'.$filename.'" target="_blank" ><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
+            $msg->status = 1;
+            $msg->save();
+        }
+        return '<a href="../../storage/sendImg/'.$filename.'" target="_blank"><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
     }
 }
