@@ -92,6 +92,8 @@ socket.on('receiver private mess',function(type,data){
          haha.src = '/audio/hahaha.mp3';
          haha.play();
       }
+  } else if(type == 'image upload'){
+        console.log(data);
   }
 })
 
