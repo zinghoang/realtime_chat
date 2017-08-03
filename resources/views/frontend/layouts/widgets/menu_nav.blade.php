@@ -5,7 +5,7 @@
 	<div class="navbar-nav">
 	<ul style="list-style: none;">
 		<li>
-			<div class="ms-block">
+			<!-- <div class="ms-block"> -->
 				<div class="ms-user"> 
 					<div class="dropdown">
 						<button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" id="dropdown-name" >
@@ -28,7 +28,7 @@
 						</ul>
 					</div>   
 				</div>
-			</div>
+			<!-- </div> -->
 		</li>
 		<li>
 				<form action="{{ route('SearchUserRoom') }}" method="get">

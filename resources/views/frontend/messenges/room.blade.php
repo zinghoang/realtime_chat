@@ -43,11 +43,11 @@
 									</a>
 									<em>- {{ str_limit($file->user->fullname, 20) }}</em>
 									@if($file->user_id == Auth::id() || $room->user_id == Auth::id())
-										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form').submit();" style="text-decoration: none;">
+										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form-{{ $file->id }}').submit();" style="text-decoration: none;">
 											<span class="glyphicon glyphicon-trash"></span>
 										</a>
 
-										<form id="deletefile-form" action="{{ route('frontend.message.deletefile', $file->id) }}" method="POST" style="display: none;">
+										<form id="deletefile-form-{{ $file->id }}" action="{{ route('frontend.message.deletefile', $file->id) }}" method="POST" style="display: none;">
 							                {{ csrf_field() }}
 							                <input type="hidden" name="_method" value="DELETE">
 							            </form>
@@ -66,7 +66,7 @@
 									<div style="padding-left: 30px;">	
 										<h6>
 											<em style="color: #cccccc;">
-												{!! $message->content !!}
+												{{ $message->content }}
 											</em>
 										</h6>
 									</div>
@@ -77,7 +77,7 @@
 										</div>
 										<div class="media-body">
 											<div class="ms-item">
-												{!! $message->content !!}
+												{{ $message->content }}
 											</div>
 											<small class="ms-date">
 												@if($message->name != Auth::user()->name)

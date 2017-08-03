@@ -149,7 +149,7 @@ a{
 /*Show Emotion in chat*/
 .emotion{
     position: absolute;
-    z-index: 30000000;
+    z-index: 1000;
     bottom: 82px;
 }
 .emotion > button{
@@ -166,7 +166,7 @@ a{
     float: left;
     display: none;
     position: absolute;
-    z-index: 21000000;
+    z-index: 1000;
     left: 40px;
     bottom: 18px;
     width: 100%;
@@ -210,7 +210,7 @@ a{
 
 .add-photo{
     position: absolute;
-    z-index: 30000000;
+    z-index: 1000;
     bottom: 100px;
 }
 .add-photo span{
@@ -318,4 +318,12 @@ a{
     .modal-content {
         width: 100%;
     }
+@media only screen and (max-width : 991px) {
+    #messages-main .ms-user > div{
+        padding: 0px 0px 7px 0px;
+    }
+}
+
+.line-wrap{
+    cursor: pointer;
 }
