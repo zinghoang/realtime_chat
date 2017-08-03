@@ -102,12 +102,12 @@
 					@widget('EmotionChat')
 
 					<div class="add-photo">
-                        <form method="POST" enctype="multipart/form-data" action="" id="form-add-photo">
+                        <form method="POST" enctype="multipart/form-data" action="{{ route('frontend.room.sendPictureMsg',$room->id) }}" id="form-add-photo">
                             {{ csrf_field() }}
                             <label for="upload-file-selector">
                                 <span class="bton">
                                     <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                    <input id="upload-file-selector" name="upload" type="file" onchange="return uploadPhoto()">
+                                    <input id="upload-file-selector" name="sendPicture" type="file" onchange="uploadPhoto()">
                                 </span>
                             </label>
                         </form>
@@ -136,6 +136,18 @@
 		</div>
 	</div>
 </div>
+<!-- Modal Zoom Img -->
+<div id="modalImg" class="modal">
+
+	<!-- The Close Button -->
+	<span class="close" onclick="document.getElementById('modalImg').style.display='none'">&times;</span>
+
+	<!-- Modal Content (The Image) -->
+	<img class="modal-content" id="img01" width="30%" >
+
+	<!-- Modal Caption (Image Text) -->
+	<div id="caption"></div>
+</div>
 @endsection
 
 @section('script2')
@@ -147,12 +159,58 @@
 
 @section('endscript')
 <script>
+	//Begin Modal
+    // Get the modal
+    var modal = document.getElementById('modalImg');
 
-	function uploadPhoto(){
-        $('#form-add-photo').submit();
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById('myImg');
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    img.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
     }
 
-	index = 10;
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+	//End Modal
+    function uploadPhoto(){
+        var fakePath = $('#upload-file-selector').val();
+        var arr_path = fakePath.split('/');
+        var filename = arr_path[arr_path.length - 1];
+        var filename = filename.split('.');
+        var type = filename[filename.length - 1];
+        if(type == 'jpg' || type == 'png' || type == 'jpeg' || type =='gif'){
+            $('#form-add-photo').submit();
+		}else{
+            alert('khong dung dinh dang');
+		}
+    }
+
+    $(document).on('submit','#form-add-photo', function (){
+		$.ajax({
+		url: "{{ route('frontend.room.sendPictureMsg',$room->id) }}",
+		type: 'POST',
+		cache: false,
+		data: {
+
+		},
+		success: function(data){
+			alert(data);
+		},
+		error: function (){
+		}
+		});
+    });
+
+    index = 10;
     scroll('.room-contentt');
 	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){

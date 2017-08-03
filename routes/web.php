@@ -36,6 +36,8 @@ Route::group(['namespace' => 'Frontend'], function(){
 		
 		Route::post('/add-room-message','MessengesController@addRoomMessage');
         Route::post('/getmoreMsg','MessengesController@getmoreMsg')->name('getmoreMsgRoom');
+        Route::post('/sendPictureMsg/{room_id}','MessengesController@sendPictureMsg')->name('frontend.room.sendPictureMsg');
+
 	});
 
 	Route::group(['prefix' => 'room'], function(){
@@ -73,7 +75,6 @@ Route::group(['namespace' => 'Frontend'], function(){
 
 	Route::get('friend-request', 'PrivateChatController@viewListFriendRequest')->name('frontend.private.request');
 	Route::get('friend', 'PrivateChatController@friend')->name('frontend.private.friend');
-
     Route::resource('account', 'AccountController', ['only' => [
 	    'edit', 'update'
 	]]);
