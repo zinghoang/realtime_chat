@@ -30,7 +30,7 @@
         				<div class="modal-body">
         					<div class="form-group">
             					<label for="name">Name:</label>
-            					<input type="text" class="form-control" name="name" id="nameRoom" value="{{ $room->name }}">
+            					<input type="text" class="form-control" name="name" id="nameRoom" value="{{ $room->name }}" required>
         					</div>
             			</div>
             			<div class="modal-footer">
@@ -104,7 +104,7 @@
     				<div class="modal-body">
     					<div class="form-group">
         					<label for="name">Name:</label>
-        					<input type="text" class="form-control" name="name" id="name">
+        					<input type="text" class="form-control" name="name" id="name" required>
     					</div>
         			</div>
         			<div class="modal-footer">
@@ -133,7 +133,7 @@
 							</div>
 							<div class="form-group">
 								<label for="upload">Choose File:</label>
-								<input type="file" class="form-control" id="upload" name="upload" onchange="showTitle(this)">
+								<input type="file" class="form-control" id="upload" name="upload" onchange="showTitle(this)" required>
 							</div>
 						</div>
 						<div class="modal-footer">

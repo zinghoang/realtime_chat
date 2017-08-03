@@ -34,6 +34,7 @@ class MessengesController extends Controller
             $notif = NotifRoom::findOrFail($notif->id);
             $notif->delete();
         }
+
         $room = Room::findOrFail($id);
 
     	$checkJoin = RoomUser::where('user_id', Auth::id())->where('room_id', $id)->first();
@@ -42,6 +43,7 @@ class MessengesController extends Controller
     	}else{
     		$isJoin = 1;
     	}
+
     	$listTemp = DB::table('messenges')
             ->join('users','users.id','=','messenges.user_id')
             ->where('messenges.room_id', $id)
@@ -49,10 +51,12 @@ class MessengesController extends Controller
             ->take(10)
             ->orderBy('messenges.id','DESC')
             ->get();
+
     	$messages = new Collection();
     	for ($i = $listTemp->count()-1 ; $i >= 0 ; $i--){
             $messages->push($listTemp[$i]);
         }
+
         foreach ($messages as $key => $chat){
             $chat->content = self::getNewContent($chat->content);
         }
@@ -74,7 +78,12 @@ class MessengesController extends Controller
         }
 
         //Get name file 
+        if($request->file('upload') == null){
+            return redirect()->route('frontend.message.room', $id);
+        }
+
         $nameFileSave = $request->file('upload')->getClientOriginalName();
+
         $ar_name_file = explode('.', $nameFileSave);
         $formatFile = end($ar_name_file);
 
@@ -166,6 +175,7 @@ class MessengesController extends Controller
         $message->content = $request['message'];
         $message->status = true;
         $message->save();
+
         //xoa thong bao tu room, neu co
         $notif = NotifRoom::where('roomid','=',$message->room_id)
                             ->where('userid','=',Auth::user()->id)
@@ -174,6 +184,7 @@ class MessengesController extends Controller
             $notif = NotifRoom::findOrFail($notif->id);
             $notif->delete();
         }
+
         //1- gui thong bao den cac thanh vien trong room
         $user_ids = RoomUser::where('room_id','=',$request['room']['id'])
                                     ->where('user_id','!=',Auth::user()->id)
@@ -190,6 +201,7 @@ class MessengesController extends Controller
                 $notifRoom->save();
             }
         }
+
         //cap nhat list room cua user gui~
         $listRoomFrom = DB::table('rooms')
             ->join('room_users','rooms.id','=','room_users.room_id')
@@ -201,6 +213,7 @@ class MessengesController extends Controller
         foreach ($listRoomFrom as $room){
             array_push($arr_roomid,$room->id);
         }
+
         $arr_roomid = array_unique($arr_roomid);
         $arr_roomidLoad = array_slice($arr_roomid,0,3);
         $roomsFrom = new Collection();
@@ -237,6 +250,7 @@ class MessengesController extends Controller
         $message->username = $user_send->name;
         $message->fullname = $user_send->fullname;
         $room_userid = Room::findOrFail($request['room']['id']);
+
         if ($room_userid == null) {
             abort(404);
         }
@@ -272,13 +286,16 @@ class MessengesController extends Controller
             ->take(10)
             ->orderBy('messenges.id','DESC')
             ->get();
+
         $listMsg = new Collection();
         for ($i = $messages->count()-1 ; $i >= 0 ; $i--){
             $listMsg->push($messages[$i]);
         }
+
         foreach ($listMsg as $key => $chat){
             $chat->content = self::getNewContent($chat->content);
         }
+        
         $stringData = "";
         if($listMsg->count() > 0) {
             foreach ($listMsg as $msg) {

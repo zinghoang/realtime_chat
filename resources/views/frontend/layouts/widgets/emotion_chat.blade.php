@@ -9,36 +9,43 @@
 </div>  
 
 <div class="emotion">
-    <button onclick="showEmotion()"><i class="fa fa-smile-o" aria-hidden="true"></i></button>
+    <button><i class="fa fa-smile-o" aria-hidden="true"></i></button>
 </div> 
 
 <script type="text/javascript">
 
-    
-
     function addIcon(code)
     {
-
         var x = $('#txt-mess-content').val();
         $('#txt-mess-content').val(x + ' ' + code);
 
         var y = $('#mess-content').val();
         $('#mess-content').val(y + ' ' + code);
-
-
     }
 
-    function showEmotion(){
+    function showEmotion(){    
 
         var x = document.getElementById('list-icon');
         if (x.style.display === 'none' || x.style.display === '') {
             x.style.display = 'block';
-            window.scrollTo(0,document.body.scrollHeight);
-
         } else {
             x.style.display = 'none';
         }
     }
 
+   $(document).ready(function(){
+        $(".emotion").click(function(e){
+            $('div#list-icon').show();
+            e.stopPropagation();
+        });
+
+        $('div#list-icon').click(function(e){
+            e.stopPropagation();
+        });
+        
+        $(window).click(function(){
+            $('div#list-icon').hide();
+        });
+    });
 
 </script>
