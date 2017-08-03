@@ -232,3 +232,9 @@ a{
         border-bottom: 1px solid #cccccc;
     }
 }
+
+@media only screen and (max-width : 991px) {
+    #messages-main .ms-user > div{
+        padding: 0px 0px 7px 0px;
+    }
+}
