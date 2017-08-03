@@ -389,7 +389,11 @@ class MessengesController extends Controller
             $msg->content = '<a href="../../storage/sendImg/'.$filename.'" target="_blank" ><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
             $msg->status = 1;
             $msg->save();
+            $msg->username = Auth::user()->name;
+            $msg->fullname = Auth::user()->fullname;
+            $msg->avatar = Auth::user()->avatar;
+            return $msg;
         }
-        return '<a href="../../storage/sendImg/'.$filename.'" target="_blank"><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
+        return null;
     }
 }
