@@ -30,21 +30,14 @@ io.on('connection',function(socket){
 
 	//join to list rooms
 	socket.on('join room',function(data){
-		console.log('join room: ');
+		console.log('join room: ' + data.length);
 		for(i=0; i<data.length; ++i){
-			console.log(data[i]);
 			socket.join('room-'+data[i].id);
 		}
 	});
 
 	socket.on('send action',function(type,currentRoom,data,action){
-		if(action == 'load'){
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
-		} else if (action == 'play') {
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
-		} else if (action == 'pause') {
-			socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
-		} 
+ 		socket.broadcast.to('room-'+currentRoom.id).emit('receiver action',type,currentRoom,action,data);
 	});
 
 	//Invite User Join Room
@@ -70,30 +63,14 @@ io.on('connection',function(socket){
 			currentUser = new User(socket,user,-1);
 		}
 		globalConnect.push(currentUser) ;
-		console.log('length  ' +globalConnect.length);
-		for(i=0;i<globalConnect.length;++i){
-			console.log(globalConnect[i].user.id + " = " + globalConnect[i].user.name);
-		}
 	});
 
 	//--------- PRIVATE CHAT ---------
 	socket.on('send private message',function(type,message){
-		if(type == 'message'){
-			for(temp=0; temp< globalConnect.length;temp++){
-				if(globalConnect[temp].user.id == message.to){
-					console.log(message);
-					globalConnect[temp].socket.emit('receiver private mess',type,message);
-				}
-			}
-		} else if (type == 'room infor'){
-			if(message != null){
-				console.log('MESSAGE');
-			//	console.log(message);
-				var index = globalConnect.findIndex(obj =>obj.user.id == message.sender.id);
-				console.log('indexx: ' + index);
-				if(index>=0){
-					globalConnect[index].socket.emit('receiver private mess',type,message);
-				}
+ 		if(message.data != null){
+			var index = globalConnect.findIndex(obj =>obj.user.id == message.toUser.id);
+			if(index>=0){
+				globalConnect[index].socket.emit('receiver private mess',type,message);
 			}
 		}
 	})
@@ -101,7 +78,6 @@ io.on('connection',function(socket){
 	socket.on('disconnect',function(){
 		console.log(socket.id + " has disconnect");
 		var index = globalConnect.indexOf(currentUser);
-		console.log('disconect index ' + index);
 		if(index>=0){
 			globalConnect.splice(index,1);
 		}

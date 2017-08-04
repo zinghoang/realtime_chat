@@ -6,11 +6,12 @@
     <div class="listview lv-message">
         <div class="lv-header-alt clearfix">
             <div id="ms-menu-trigger">
-                <div class="line-wrap">
+                <div class="line-wrap button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" role="button" type="button">
                     <div class="line top"></div>
                     <div class="line center"></div>
                     <div class="line bottom"></div>
                 </div>
+                @widget('MenuNav')
             </div>
             <div class="lvh-label hidden-xs">
                 <div class="lv-avatar pull-left"> 
@@ -50,7 +51,12 @@
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </a>
                     </li>
-                @endif
+                @endif                   
+                    <li>
+                        <a href="#" title="Hahaha" id="hahaPrivateIco">
+                            <img src="/images/haha.png" alt="" width="25px" height="25px">
+                        </a>
+                    </li>
             </ul>
         </div>
         <div class="lv-body">
@@ -73,19 +79,37 @@
                                 </div>
                                 <small class="ms-date">
                                     <span class="glyphicon glyphicon-time"></span>
-                                    &nbsp; {{ date('d-m-Y', strtotime($chat->created_at)) }} at {{ date('h:i:s', strtotime($chat->created_at)) }}
+                                    &nbsp; {{ date('d-m-Y', strtotime($chat->created_at)) }} at {{ date('H:i:s', strtotime($chat->created_at)) }}
                                 </small> 
                             </div>
                         </div>
                         @endforeach
                         </div>
                         <div class="clearfix"></div>
+
+                        @widget('EmotionChat')
+
+                        <div class="add-photo">
+                            <form method="POST" enctype="multipart/form-data" action="javascript:void(0)" id="form-add-photo">
+                                {{ csrf_field() }}
+                                <label for="upload-file-selector">
+                                    <span class="bton">
+                                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                        <input id="upload-file-selector" name="sendPicture" type="file" onchange="return uploadPhoto()">
+                                    </span>
+                                </label>
+                            </form>
+                        </div>
+
+                        
+
                         <div class="lv-footer ms-reply">
                             <textarea rows="10" placeholder="Write messages..." id="txt-mess-content" onclick="return deleteNotif({{ $toUser->id }},{{ $user->id }})"></textarea>
                             <button class="" id='btn-reply'>
                                 <span class="glyphicon glyphicon-send"></span>
                             </button>
                         </div>
+
                 </div>
             </div>
         </div>
@@ -153,4 +177,56 @@
 </script>
 <script src="{{ asset('js/jquery.validate.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/validate.js') }}" type="text/javascript"></script>
+@endsection
+@section('endscript')
+    <script>
+            function uploadPhoto(){
+                var fakePath = $('#upload-file-selector').val();
+                var arr_path = fakePath.split('/');
+                var filename = arr_path[arr_path.length - 1];
+                var filename = filename.split('.');
+                var type = filename[filename.length - 1];
+                if(type == 'jpg' || type == 'png' || type == 'jpeg' || type =='gif'){
+                    $('#form-add-photo').submit();
+                }else{
+                    alert('File khong dung dinh dang');
+                }
+            }
+            $(document).on('submit','#form-add-photo', function (e){
+                var token = $("input[name='_token']").val();
+                var form = $(this);
+                var formdata = false;
+                if(window.FormData){
+                    formdata = new FormData(form[0]);
+                }
+                $.ajax({
+                    url: "{{ route('frontend.private.sendPicturePrivate',[Auth::user()->id, $toUser->id]) }}",
+                    type: 'POST',
+                    data: formdata,
+                    success: function(data){
+                        var mydate = new Date(data.created_at);
+
+                        var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+                            mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+                        var stringDivData = ' <div class="lv-item media right"> ' + ' <div class="lv-avatar pull-right"> ' +
+                            ' <img src="../storage/avatars/'+ user.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+                            ' <div class="ms-item"> ' + data.content + ' </div> ' + ' <small class="ms-date"> ' +
+                            ' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
+                        $('.content-message').append(stringDivData);
+                        scroll('.content-message');
+                        //send data to other
+                        var dataContent = new Object;
+                        dataContent.from = user;
+                        dataContent.toUser = toUser;
+                        dataContent.data = data;
+                        socket.emit('send private message','image upload',{toUser: toUser,data:dataContent});
+                    },
+                    error: function (){
+                    },
+                    contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                    processData: false,
+                });
+                return false;
+            });
+    </script>
 @endsection

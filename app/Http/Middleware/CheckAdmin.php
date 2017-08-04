@@ -18,7 +18,7 @@ class CheckAdmin
     {
 
         if(Auth::user()->level == 0){
-            //$request->session()->flash('fail','You are not an admin!');
+            $request->session()->flash('fail','You are not an administrator!');
             return redirect()->route('home');
         }
         

@@ -75,7 +75,9 @@ class PrivateChatController extends Controller
     public function user($username)
     {
         $userid = User::where('name','=',$username)->select('id')->first();
-
+        if($userid == null){
+            abort(404);
+        }
         //xoa thong bao tu user nay neu co
         $notif = NotifPrivate::where('from','=',$userid->id)
                                 ->where('to','=',Auth::user()->id)
@@ -175,11 +177,11 @@ class PrivateChatController extends Controller
             unset($arr_id[$del_key]);
         }
 
-        $arr_id = array_slice($arr_id,0,5);
+        $arr_id_Receiver = array_slice($arr_id,0,3);
 
         $users = new Collection();
 
-        foreach ($arr_id as $id){
+        foreach ($arr_id_Receiver as $id){
             $user = User::findOrFail($id);
             //kiem tra user co thong bao hay khong
             $status = DB::table('notifprivate')
@@ -194,6 +196,22 @@ class PrivateChatController extends Controller
         }
 
         $privateMessage->listUser = $users;
+        //dem so thong bao cua user nhan
+        $notifReceiver = 0;
+        if(count($arr_id) > 3){
+            $arr_idReceiver = array_slice($arr_id, 3,count($arr_id)-3);
+            //kiem tra xem co thong bao nao tu list User khong
+            foreach ($arr_idReceiver as $fromUser) {
+                $checkNotif = NotifPrivate::where('from', '=', $fromUser)
+                    ->where('to', '=', $request['toUser']['id'])
+                    ->first();
+                if ($checkNotif != null){
+                    $notifReceiver++;
+                }
+            }
+        }
+        $privateMessage->notifReceiver = $notifReceiver;
+
 
         //cap nhat list lien lac gan day cua user gui~
         $ids = PrivateMessage::where('from','=',$request['user']['id'])
@@ -201,39 +219,51 @@ class PrivateChatController extends Controller
             ->orderBy('created_at','DESC')
             ->select('from','to')->get();
 
-        $arr_id = array();
+        $arr_id_Sender = array();
 
         foreach ($ids as $id){
             if($request['user']['id'] == $id->to){
-                array_push($arr_id,$id->from);
+                array_push($arr_id_Sender,$id->from);
             }else{
-                array_push($arr_id,$id->to);
+                array_push($arr_id_Sender,$id->to);
             }
         }
 
-        $arr_id = array_unique($arr_id);
+        $arr_id_Sender = array_unique($arr_id_Sender);
 
-        $del_key = array_search($request['user']['id'], $arr_id);
+        $del_key = array_search($request['user']['id'], $arr_id_Sender);
         if($del_key !== false){
-            unset($arr_id[$del_key]);
+            unset($arr_id_Sender[$del_key]);
         }
-
-        $arr_id = array_slice($arr_id,0,5);
+        $arr_idLoad = array_slice($arr_id_Sender,0,3);
 
         $users = new Collection();
 
-        foreach ($arr_id as $id){
+        foreach ($arr_idLoad as $id){
             $user = User::findOrFail($id);
             //kiem tra user co thong bao hay khong
-            $status = DB::table('notifprivate')
-                ->join('users','users.id','=','notifprivate.from')
-                ->where('notifprivate.from','=',$user->id)->first();
+            $status = NotifPrivate::where('from', '=', $id)
+                ->where('to', '=', Auth::user()->id)
+                ->first();
             $status != null ? $user->notif = 1 : $user->notif = 0;
             $users->push($user);
         }
-
         $privateMessage->listUserFrom = $users;
-
+        //dem so thong bao chua xem
+        $notifSender = 0;
+        if(count($arr_id_Sender) > 3){
+            $arr_idSender = array_slice($arr_id_Sender, 3,count($arr_id_Sender)-3);
+            //kiem tra xem co thong bao nao tu list User khong
+            foreach ($arr_idSender as $fromUser) {
+                $checkNotif = NotifPrivate::where('from', '=', $fromUser)
+                    ->where('to', '=', Auth::user()->id)
+                    ->first();
+                if ($checkNotif != null){
+                    $notifSender++;
+                }
+            }
+        }
+        $privateMessage->notifSender = $notifSender;
     	return $privateMessage;
     }
 
@@ -248,7 +278,16 @@ class PrivateChatController extends Controller
             $image = Emotion::where('code','=',$code)
                 ->select('image')->first();
             if($image == null){
-                $output = $output. " ".$code;
+                //kiem tra xem co phai link khong?
+                if(self::checkLink($code)>0){//neu la link thi kiem tra co phai link youtube ko
+                    if(self::checkYoutube($code) > 0 ){//la link youtube
+                        $output = $output. " ". self::getEmbedCode($code);
+                    }else{ //khong phai link youtube
+                        $output = $output. ' <a href="'.$code .'" target="_blank">'.$code.'</a>';
+                    }
+                }else{
+                    $output = $output. " ".$code;
+                }
             }else{
                 $output = $output. " "."<img src=\"../storage/emotions/$image->image\" alt=\"\" width=\"50px\" height=\"50px\"> ";
             }
@@ -257,7 +296,31 @@ class PrivateChatController extends Controller
 
         return $output;
     }
-
+    public static function checkLink($text){
+        if(filter_var($text,FILTER_VALIDATE_URL) == true){
+            return 1;
+        }
+        return 0;
+    }
+    public static function checkYoutube($url){
+        $parsed = parse_url($url);
+        if($parsed['host'] == 'www.youtube.com' && $parsed['path'] == '/watch'){
+            return 1;
+        }
+        return 0;
+    }
+    public static function getEmbedCode($url){
+        $embed = 'https://www.youtube.com/embed/';
+        $parsed = parse_url($url);
+        $query = $parsed['query'];
+        $query = explode('&',$query);
+        $query = $query[0];
+        $query = explode('=',$query);
+        $query = $query[1];
+        $embed = $embed . $query.'?ecver=1';
+        $output = " <iframe width=\"560\" height=\"315\" src=\"".$embed."\" frameborder=\"0\" allowfullscreen></iframe>";
+        return $output;
+    }
     public function requestRelationship($to){
 
         if($this->checkFriendship($to) == null){
@@ -409,6 +472,23 @@ class PrivateChatController extends Controller
         
 
         return view('frontend.privatechat.friend', compact('friends'));
+    }
+    public function sendPicturePrivate(Request $request){
+        $from = $request->from;
+        $to = $request->to;
+        if($request->file('sendPicture') != null){
+            //Up anh moi
+            $image = $request->file('sendPicture')->store('public/sendImg');
+            $arr_filename = explode("/",$image);
+            $filename = end($arr_filename);
+            //luu tin nhan vao DB
+            $msg = new PrivateMessage();
+            $msg->from = $from;
+            $msg->to = $to;
+            $msg->content = '<a href="../../storage/sendImg/'.$filename.'" target="_blank" ><img src="../../storage/sendImg/'.$filename.'" width="50%" /></a>';
+            $msg->save();
+        }
+        return $msg;
     }
 }
  

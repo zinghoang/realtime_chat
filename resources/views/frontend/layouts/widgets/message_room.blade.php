@@ -1,10 +1,11 @@
 <div class="lv-header-alt clearfix">
 	<div id="ms-menu-trigger">
-		<div class="line-wrap">
-			<div class="line top"></div>
-			<div class="line center"></div>
-			<div class="line bottom"></div>
-		</div>
+		<div class="line-wrap button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" role="button" type="button">
+                    <div class="line top"></div>
+                    <div class="line center"></div>
+                    <div class="line bottom"></div>
+                </div>
+                @widget('MenuNav')
 	</div>
 	<div class="lvh-label hidden-xs">
 		<div class="lv-avatar pull-left"> 
@@ -29,7 +30,7 @@
         				<div class="modal-body">
         					<div class="form-group">
             					<label for="name">Name:</label>
-            					<input type="text" class="form-control" name="name" id="nameRoom" value="{{ $room->name }}">
+            					<input type="text" class="form-control" name="name" id="nameRoom" value="{{ $room->name }}" required>
         					</div>
             			</div>
             			<div class="modal-footer">
@@ -70,7 +71,11 @@
 				<i class="fa fa-envelope" aria-hidden="true"></i>
 			</a>
 		</li>
-
+		<li>
+			<a href="#" title="Hahaha" id="hahaIco">
+				<img src="/images/haha.png" alt="" width="25px" height="25px">
+			</a>
+		</li>
 		@if($room->user_id == Auth::id())
 			<li> 
 				<a href="{{ route('frontend.room.destroy', $room->id) }}" 
@@ -99,7 +104,7 @@
     				<div class="modal-body">
     					<div class="form-group">
         					<label for="name">Name:</label>
-        					<input type="text" class="form-control" name="name" id="name">
+        					<input type="text" class="form-control" name="name" id="name" required>
     					</div>
         			</div>
         			<div class="modal-footer">
@@ -128,7 +133,7 @@
 							</div>
 							<div class="form-group">
 								<label for="upload">Choose File:</label>
-								<input type="file" class="form-control" id="upload" name="upload" onchange="showTitle(this)">
+								<input type="file" class="form-control" id="upload" name="upload" onchange="showTitle(this)" required>
 							</div>
 						</div>
 						<div class="modal-footer">

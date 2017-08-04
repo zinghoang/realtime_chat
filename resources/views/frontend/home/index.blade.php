@@ -6,15 +6,16 @@
     <div class="listview lv-message">
         <div class="lv-header-alt clearfix">
             <div id="ms-menu-trigger">
-                <div class="line-wrap">
+                <div class="line-wrap button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation" role="button" type="button">
                     <div class="line top"></div>
                     <div class="line center"></div>
                     <div class="line bottom"></div>
                 </div>
+                @widget('MenuNav')
             </div>
             <div class="lvh-label hidden-xs">
                 @if(Session::has('fail'))
-                    <div class="alert alert-danger"><p><strong>{{ Session::get('fail') }}</strong></p></div>
+                    <p><span style="font-size: 30px;color: #aa1111;margin-right: 20px"><i class="fa fa-ban" aria-hidden="true"></i></span><strong style="color: #aa1111">{{ Session::get('fail') }}</strong><span style="font-size: 30px;color: #aa1111;margin-left: 20px"><i class="fa fa-ban" aria-hidden="true"></i></span></p>
                 @endif
                 <span class="c-black">
                     Welcome to Chat Blue Team!

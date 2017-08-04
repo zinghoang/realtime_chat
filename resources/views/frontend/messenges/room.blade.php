@@ -9,14 +9,14 @@
 			<div class="row content-chat-video">
 				@if($isJoin == 1)
 			        
-				<div class="col-md-7" style="border-bottom: 1px solid #cccccc;">
+				<div class="col-md-7">
 					<div class="show-video" id="ms-scrollbar" style="overflow:scroll; overflow-x: hidden; height:80vh;">
 						<div class="content-video">
 							@if(count($listFile) == 0)
 								<div style="font-size: 350px; color: #cccccc; text-align: center;">
-									<a href="#" data-toggle="modal" data-target="#myModalUpload" title="Upload Media">
-				<i class="fa fa-upload" aria-hidden="true"></i>
-			</a>
+									<a href="#" data-toggle="modal" data-target="#myModalUpload" title="Upload Media" style="color: #f0f0f0">
+										<i class="fa fa-upload" aria-hidden="true"></i>
+									</a>
 							    </div>
 							@else
 
@@ -43,11 +43,11 @@
 									</a>
 									<em>- {{ str_limit($file->user->fullname, 20) }}</em>
 									@if($file->user_id == Auth::id() || $room->user_id == Auth::id())
-										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form').submit();" style="text-decoration: none;">
+										<a href="{{ route('frontend.message.deletefile', $file->id) }}" onclick="event.preventDefault(); document.getElementById('deletefile-form-{{ $file->id }}').submit();" style="text-decoration: none;">
 											<span class="glyphicon glyphicon-trash"></span>
 										</a>
 
-										<form id="deletefile-form" action="{{ route('frontend.message.deletefile', $file->id) }}" method="POST" style="display: none;">
+										<form id="deletefile-form-{{ $file->id }}" action="{{ route('frontend.message.deletefile', $file->id) }}" method="POST" style="display: none;">
 							                {{ csrf_field() }}
 							                <input type="hidden" name="_method" value="DELETE">
 							            </form>
@@ -89,7 +89,8 @@
 													@endif
 												@endif
 												<span class="glyphicon glyphicon-time"></span>
-												&nbsp; {{ $message->created_at }}
+												&nbsp; 
+												{{ date('d-m-Y', strtotime($message->created_at)) }} at {{ date('H:i:s', strtotime($message->created_at)) }}
 											</small>
 										</div>
 									</div>
@@ -98,6 +99,20 @@
 						@endif
 					</div>
 					<div class="clearfix"></div>
+					@widget('EmotionChat')
+
+					<div class="add-photo">
+                        <form method="POST" enctype="multipart/form-data" action="javascript:void(0)" id="form-add-photo">
+                            {{ csrf_field() }}
+                            <label for="upload-file-selector">
+                                <span class="bton">
+                                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                    <input id="upload-file-selector" name="sendPicture" type="file" onchange="uploadPhoto()">
+                                </span>
+                            </label>
+                        </form>
+                    </div>
+
 					<div class="lv-footer ms-reply">
 						<textarea rows="10" placeholder="Write messages..." id="mess-content" onclick="return deleteNotifRoom({{ $room->id }},{{ Auth::user() }})"></textarea>
 						<button class="" id="btn-room-reply">
@@ -132,7 +147,57 @@
 
 @section('endscript')
 <script>
-	index = 10;
+    function uploadPhoto(){
+        var fakePath = $('#upload-file-selector').val();
+        var arr_path = fakePath.split('/');
+        var filename = arr_path[arr_path.length - 1];
+        var filename = filename.split('.');
+        var type = filename[filename.length - 1];
+        if(type == 'jpg' || type == 'png' || type == 'jpeg' || type =='gif'){
+            $('#form-add-photo').submit();
+		}else{
+            alert('khong dung dinh dang');
+		}
+    }
+
+    $(document).on('submit','#form-add-photo', function (e){
+        var token = $("input[name='_token']").val();
+        var form = $(this);
+        var formdata = false;
+        if(window.FormData){
+            formdata = new FormData(form[0]);
+		}
+        $.ajax({
+		url: "{{ route('frontend.room.sendPictureMsg',$room->id) }}",
+		type: 'POST',
+		data: formdata,
+		success: function(data){
+            var mydate = new Date(data.created_at);
+
+            var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+                mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+
+
+            var stringDivData = ' <div class="lv-item media right"> '+' <div class="lv-avatar pull-right"> '
+                +' <img src="../../storage/avatars/'+ data.avatar +'" alt=""> '
+                +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+data.content+' </div> '+' <small class="ms-date"> '
+                +' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
+                +' </small> '+' </div> '+' </div> ';
+            $('.room-contentt').append(stringDivData);
+            if($('.room-contentt').length){
+                scroll('.room-contentt');
+            }
+			socket.emit('send action','video',currentRoom,data,'upload image');
+		},
+		error: function (){
+		},
+		contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+        processData: false,
+		});
+        return false;
+    });
+
+    index = 10;
     scroll('.room-contentt');
 	@if($isJoin == 1)
     $('#mess-content').keypress(function(event){
@@ -193,14 +258,15 @@
 	    		//add video div if list file is empty
 	    		var count = {!!count($listFile)!!};
 	    		if(count == 0){
-	    			$(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    			// $(".content-video").html('<video width="100%" controls class="video-play" id="myVideo"> <source src="" type="video/mp4"> Your browser does not support HTML5 video. </video>')
+	    			window.location = "http://localhost:8000/message/room/"+currentRoom.id;
 	    		}
 	    		//add message
        			$('.room-contentt').append('<div style="padding-left: 30px;">'
                             +'<h6>'+'<em style="color: #cccccc;">'+data[3]+'</em>'+'<h6>'+'</div>');
 	    		//add to video list
 	    		var videoDiv = '<li class=""> <a href="javascript:void(0)" class="change-video"> <i class="fa fa-play-circle-o" aria-hidden="true"></i><span class="video-id hidden">'+ data[0] + '</span> <span>'+ data[1] + '</span> </a> <em>- '+ data[4] +'</em> </li>';
-
+	    		$('.title-video').html(data[1]);
 	    		$('.show-list-video').append(function(){
 	    			return $(videoDiv).click(function(){
 	    				changeVideo(data[0]);
@@ -213,6 +279,35 @@
        			//remove li
        			var li = '#'+data[0]; 
        			$(li).remove();
+       		} else if( action == 'IconAction'){
+       			//haha
+       			console.log(data);
+                var haha = new Audio();
+                haha.src = '/audio/hahaha.mp3';
+                haha.play();
+       		} else if( action == 'upload image'){
+       			console.log(data);
+                var mydate = new Date(data.created_at);
+
+                var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+                    mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+
+                var stringDivData = ' <div class="lv-item media left"> '+' <div class="lv-avatar pull-left"> '
+                    +' <img src="../../storage/avatars/'+data.avatar +'" alt=""> '
+                    +' </div> '+' <div class="media-body"> '+' <div class="ms-item"> '+data.content+' </div> '+' <small class="ms-date"> '
+                    +'<a href="/chat/'+ data.username +'"><strong style="font-size: 10px">'+data.fullname+'</strong></a>';
+
+                if(data.room_userid == data.user_id){
+                    stringDivData = stringDivData + '- <strong style="color: red;font-size: 10px">[AD]</strong>';
+                }
+
+                stringDivData = stringDivData + ' <span class="glyphicon glyphicon-time"> '+' </span> '+' &nbsp; ' +dateFormat
+                    +' </small></div></div> ';
+
+                $('.room-contentt').append(stringDivData);
+                if($('.room-contentt').length){
+                    scroll('.room-contentt');
+                }
        		}
     	}
     });
@@ -269,6 +364,12 @@
     	socket.emit('send room message','file deleted',currentRoom,fileInfor);
     @endif
 
+    $('#hahaIco').click(function(){
+        var haha = new Audio();
+        haha.src = '/audio/hahaha.mp3';
+        haha.play();
+    	socket.emit('send action','Icon',currentRoom,'haha','IconAction');
+    })
 </script>
 
 @if($isJoin == 1)

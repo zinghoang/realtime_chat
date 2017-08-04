@@ -13,7 +13,8 @@ if(typeof currentRoom !== 'undefined' && isJoin){
 //Join room
 socket.emit('join room',roomJoined);
 
-socket.on('receiver private mess',function(type,data){
+socket.on('receiver private mess',function(type,message){
+  var data = message.data;
 	// chat 2 nguoi
 	if(type == 'message'){
 	    var mydate = new Date(data.created_at);
@@ -36,11 +37,15 @@ socket.on('receiver private mess',function(type,data){
 
     //cap nhat listUser
     var pathname = window.location.pathname;
-        var arr_name = pathname.split('/');
-        var name = arr_name[arr_name.length-1];
+    var arr_name = pathname.split('/');
+    var name = arr_name[arr_name.length-1];
     var stringDivUser = '';
     for(var i = 0; i< data.listUser.length;i++){
-        stringDivUser = stringDivUser + '<div class="lv-item media">'
+        stringDivUser = stringDivUser + '<div class="lv-item media';
+        if(data.listUser[i].name == name){
+            stringDivUser = stringDivUser + ' active';
+        }
+        stringDivUser = stringDivUser +'">'
                             +'<div class="lv-avatar pull-left">'
                             +'<img src="/storage/avatars/'+ data.listUser[i].avatar+'" alt="">'
                             +'</div>'
@@ -50,7 +55,7 @@ socket.on('receiver private mess',function(type,data){
                             + data.listUser[i].fullname
                             +'</a>';
         if(data.listUser[i].notif == 1 && data.listUser[i].name != name){
-            stringDivUser = stringDivUser + '<i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i>';
+            stringDivUser = stringDivUser + '<i class="fa fa-star" aria-hidden="true" style="color: #aa1111;padding-left: 10px"></i>';
         }
         stringDivUser = stringDivUser + '</div>'
         +'<div class="lv-small">'+'@ '+data.listUser[i].name
@@ -62,18 +67,15 @@ socket.on('receiver private mess',function(type,data){
                                      		+'<div class="media-body">'
                                      			+'<p class="text-center" style="margin: 0px;">'
                                      				+'<a href="/chat" title="" style="text-decoration:none;">'
-                                     					+'Show All Contacts'
-                                     				+'</a>'
-                                     			+'</p>'
-                                     		+'</div>'
-                                     	+'</div>';
-     $('.listUser').html(stringDivUser);
+                                     					+'Show More Contacts ';
+    if(data.notifReceiver > 0){
+         stringDivUser = stringDivUser + '<strong style="color: red">[ ' + data.notifReceiver + ' ]</strong>';
+    }
+    stringDivUser = stringDivUser + '</a></p></div></div>';
+    $('.listUser').html(stringDivUser);
 
 	} else if( type =='room infor'){
-		console.log(type);
-		console.log(data);
-		
-		var video = $('#myVideo')[0];
+    var video = $('#myVideo')[0];
 		$("#myVideo source").attr("src",data.src);
     $('.title-video').html(data.title); 
 		video.load();
@@ -81,9 +83,36 @@ socket.on('receiver private mess',function(type,data){
 		if(!data.paused){
 			video.play(); 
 		}
-	}
-	
+	} else if(type == 'IconAction') {
+      if(typeof(toUser) !== 'undefined' && toUser.id == data.from.id) {
+         var haha = new Audio();
+         haha.src = '/audio/hahaha.mp3';
+         haha.play();
+      }
+  } else if(type == 'image upload'){
+         var mydate = new Date(data.data.created_at);
 
+         var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
+                          mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
+         var stringDivData = ' <div class="lv-item media left"> ' + ' <div class="lv-avatar pull-left"> ' +
+                                    ' <img src="../storage/avatars/'+ user.avatar +'" alt=""> ' + ' </div> ' + ' <div class="media-body"> ' +
+                                    ' <div class="ms-item"> ' + data.data.content + ' </div> ' + ' <small class="ms-date"> ' +
+                                    ' <span class="glyphicon glyphicon-time"></span> ' + ' &nbsp; ' + dateFormat + ' </small> ' + ' </div> ' + ' </div> ' ;
+         $('.content-message').append(stringDivData);
+          scroll('.content-message');
+  }
+})
+
+//send haha icon action
+$('#hahaPrivateIco').click(function(){
+  var data = new Object;
+  data.from = user;
+  data.toUser = toUser;
+  data.action = 'hahaha';
+  var haha = new Audio();
+  haha.src = '/audio/hahaha.mp3';
+  haha.play();
+  socket.emit('send private message','IconAction',{toUser: toUser,data:data});
 })
 
 //Send private message 
@@ -96,7 +125,6 @@ if($("#btn-reply").length){
 	$('#btn-reply').click(function(){
 		var mess = $('#txt-mess-content').val();
 	  	$('#txt-mess-content').val('');
-
 		var request = $.ajax({
 			type: "post",
 			url: '/chat/addprivatemess',
@@ -107,9 +135,7 @@ if($("#btn-reply").length){
 		});
 
 		request.done(function (response, textStatus, jqXHR){
-		  	console.log(response);
-
-		  	var mydate = new Date(response.created_at);
+        var mydate = new Date(response.created_at);
 
 		  	var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' + 
 		  	mydate.getHours() + ":" + mydate.getMinutes() + ":" + mydate.getSeconds();
@@ -127,11 +153,16 @@ if($("#btn-reply").length){
 
             //cap nhat listUser
                 var pathname = window.location.pathname;
-                    var arr_name = pathname.split('/');
-                    var name = arr_name[arr_name.length-1];
+                var arr_name = pathname.split('/');
+                var name = arr_name[arr_name.length-1];
                 var stringDivUser = '';
+
                 for(var i = 0; i< response.listUserFrom.length;i++){
-                    stringDivUser = stringDivUser + '<div class="lv-item media">'
+                    stringDivUser = stringDivUser + '<div class="lv-item media';
+                    if(response.listUserFrom[i].name == name){
+                        stringDivUser = stringDivUser + ' active';
+                    }
+                    stringDivUser = stringDivUser +'">'
                                         +'<div class="lv-avatar pull-left">'
                                         +'<img src="/storage/avatars/'+ response.listUserFrom[i].avatar+'" alt="">'
                                         +'</div>'
@@ -140,6 +171,9 @@ if($("#btn-reply").length){
                                         +'<a href="/chat/'+response.listUserFrom[i].name+'" title="" style="text-decoration:none;">'
                                         + response.listUserFrom[i].fullname
                                         +'</a>';
+                    if(response.listUserFrom[i].notif == 1){
+                    stringDivUser = stringDivUser + ' <i class="fa fa-star" aria-hidden="true" style="color: #aa1111;padding-left: 10px"></i> ';
+                    }
                     stringDivUser = stringDivUser + '</div>'
                     +'<div class="lv-small">'+'@ '+response.listUserFrom[i].name
                     +'</div>'
@@ -150,15 +184,15 @@ if($("#btn-reply").length){
                                                  		+'<div class="media-body">'
                                                  			+'<p class="text-center" style="margin: 0px;">'
                                                  				+'<a href="/chat" title="" style="text-decoration:none;">'
-                                                 					+'Show All Contacts'
-                                                 				+'</a>'
-                                                 			+'</p>'
-                                                 		+'</div>'
-                                                 	+'</div>';
-                 $('.listUser').html(stringDivUser);
+                                                 					+'Show More Contacts ';
+                if(response.notifSender > 0){
+                   stringDivUser = stringDivUser + '<strong style="color: red">[ ' + response.notifSender + ' ]</strong>';
+                }
+                stringDivUser = stringDivUser + '</a></p></div></div>';
+                $('.listUser').html(stringDivUser);
 
 
-		  	socket.emit('send private message','message',response);
+		  	socket.emit('send private message','message',{toUser: toUser,data:response});
 		});
 
 		// Callback handler that will be called on failure
@@ -184,8 +218,6 @@ if($('#btn-room-reply').length){
 		});
 
 		request.done(function (response, textStatus, jqXHR){
-		  	console.log(response);
-			
 			var mydate = new Date(response.created_at);
 
             var dateFormat = mydate.getDate() + '-' + mydate.getMonth() + '-' + mydate.getFullYear() + ' at ' +
@@ -218,7 +250,7 @@ if($('#btn-room-reply').length){
                                                            			+ response.roomsFrom[i].name
                                                            			+' </a> ';
                         if(response.roomsFrom[i].notif == 1){
-                            stringDivRooms = stringDivRooms + ' <i class="fa fa-star" aria-hidden="true" style="color: #aa1111"></i> ';
+                            stringDivRooms = stringDivRooms + ' <i class="fa fa-star" aria-hidden="true" style="color: #aa1111;padding-left: 10px"></i> ';
                         }
                         stringDivRooms = stringDivRooms + '</div>'
                                                            			+' <div class="lv-small"> Click here to chat... </div> '
@@ -269,7 +301,6 @@ if($('#leave-room').length){
 //Receiver message from server
 socket.on('receiver room mess',function(type,sender,data){
 	if(type == 'message'){
-		console.log(data);
 		//chat room
 		var mydate = new Date(data.created_at);
 
@@ -292,12 +323,15 @@ socket.on('receiver room mess',function(type,sender,data){
 	    if($('.room-contentt').length){
             scroll('.room-contentt');
 	    }
+	    var pathname = window.location.pathname;
+	    var arr_pathname = pathname.split('/');
+	    var id_room = arr_pathname[arr_pathname.length - 1];
         $.ajax({
              url : "/room/reloadListRoom",
              type : "post",
               dataType:"text",
               data : {
-
+                    'roomid' : id_room
               },
               success : function (result){
                   $('.listRoom').html(result);
@@ -308,9 +342,6 @@ socket.on('receiver room mess',function(type,sender,data){
         });
 
 	} else if ( type == 'notif') {
-		console.log(sender);
-		console.log(data); //join - leave
-		console.log(type);
         var stringDivData = '<div style="padding-left: 30px;">'
                             +'<h6>'+'<em style="color: #cccccc;">'+data+'</em>'+'<h6>'+'</div>';
         $('.room-contentt').append(stringDivData);
@@ -335,7 +366,7 @@ socket.on('receiver room mess',function(type,sender,data){
       data.title = $('.title-video').html(); 
 		 }
 		 //send back status of room to user
-		socket.emit('send private message','room infor',data);
+		socket.emit('send private message','room infor',{toUser: sender,data:data});
 	}
 })
 
@@ -353,7 +384,6 @@ if($('#invite-form').length){
 			},
 			success: function(data){
 				if(data['status'] == 'success'){
-					console.log(data['user']);
 					socket.emit('invite to room',user,data['user'],data['room']);
 
           var html_noti = '<script type="text/javascript">'
