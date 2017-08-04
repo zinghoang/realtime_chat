@@ -156,7 +156,7 @@
         if(type == 'jpg' || type == 'png' || type == 'jpeg' || type =='gif'){
             $('#form-add-photo').submit();
 		}else{
-            alert('khong dung dinh dang');
+            alert('The title must be a file of type: jpg, jpeg, png or gif');
 		}
     }
 
