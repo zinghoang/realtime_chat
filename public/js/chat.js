@@ -1,6 +1,6 @@
 //user , toUser, currentRoom
 
-var socket = io('https://node-blue-team-php-intern.bap.jp');
+var socket = io('http://blue-team-php-intern.bap.jp');
 
 if(typeof currentRoom !== 'undefined' && isJoin){
 	//register user and current room
